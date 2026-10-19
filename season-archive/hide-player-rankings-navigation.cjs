@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/index.html';let s=fs.readFileSync(p,'utf8');s=s.replace('data-tab="rankings">Rankings</a>','data-tab="rankings">Teams</a>').replace('<div class="ranking-mode-switch" aria-label="Ranking category">','<div class="ranking-mode-switch" aria-label="Ranking category" hidden>');fs.writeFileSync(p,s);

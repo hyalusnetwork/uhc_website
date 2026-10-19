@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/app.js';let s=fs.readFileSync(p,'utf8');s=s.replace("$('year').style.width=originalFilterWidth+'px';", "$('year').style.width=(originalFilterWidth+10)+'px';");s=s.replace('<span>${escape(s.mode)}</span>', '<span${s.mode===\'War\'?` ${chartTip(\'War\\nTwo large teams face each other.\')}`:\'\'}>${escape(s.mode)}</span>');fs.writeFileSync(p,s);

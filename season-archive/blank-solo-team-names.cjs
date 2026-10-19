@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/stats.js';let s=fs.readFileSync(p,'utf8');s=s.replace("${seasonStatCell(v,table.columns[i][1],table.columns[i][0])}</td>","${table.id==='winners'&&table.columns[i][0]==='Team Name'&&seasons.find(s=>s.id===row[0])?.teamSize===1?'':seasonStatCell(v,table.columns[i][1],table.columns[i][0])}</td>");fs.writeFileSync(p,s);

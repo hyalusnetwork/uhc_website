@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),window={};vm.runInNewContext(fs.readFileSync('dist/profiles.js','utf8'),{window});for(const p of window.UHC_PROFILES.profiles)for(const t of p.trivia.filter(t=>t.includes('matches before')&&t.includes('first PVE death')))console.log(p.name+': '+t);

@@ -1,0 +1,1 @@
+const fs=require('fs'),p='profile-engine.cjs';let s=fs.readFileSync(p,'utf8');s=s.replace("h.type==='PVP'&&/\\bslain by\\b/i.test(h.death||'')","['PVP','Team Kill'].includes(h.type)&&/\\bslain by\\b/i.test(h.death||'')");fs.writeFileSync(p,s);

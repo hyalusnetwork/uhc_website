@@ -1,0 +1,3 @@
+const fs=require('fs');let p='dist/stats.js',s=fs.readFileSync(p,'utf8');let start=s.indexOf('function histogram('),end=s.indexOf('function timingGraph(',start);s=s.slice(0,start)+fs.readFileSync('death-time-chart-function.txt','utf8')+s.slice(end);s=s.replace('Season outcomes scale','Player deaths scale');fs.writeFileSync(p,s);
+p='stats-engine.cjs';s=fs.readFileSync(p,'utf8').replace("{id:'death-time',title:'Death Time',bins},{id:'death-type',title:'Season Outcomes',types,data:deathTypes}","{id:'death-type',title:'Player Deaths',types,data:deathTypes},{id:'death-time',title:'Death Time',bins}");fs.writeFileSync(p,s);
+p='verify.cjs';s=fs.readFileSync(p,'utf8').replace("includes('Season Outcomes')","includes('Player Deaths')");fs.writeFileSync(p,s);

@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),window={};vm.runInNewContext(fs.readFileSync('dist/profiles.js','utf8'),{window});for(const p of window.UHC_PROFILES.profiles){const t=p.trivia.filter(t=>/three-peat|four-peat|consecutive matches played \(S/.test(t));if(t.length)console.log(p.name+': '+t.join('\n'))}

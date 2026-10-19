@@ -1,0 +1,13 @@
+const fs=require('node:fs');
+let app=fs.readFileSync('dist/app.js','utf8');
+app=app.replace('>👑</button>','><img class="crown-icon" src="${window.UHC_ICONS.crown}" alt="" width="22" height="14"></button>');
+fs.writeFileSync('dist/app.js',app);
+let players=fs.readFileSync('dist/players.js','utf8');
+players=players.replace("'👑 Crown'","'<img class=\"crown-icon\" src=\"'+window.UHC_ICONS.crown+'\" alt=\"\" width=\"20\" height=\"12\"> Crown'");
+fs.writeFileSync('dist/players.js',players);
+let engine=fs.readFileSync('profile-engine.cjs','utf8');
+engine=engine.replace("s.id,s.crown.method,'helmet'","s.id,s.crown.method,'crown'").replace("newly acquired crown.','helmet'","newly acquired crown.','crown'");
+fs.writeFileSync('profile-engine.cjs',engine);
+let html=fs.readFileSync('dist/index.html','utf8');
+html=html.replace(/<b class="crown-legend">[^<]+<\/b>/,'<img class="crown-icon crown-legend" src="icons/crown.png" alt="Crown" width="22" height="14">');
+fs.writeFileSync('dist/index.html',html);

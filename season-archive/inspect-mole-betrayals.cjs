@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),window={};vm.runInNewContext(fs.readFileSync('dist/profiles.js','utf8'),{window});for(const p of window.UHC_PROFILES.profiles){const notes=p.trivia.filter(t=>t.includes('cover teammates:'));if(notes.length)console.log(p.name+': '+notes.join('\n'))}

@@ -1,0 +1,5 @@
+const fs=require('node:fs');let s=fs.readFileSync('qa-mobile-overflow.cjs','utf8');const start=s.indexOf("await send('Emulation.setDeviceMetricsOverride'");s=s.slice(0,start)+`
+await send('Page.navigate',{url:'file:///E:/Games/Minecraft/UHC/Website/UHC.html#seasons'});await send('Page.reload',{ignoreCache:true});await new Promise(r=>setTimeout(r,300));
+for(const width of [320,375,390,430,540,720,768,820]){await send('Emulation.setDeviceMetricsOverride',{width,height:844,deviceScaleFactor:1,mobile:true});await new Promise(r=>setTimeout(r,100));console.log(JSON.stringify(await evaluate(\`({width:innerWidth,client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,overflow:[...document.querySelectorAll('body *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>document.documentElement.clientWidth+2&&!e.closest('table')}).slice(0,9).map(e=>({cls:e.className,width:e.getBoundingClientRect().width,right:e.getBoundingClientRect().right}))})\`)));}ws.close();
+})().catch(e=>{console.error(e);process.exit(1)});
+`;fs.writeFileSync('qa-mobile-overflow.cjs',s);

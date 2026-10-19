@@ -1,0 +1,1 @@
+const fs=require('fs');const r=JSON.parse(fs.readFileSync('../workbook-extracted.json','utf8').replace(/^\uFEFF/,''));console.log(JSON.stringify(r[0].rows[0]));for(const row of r[0].rows){const c=Object.fromEntries(row.cells.map(c=>[c.cell.replace(/\d/g,''),c.value]));if(c.A==='33'||c.J||c.K)console.log(c)}console.log('SPECIALS');console.log(JSON.stringify(r[3].rows));

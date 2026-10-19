@@ -1,0 +1,1 @@
+const fs=require('fs'),p='profile-engine.cjs';let s=fs.readFileSync(p,'utf8').replace('(Only ${greenStreakPlayers.length} out of ${greenStreakEligible.length} eligible players).','(Among ${greenStreakPlayers.length} out of ${greenStreakEligible.length} eligible players).');fs.writeFileSync(p,s);

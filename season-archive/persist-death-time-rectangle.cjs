@@ -1,0 +1,1 @@
+const fs=require('node:fs');let s=fs.readFileSync('dist/stats.js','utf8');const old='class="outcome-plot" viewBox="0 0 1084 354" role="group" aria-label="Death Time:';if(!s.includes(old))throw Error('Death Time plot missing');s=s.replace(old,'class="outcome-plot death-time-plot" viewBox="0 0 1084 354" role="group" aria-label="Death Time:');fs.writeFileSync('dist/stats.js',s);

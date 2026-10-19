@@ -1,0 +1,1 @@
+const fs=require('node:fs');let p=fs.readFileSync('profile-engine.cjs','utf8');p=p.replace("same season (one of '+ironmanPvePlayers.length+' out of '","same season ('+ironmanPvePlayers.length+' out of '");fs.writeFileSync('profile-engine.cjs',p);

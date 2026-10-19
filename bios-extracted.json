@@ -1,0 +1,3470 @@
+[
+  {
+    "name": "arecue",
+    "cells": [
+      {
+        "cell": "A1",
+        "value": "arecue"
+      },
+      {
+        "cell": "D1",
+        "value": "Trophy Case"
+      },
+      {
+        "cell": "J1",
+        "value": "Trivia"
+      },
+      {
+        "cell": "E3",
+        "value": "9 Time UHC Victor \n(S2-4, S10-11, S24-26, S31)"
+      },
+      {
+        "cell": "G3",
+        "value": "Second Longest Killstreak Ever - 9 Kills\n(S2-4)"
+      },
+      {
+        "cell": "I3",
+        "value": "3 Time Final Boss\n(S7, 19-20)"
+      },
+      {
+        "cell": "J3",
+        "value": "Has the most PVP kills (43).\n1 of 5 players to use an Enderpearl in a fight.\nHas participated in 29 of 31 seasons -- second most.\n1 of 8 players to win two games back-to-back. 1 of 3 players to win back-to-back more than once.\n1 of 5 players to win three games back-to-back. Only player to win three-peat twice.\n1 of 3 players to take the first damage and still win.\n1 of 4 players to get second place twice in a row.\nIt took 17 seasons for arecue to get his first ironman.\n1 of 8 players to win and earn ironman in one season.\nWas the first PVP death."
+      },
+      {
+        "cell": "E8",
+        "value": "2 Time Ironman      (S18, S25)"
+      },
+      {
+        "cell": "G8",
+        "value": "'Most Kills in a Season' - 7 Times\n(S2-4, S7, S11, S25, S31)"
+      },
+      {
+        "cell": "I8",
+        "value": "5 Teams Wiped\n(S2, 4, 11, 31)"
+      },
+      {
+        "cell": "E13",
+        "value": "Most Kills Ever in a Single Game - 8 Kills (S31)"
+      },
+      {
+        "cell": "G13",
+        "value": "3 Time Crown Holder\n(S4, S26, S31)"
+      },
+      {
+        "cell": "I13",
+        "value": "6 First Bloods\n(S3-4, 8, 10, 19, 21)"
+      },
+      {
+        "cell": "A17",
+        "value": "Formerly Known As: Happy_Guy555"
+      },
+      {
+        "cell": "D18",
+        "value": "Player Description"
+      },
+      {
+        "cell": "A19",
+        "value": "Participated in 29 Seasons (S1-5,7-21,23-31)"
+      },
+      {
+        "cell": "D19",
+        "value": "arecue has been playing UHC since the pre-historic times... long before Season 1 was ever written down. It's no surprise then that arecue has racked up his fair share of kills. arecue is recognized as one of the most adept players in UHC. He has participated in all but two seasons to date and has proven his grit in each and every one. Many of his wins are nailbiters; they come down to epic conclusions where the victor comes out with only a few hearts. Although, there are notable exceptions; in Season 11, arecue set the record for the highest number of kills in a single game (7 kills), which has yet to be passed and only tied once by Karova.\nWhat truly makes arecue so deadly is his knowledge. arecue stays well read on updates as well as more obscure nuggets of information to gain a competitive edge over his opponents. Combine that with his aptitude for coming up with unique solutions for dealing with enemy players, and you have yourself a consistent threat on your hands.\nWhile often overlooked due to the two dominant powers in the field, arecue is tied for third in total Ironmen. While that could be thanks to the vast number of seasons he has played in, arecue consistently remains competitive for Ironman and likely would have gotten more if it were not for his aggressive playstyle. Moreover, arecue in his many seasons has only died one time to PvE causes and that was from a split-second error in placing a Nether Portal beyond the World Border. arecue also produced a video with Enzo_ showcasing his repertoire of tactics he uses to dispense of mobs in UHC.\nSo be warned, dear reader! Should you come across this man in a UHC, he very well may do any of the following: jump you in your spawn base, storm into your mine, shoot you up with fireworks, fight you in a boat, snipe you from afar, or lure you into a trap! You've been warned."
+      },
+      {
+        "cell": "A20",
+        "value": " Most Frequent Victim(s): Caenum_ and Enzo_ each with 4"
+      },
+      {
+        "cell": "A22",
+        "value": "Most Frequent Killer(s): coleam and Enzo_ with 6"
+      },
+      {
+        "cell": "A24",
+        "value": "Most Frequent Teammate(s): Pecus and Karova with 5"
+      },
+      {
+        "cell": "A26",
+        "value": "Teams Participated In: WoodenDoor (1), Hungry Moscow (2), Last Man Standing (3), EA (4), Goldy (5), Aquaman (7), Lavaman (8), (9), Underdogs (10), Goldilocks and the Four Bears (11), RedGuard (12), California (13), Whoops (14), Gainz (15), Snowman Militia (16), Straight ISIS (17), D2169 (18), (19), Upcar (20), ScoobySquad (21), Phony Ponies (23), Stacked (24), The Royal Navy (25), Sexy Salmon (26), Small Yip Yip Kings (27), Funny Monkey (28), Turtles (29), Toast (30), The Village People (31)"
+      },
+      {
+        "cell": "A52",
+        "value": "Season"
+      },
+      {
+        "cell": "B52",
+        "value": "Death Time"
+      },
+      {
+        "cell": "C52",
+        "value": "Season"
+      },
+      {
+        "cell": "D52",
+        "value": "Kills"
+      },
+      {
+        "cell": "E52",
+        "value": "Kills Over Time"
+      },
+      {
+        "cell": "A53",
+        "value": "S1"
+      },
+      {
+        "cell": "B53",
+        "value": "0.3333"
+      },
+      {
+        "cell": "C53",
+        "value": "S1"
+      },
+      {
+        "cell": "D53",
+        "value": "0.0"
+      },
+      {
+        "cell": "E53",
+        "value": "0.0"
+      },
+      {
+        "cell": "A54",
+        "value": "S2"
+      },
+      {
+        "cell": "B54",
+        "value": "1.0"
+      },
+      {
+        "cell": "C54",
+        "value": "S2"
+      },
+      {
+        "cell": "D54",
+        "value": "4.0"
+      },
+      {
+        "cell": "E54",
+        "value": "4.0"
+      },
+      {
+        "cell": "A55",
+        "value": "S3"
+      },
+      {
+        "cell": "B55",
+        "value": "1.0"
+      },
+      {
+        "cell": "C55",
+        "value": "S3"
+      },
+      {
+        "cell": "D55",
+        "value": "2.0"
+      },
+      {
+        "cell": "E55",
+        "value": "6.0"
+      },
+      {
+        "cell": "A56",
+        "value": "S4"
+      },
+      {
+        "cell": "B56",
+        "value": "1.0"
+      },
+      {
+        "cell": "C56",
+        "value": "S4"
+      },
+      {
+        "cell": "D56",
+        "value": "3.0"
+      },
+      {
+        "cell": "E56",
+        "value": "9.0"
+      },
+      {
+        "cell": "A57",
+        "value": "S5"
+      },
+      {
+        "cell": "B57",
+        "value": "0.5"
+      },
+      {
+        "cell": "C57",
+        "value": "S5"
+      },
+      {
+        "cell": "D57",
+        "value": "0.0"
+      },
+      {
+        "cell": "E57",
+        "value": "9.0"
+      },
+      {
+        "cell": "A58",
+        "value": "S7"
+      },
+      {
+        "cell": "B58",
+        "value": "0.75"
+      },
+      {
+        "cell": "C58",
+        "value": "S7"
+      },
+      {
+        "cell": "D58",
+        "value": "1.0"
+      },
+      {
+        "cell": "E58",
+        "value": "10.0"
+      },
+      {
+        "cell": "A59",
+        "value": "S8"
+      },
+      {
+        "cell": "B59",
+        "value": "0.1"
+      },
+      {
+        "cell": "C59",
+        "value": "S8"
+      },
+      {
+        "cell": "D59",
+        "value": "1.0"
+      },
+      {
+        "cell": "E59",
+        "value": "11.0"
+      },
+      {
+        "cell": "A60",
+        "value": "S9"
+      },
+      {
+        "cell": "B60",
+        "value": "0.3636"
+      },
+      {
+        "cell": "C60",
+        "value": "S9"
+      },
+      {
+        "cell": "D60",
+        "value": "0.0"
+      },
+      {
+        "cell": "E60",
+        "value": "11.0"
+      },
+      {
+        "cell": "A61",
+        "value": "S10"
+      },
+      {
+        "cell": "B61",
+        "value": "0.2222"
+      },
+      {
+        "cell": "C61",
+        "value": "S10"
+      },
+      {
+        "cell": "D61",
+        "value": "1.0"
+      },
+      {
+        "cell": "E61",
+        "value": "12.0"
+      },
+      {
+        "cell": "A62",
+        "value": "S11"
+      },
+      {
+        "cell": "B62",
+        "value": "1.0"
+      },
+      {
+        "cell": "C62",
+        "value": "S11"
+      },
+      {
+        "cell": "D62",
+        "value": "7.0"
+      },
+      {
+        "cell": "E62",
+        "value": "19.0"
+      },
+      {
+        "cell": "A63",
+        "value": "S12"
+      },
+      {
+        "cell": "B63",
+        "value": "0.5"
+      },
+      {
+        "cell": "C63",
+        "value": "S12"
+      },
+      {
+        "cell": "D63",
+        "value": "0.0"
+      },
+      {
+        "cell": "E63",
+        "value": "19.0"
+      },
+      {
+        "cell": "A64",
+        "value": "S13"
+      },
+      {
+        "cell": "B64",
+        "value": "0.1666"
+      },
+      {
+        "cell": "C64",
+        "value": "S13"
+      },
+      {
+        "cell": "D64",
+        "value": "0.0"
+      },
+      {
+        "cell": "E64",
+        "value": "19.0"
+      },
+      {
+        "cell": "A65",
+        "value": "S14"
+      },
+      {
+        "cell": "B65",
+        "value": "0.3636"
+      },
+      {
+        "cell": "C65",
+        "value": "S14"
+      },
+      {
+        "cell": "D65",
+        "value": "0.0"
+      },
+      {
+        "cell": "E65",
+        "value": "19.0"
+      },
+      {
+        "cell": "A66",
+        "value": "S15"
+      },
+      {
+        "cell": "B66",
+        "value": "0.0769"
+      },
+      {
+        "cell": "C66",
+        "value": "S15"
+      },
+      {
+        "cell": "D66",
+        "value": "0.0"
+      },
+      {
+        "cell": "E66",
+        "value": "19.0"
+      },
+      {
+        "cell": "A67",
+        "value": "S16"
+      },
+      {
+        "cell": "B67",
+        "value": "0.6111"
+      },
+      {
+        "cell": "C67",
+        "value": "S16"
+      },
+      {
+        "cell": "D67",
+        "value": "1.0"
+      },
+      {
+        "cell": "E67",
+        "value": "20.0"
+      },
+      {
+        "cell": "A68",
+        "value": "S17"
+      },
+      {
+        "cell": "B68",
+        "value": "0.521739"
+      },
+      {
+        "cell": "C68",
+        "value": "S17"
+      },
+      {
+        "cell": "D68",
+        "value": "2.0"
+      },
+      {
+        "cell": "E68",
+        "value": "22.0"
+      },
+      {
+        "cell": "A69",
+        "value": "S18"
+      },
+      {
+        "cell": "B69",
+        "value": "0.75"
+      },
+      {
+        "cell": "C69",
+        "value": "S18"
+      },
+      {
+        "cell": "D69",
+        "value": "1.0"
+      },
+      {
+        "cell": "E69",
+        "value": "23.0"
+      },
+      {
+        "cell": "A70",
+        "value": "S19"
+      },
+      {
+        "cell": "B70",
+        "value": "0.875"
+      },
+      {
+        "cell": "C70",
+        "value": "S19"
+      },
+      {
+        "cell": "D70",
+        "value": "3.0"
+      },
+      {
+        "cell": "E70",
+        "value": "26.0"
+      },
+      {
+        "cell": "A71",
+        "value": "S20"
+      },
+      {
+        "cell": "B71",
+        "value": "0.9166"
+      },
+      {
+        "cell": "C71",
+        "value": "S20"
+      },
+      {
+        "cell": "D71",
+        "value": "1.0"
+      },
+      {
+        "cell": "E71",
+        "value": "27.0"
+      },
+      {
+        "cell": "A72",
+        "value": "S21"
+      },
+      {
+        "cell": "B72",
+        "value": "0.45"
+      },
+      {
+        "cell": "C72",
+        "value": "S21"
+      },
+      {
+        "cell": "D72",
+        "value": "1.0"
+      },
+      {
+        "cell": "E72",
+        "value": "28.0"
+      },
+      {
+        "cell": "A73",
+        "value": "S23"
+      },
+      {
+        "cell": "B73",
+        "value": "0.3"
+      },
+      {
+        "cell": "C73",
+        "value": "S23"
+      },
+      {
+        "cell": "D73",
+        "value": "0.0"
+      },
+      {
+        "cell": "E73",
+        "value": "28.0"
+      },
+      {
+        "cell": "A74",
+        "value": "S24"
+      },
+      {
+        "cell": "B74",
+        "value": "1.0"
+      },
+      {
+        "cell": "C74",
+        "value": "S24"
+      },
+      {
+        "cell": "D74",
+        "value": "0.0"
+      },
+      {
+        "cell": "E74",
+        "value": "28.0"
+      },
+      {
+        "cell": "A75",
+        "value": "S25"
+      },
+      {
+        "cell": "B75",
+        "value": "1.0"
+      },
+      {
+        "cell": "C75",
+        "value": "S25"
+      },
+      {
+        "cell": "D75",
+        "value": "2.0"
+      },
+      {
+        "cell": "E75",
+        "value": "30.0"
+      },
+      {
+        "cell": "A76",
+        "value": "S26"
+      },
+      {
+        "cell": "B76",
+        "value": "1.0"
+      },
+      {
+        "cell": "C76",
+        "value": "S26"
+      },
+      {
+        "cell": "D76",
+        "value": "4.0"
+      },
+      {
+        "cell": "E76",
+        "value": "34.0"
+      },
+      {
+        "cell": "A77",
+        "value": "S27"
+      },
+      {
+        "cell": "B77",
+        "value": "0.3636"
+      },
+      {
+        "cell": "C77",
+        "value": "S27"
+      },
+      {
+        "cell": "D77",
+        "value": "1.0"
+      },
+      {
+        "cell": "E77",
+        "value": "35.0"
+      },
+      {
+        "cell": "A78",
+        "value": "S28"
+      },
+      {
+        "cell": "B78",
+        "value": "0.6"
+      },
+      {
+        "cell": "C78",
+        "value": "S28"
+      },
+      {
+        "cell": "D78",
+        "value": "0.0"
+      },
+      {
+        "cell": "E78",
+        "value": "35.0"
+      },
+      {
+        "cell": "A79",
+        "value": "S29"
+      },
+      {
+        "cell": "B79",
+        "value": "0.5625"
+      },
+      {
+        "cell": "C79",
+        "value": "S29"
+      },
+      {
+        "cell": "D79",
+        "value": "0.0"
+      },
+      {
+        "cell": "E79",
+        "value": "35.0"
+      },
+      {
+        "cell": "A80",
+        "value": "S30"
+      },
+      {
+        "cell": "B80",
+        "value": "0.72"
+      },
+      {
+        "cell": "C80",
+        "value": "S30"
+      },
+      {
+        "cell": "D80",
+        "value": "0.0"
+      },
+      {
+        "cell": "E80",
+        "value": "35.0"
+      },
+      {
+        "cell": "A81",
+        "value": "S31"
+      },
+      {
+        "cell": "B81",
+        "value": "1.0"
+      },
+      {
+        "cell": "C81",
+        "value": "S31"
+      },
+      {
+        "cell": "D81",
+        "value": "8.0"
+      },
+      {
+        "cell": "E81",
+        "value": "43.0"
+      }
+    ]
+  },
+  {
+    "name": "Caenum_",
+    "cells": [
+      {
+        "cell": "A1",
+        "value": "Caenum_"
+      },
+      {
+        "cell": "D1",
+        "value": "Trophy Case"
+      },
+      {
+        "cell": "J1",
+        "value": "Trivia"
+      },
+      {
+        "cell": "E3",
+        "value": "7 Time UHC Victor\n(S1, S7, S10, S14, S17, S27, S30)"
+      },
+      {
+        "cell": "G3",
+        "value": "2 Time Crown Holder\n(S1, S13)"
+      },
+      {
+        "cell": "I3",
+        "value": "3 Time Final Boss (S12-13, 28)"
+      },
+      {
+        "cell": "J3",
+        "value": "Got the first PVP kill.\nFought in the final battle of his first season.\n1 of 7 players to get 2+ bow kills in one season.\nHas the most ironmen (10).\n1 of 8 players to win and earn ironman in one season\n1 of 6 players to win, get a kill, and earn ironman in one season.\nOnly player to earn ironman and die to PVE in the same season.\n1 of 13 players to get a kill in his first season.\n1 of 6 players to win their first game without dying.\n1 of 5 players to get second place and then win the next game.\n1 of 4 players to get second place twice in a row.\nTied first for being on Green Team the most (3).\n1 of 8 players to consume an Enchanted Golden Apple.\n1 of 2 players to keep the Crown an entire season without dying.\nWent an entire season (S5) without crafting a sword."
+      },
+      {
+        "cell": "E8",
+        "value": "10 Time Ironman\n(S3-4, S12-13, S15, S17, S19, S21, S26, S30)"
+      },
+      {
+        "cell": "G8",
+        "value": "Enchanted Golden Apple (S17)"
+      },
+      {
+        "cell": "I8",
+        "value": "1 First Blood (S1)"
+      },
+      {
+        "cell": "E13",
+        "value": "'Most Kills in a Season' - 3 Times\n(S1, S7, S13)"
+      },
+      {
+        "cell": "G13",
+        "value": "Perfect Ironman\n- No Damage in a Season\n(S30)"
+      },
+      {
+        "cell": "I13",
+        "value": "1 Team Wipe (S8)"
+      },
+      {
+        "cell": "A17",
+        "value": "Formerly Known As: Cade777"
+      },
+      {
+        "cell": "D18",
+        "value": "Player Description"
+      },
+      {
+        "cell": "A19",
+        "value": "Participated in 25 Seasons (S1-10,12-15,17-19,21-23,26-30)"
+      },
+      {
+        "cell": "D19",
+        "value": "Caenum_ is the guy who got this whole operation rolling. Had it not been for his recording of S1, none of this may have ever happened. He made the push to start recording these games, and with it came a series of games that has now stretched over half of a decade.\nIn UHC circles, Caenum_ is recognized for a few specific things: ironmen, strip-mining, and jukeboxes. Caenum_, ever since the early days, has been a tough-out for the title of Ironman. Now the sole holder of most ironmen, Caenum_ has achieved 10 in five less games played than his closest competitor, Enzo_; part of his acclaim comes from his infamous nature as a strip-miner -- a method that, while looked down upon, cannot be refuted as ineffective or viewed as exclusive to Caenum_. Something Caenum_ has also received great notoriety for is his seemingly uncanny aptitude to always remember to make jukeboxes -- mind you, those things cost a diamond. Nevertheless, Caenum_, more so than any other player, commits to making jukeboxes, which just gives a glimpse into his quirky sense of humor.\nNot to be overlooked, Caenum_ holds his own in PVP. Across his career, he has slain 12 players, which places him in 6th overall. This shouldn't come as a surprise if you've watched some of his recordings, in which his team usually delivers crushing defeats to enemy teams -- S1, S14, S17, S26, S27, S30, but in losses, often provides a close finish with the enemy team -- S3, S4, S13, S26.\nIn seasons where players must find their teammates, Caenum_ struggles to do so. In Season 10, he was absent from the rest of his team for the final fight. In Season 14, he only found a teammate minutes before the final fight. In Season 17 and 26, he spent much of the game without his team. In Seasons 15 and 28, he never found a teammate. It's hard to say why Caenum_ has such misfortune in this category -- perhaps his defensive playstyle is to blame. Regardless, his tactics do often warrant him victories as he is one of the winningest players in UHC. Lastly, Caenum_ achieved what no player has (or likely ever will again): Win the game without taking damage. This was dubbed the \"Perfect Ironman\" and was Caenum_'s tenth ironman earned. His showcase further cemented himself as one of the great defensive stalwarts in UHC history."
+      },
+      {
+        "cell": "A21",
+        "value": " Most Frequent Victims: 12 players all tied at 1"
+      },
+      {
+        "cell": "A23",
+        "value": "Most Frequent Killers: Karova and arecue each with 3"
+      },
+      {
+        "cell": "A25",
+        "value": "Most Frequent Teammate(s): coleam and Enzo_ with 6"
+      },
+      {
+        "cell": "A27",
+        "value": "Teams Participated In: Calcium (1), Dirt (2), Pocket Edition (3), Red C (4), Manly Men (5), Potato (6), Cross Country (7), Honey Potters (8), (9), Underdogs (10), The Potatoes (12), Premature Ejaculation (13), Black Death (14), (15), White Supremacy (17), D2169 (18), (19), Scooby Squad (21), Cross Country 3 (22), Phony Ponies (23), coleam plus three (26), WTGTTTWWT (27), (28), CTE (29), Jokers (30)"
+      },
+      {
+        "cell": "A52",
+        "value": "Season"
+      },
+      {
+        "cell": "B52",
+        "value": "Death Time"
+      },
+      {
+        "cell": "C52",
+        "value": "Season"
+      },
+      {
+        "cell": "D52",
+        "value": "Kills"
+      },
+      {
+        "cell": "E52",
+        "value": "Kills Over Time"
+      },
+      {
+        "cell": "A53",
+        "value": "S1"
+      },
+      {
+        "cell": "B53",
+        "value": "1.0"
+      },
+      {
+        "cell": "C53",
+        "value": "S1"
+      },
+      {
+        "cell": "D53",
+        "value": "2.0"
+      },
+      {
+        "cell": "E53",
+        "value": "2.0"
+      },
+      {
+        "cell": "A54",
+        "value": "S2"
+      },
+      {
+        "cell": "B54",
+        "value": "0.0"
+      },
+      {
+        "cell": "C54",
+        "value": "S2"
+      },
+      {
+        "cell": "D54",
+        "value": "0.0"
+      },
+      {
+        "cell": "E54",
+        "value": "2.0"
+      },
+      {
+        "cell": "A55",
+        "value": "S3"
+      },
+      {
+        "cell": "B55",
+        "value": "0.6667"
+      },
+      {
+        "cell": "C55",
+        "value": "S3"
+      },
+      {
+        "cell": "D55",
+        "value": "0.0"
+      },
+      {
+        "cell": "E55",
+        "value": "2.0"
+      },
+      {
+        "cell": "A56",
+        "value": "S4"
+      },
+      {
+        "cell": "B56",
+        "value": "0.375"
+      },
+      {
+        "cell": "C56",
+        "value": "S4"
+      },
+      {
+        "cell": "D56",
+        "value": "0.0"
+      },
+      {
+        "cell": "E56",
+        "value": "2.0"
+      },
+      {
+        "cell": "A57",
+        "value": "S5"
+      },
+      {
+        "cell": "B57",
+        "value": "0.0833"
+      },
+      {
+        "cell": "C57",
+        "value": "S5"
+      },
+      {
+        "cell": "D57",
+        "value": "0.0"
+      },
+      {
+        "cell": "E57",
+        "value": "2.0"
+      },
+      {
+        "cell": "A58",
+        "value": "S6"
+      },
+      {
+        "cell": "B58",
+        "value": "0.25"
+      },
+      {
+        "cell": "C58",
+        "value": "S6"
+      },
+      {
+        "cell": "D58",
+        "value": "0.0"
+      },
+      {
+        "cell": "E58",
+        "value": "2.0"
+      },
+      {
+        "cell": "A59",
+        "value": "S7"
+      },
+      {
+        "cell": "B59",
+        "value": "0.625"
+      },
+      {
+        "cell": "C59",
+        "value": "S7"
+      },
+      {
+        "cell": "D59",
+        "value": "1.0"
+      },
+      {
+        "cell": "E59",
+        "value": "3.0"
+      },
+      {
+        "cell": "A60",
+        "value": "S8"
+      },
+      {
+        "cell": "B60",
+        "value": "0.6"
+      },
+      {
+        "cell": "C60",
+        "value": "S8"
+      },
+      {
+        "cell": "D60",
+        "value": "2.0"
+      },
+      {
+        "cell": "E60",
+        "value": "5.0"
+      },
+      {
+        "cell": "A61",
+        "value": "S9"
+      },
+      {
+        "cell": "B61",
+        "value": "0.7272"
+      },
+      {
+        "cell": "C61",
+        "value": "S9"
+      },
+      {
+        "cell": "D61",
+        "value": "1.0"
+      },
+      {
+        "cell": "E61",
+        "value": "6.0"
+      },
+      {
+        "cell": "A62",
+        "value": "S10"
+      },
+      {
+        "cell": "B62",
+        "value": "0.6667"
+      },
+      {
+        "cell": "C62",
+        "value": "S10"
+      },
+      {
+        "cell": "D62",
+        "value": "0.0"
+      },
+      {
+        "cell": "E62",
+        "value": "6.0"
+      },
+      {
+        "cell": "A63",
+        "value": "S12"
+      },
+      {
+        "cell": "B63",
+        "value": "0.8"
+      },
+      {
+        "cell": "C63",
+        "value": "S12"
+      },
+      {
+        "cell": "D63",
+        "value": "1.0"
+      },
+      {
+        "cell": "E63",
+        "value": "7.0"
+      },
+      {
+        "cell": "A64",
+        "value": "S13"
+      },
+      {
+        "cell": "B64",
+        "value": "0.8333"
+      },
+      {
+        "cell": "C64",
+        "value": "S13"
+      },
+      {
+        "cell": "D64",
+        "value": "2.0"
+      },
+      {
+        "cell": "E64",
+        "value": "9.0"
+      },
+      {
+        "cell": "A65",
+        "value": "S14"
+      },
+      {
+        "cell": "B65",
+        "value": "1.0"
+      },
+      {
+        "cell": "C65",
+        "value": "S14"
+      },
+      {
+        "cell": "D65",
+        "value": "1.0"
+      },
+      {
+        "cell": "E65",
+        "value": "10.0"
+      },
+      {
+        "cell": "A66",
+        "value": "S15"
+      },
+      {
+        "cell": "B66",
+        "value": "0.3846"
+      },
+      {
+        "cell": "C66",
+        "value": "S15"
+      },
+      {
+        "cell": "D66",
+        "value": "0.0"
+      },
+      {
+        "cell": "E66",
+        "value": "10.0"
+      },
+      {
+        "cell": "A67",
+        "value": "S17"
+      },
+      {
+        "cell": "B67",
+        "value": "1.0"
+      },
+      {
+        "cell": "C67",
+        "value": "S17"
+      },
+      {
+        "cell": "D67",
+        "value": "1.0"
+      },
+      {
+        "cell": "E67",
+        "value": "11.0"
+      },
+      {
+        "cell": "A68",
+        "value": "S18"
+      },
+      {
+        "cell": "B68",
+        "value": "0.1"
+      },
+      {
+        "cell": "C68",
+        "value": "S18"
+      },
+      {
+        "cell": "D68",
+        "value": "0.0"
+      },
+      {
+        "cell": "E68",
+        "value": "11.0"
+      },
+      {
+        "cell": "A69",
+        "value": "S19"
+      },
+      {
+        "cell": "B69",
+        "value": "0.6875"
+      },
+      {
+        "cell": "C69",
+        "value": "S19"
+      },
+      {
+        "cell": "D69",
+        "value": "0.0"
+      },
+      {
+        "cell": "E69",
+        "value": "11.0"
+      },
+      {
+        "cell": "A70",
+        "value": "S21"
+      },
+      {
+        "cell": "B70",
+        "value": "0.65"
+      },
+      {
+        "cell": "C70",
+        "value": "S21"
+      },
+      {
+        "cell": "D70",
+        "value": "0.0"
+      },
+      {
+        "cell": "E70",
+        "value": "11.0"
+      },
+      {
+        "cell": "A71",
+        "value": "S22"
+      },
+      {
+        "cell": "B71",
+        "value": "0.0833"
+      },
+      {
+        "cell": "C71",
+        "value": "S22"
+      },
+      {
+        "cell": "D71",
+        "value": "0.0"
+      },
+      {
+        "cell": "E71",
+        "value": "11.0"
+      },
+      {
+        "cell": "A72",
+        "value": "S23"
+      },
+      {
+        "cell": "B72",
+        "value": "0.4"
+      },
+      {
+        "cell": "C72",
+        "value": "S23"
+      },
+      {
+        "cell": "D72",
+        "value": "0.0"
+      },
+      {
+        "cell": "E72",
+        "value": "11.0"
+      },
+      {
+        "cell": "A73",
+        "value": "S26"
+      },
+      {
+        "cell": "B73",
+        "value": "0.5"
+      },
+      {
+        "cell": "C73",
+        "value": "S26"
+      },
+      {
+        "cell": "D73",
+        "value": "0.0"
+      },
+      {
+        "cell": "E73",
+        "value": "11.0"
+      },
+      {
+        "cell": "A74",
+        "value": "S27"
+      },
+      {
+        "cell": "B74",
+        "value": "1.0"
+      },
+      {
+        "cell": "C74",
+        "value": "S27"
+      },
+      {
+        "cell": "D74",
+        "value": "1.0"
+      },
+      {
+        "cell": "E74",
+        "value": "12.0"
+      },
+      {
+        "cell": "A75",
+        "value": "S28"
+      },
+      {
+        "cell": "B75",
+        "value": "0.7"
+      },
+      {
+        "cell": "C75",
+        "value": "S28"
+      },
+      {
+        "cell": "D75",
+        "value": "0.0"
+      },
+      {
+        "cell": "E75",
+        "value": "12.0"
+      },
+      {
+        "cell": "A76",
+        "value": "S29"
+      },
+      {
+        "cell": "B76",
+        "value": "0.375"
+      },
+      {
+        "cell": "C76",
+        "value": "S29"
+      },
+      {
+        "cell": "D76",
+        "value": "0.0"
+      },
+      {
+        "cell": "E76",
+        "value": "12.0"
+      },
+      {
+        "cell": "A77",
+        "value": "S30"
+      },
+      {
+        "cell": "B77",
+        "value": "1.0"
+      },
+      {
+        "cell": "C77",
+        "value": "S30"
+      },
+      {
+        "cell": "D77",
+        "value": "0.0"
+      },
+      {
+        "cell": "E77",
+        "value": "12.0"
+      }
+    ]
+  },
+  {
+    "name": "coleam",
+    "cells": [
+      {
+        "cell": "A1",
+        "value": "coleam"
+      },
+      {
+        "cell": "D1",
+        "value": "Trophy Case"
+      },
+      {
+        "cell": "J1",
+        "value": "Trivia"
+      },
+      {
+        "cell": "E3",
+        "value": "6 Time UHC Victor\n(S6-8, S14, S17, S28)"
+      },
+      {
+        "cell": "G3",
+        "value": "4 Time Crown Holder\n(S2, S8, S10, S28)"
+      },
+      {
+        "cell": "I3",
+        "value": "6 Team Wipes (S8, 14, 28)"
+      },
+      {
+        "cell": "J3",
+        "value": "First player to use an enderpearl in a fight. 1 of 5 to do so.\nGot the fastest PVP ever. (0:05:07)\nGot a kill in his first season.\nWon 2 games in a row. Has also won 3 games in a row.\nAlive for all of his wins.\nSecond place twice in a row (S23 > S25).\nFirst player to get a Wither Skeleton Skull.\n1 of 2 to earn the Crown in his first game.\nWiped out 3 teams in S14."
+      },
+      {
+        "cell": "E8",
+        "value": "Third Longest Killstreak Ever - 7 Kills\n(S7-9)"
+      },
+      {
+        "cell": "G8",
+        "value": "2 Time Final Boss\n(S23, 25)"
+      },
+      {
+        "cell": "E13",
+        "value": "'Most Kills in a Season' - 7 Times\n(S7-8, S10, S14, S17, S26, S28)"
+      },
+      {
+        "cell": "G13",
+        "value": "7 First Bloods\n(S2, 9, 13-14, 17, 26, 28)"
+      },
+      {
+        "cell": "A17",
+        "value": "Participated in 21 Seasons (S2,4,6-10,12-14,16-18,20-23,25-26,28-29)"
+      },
+      {
+        "cell": "D18",
+        "value": "Player Description"
+      },
+      {
+        "cell": "A19",
+        "value": " Most Frequent Victims: arecue with 6"
+      },
+      {
+        "cell": "D19",
+        "value": "Ahh, the speedrunner! Yep, that's coleam! He excels at doing things as fast as possible... even if he does take a little fall damage along the way. With how fast he accomplishes things in UHC, it's no surprise that he's taken up speedrunning as a hobby. In most games, he's built a portal before the thought has even crossed most peoples' minds. Coleam ability to quickly gather resources only accentuates his ability in combat. Historically not a ranged combat kind of guy, coleam's skill with a bow (and crossbow) has noticeably improved, which further advances his tour de force status in UHC.\nWhen coleam wins, he wins big; he posted big kill numbers in his victories during Seasons 8, 14, 17, and 28. It comes as no surprise of course when one finds out he has gotten \"Most Kills in a Season\" the most times, the Crown the most times, drawn 'First Blood' the most times, and has the third longest killstreak of all time.\nColeam plays aggressively. He doesn't usually take a moment to think before he charges in, but that doesn't mean he's not smart about how he plays. He's usually planned out his game progression so well that there is little for him to worry about."
+      },
+      {
+        "cell": "A20",
+        "value": "Most Frequent Killers: arecue with 3"
+      },
+      {
+        "cell": "A22",
+        "value": "Most Frequent Teammates: Caenum_ with 6"
+      },
+      {
+        "cell": "A24",
+        "value": "Teams Participated In: Cesium (2), Red C (4), Crazy Lucky Russians (6), Cross Country (7), Bipolar (8), (9), C.A.S.H. (10), Fifty Shades of Green (12), Carbon Monoxide (13), Black Death (14), CSS (16), White Supremacy (17), We Don't Have One (18), Puking Hummus (20), Big Hummus Latina Bitches (21), Cross Country 3 (22), Fuck Gravity (23), The Curse (25), coleam plus three (26), Traps Are Gay (28), Bumber Biff Team (29)"
+      },
+      {
+        "cell": "A52",
+        "value": "Season"
+      },
+      {
+        "cell": "B52",
+        "value": "Death Time"
+      },
+      {
+        "cell": "C52",
+        "value": "Season"
+      },
+      {
+        "cell": "D52",
+        "value": "Kills"
+      },
+      {
+        "cell": "E52",
+        "value": "Kills Over Time"
+      },
+      {
+        "cell": "A53",
+        "value": "S2"
+      },
+      {
+        "cell": "B53",
+        "value": "0.13"
+      },
+      {
+        "cell": "C53",
+        "value": "S2"
+      },
+      {
+        "cell": "D53",
+        "value": "1.0"
+      },
+      {
+        "cell": "E53",
+        "value": "1.0"
+      },
+      {
+        "cell": "A54",
+        "value": "S4"
+      },
+      {
+        "cell": "B54",
+        "value": "0.5"
+      },
+      {
+        "cell": "C54",
+        "value": "S4"
+      },
+      {
+        "cell": "D54",
+        "value": "0.0"
+      },
+      {
+        "cell": "E54",
+        "value": "1.0"
+      },
+      {
+        "cell": "A55",
+        "value": "S6"
+      },
+      {
+        "cell": "B55",
+        "value": "0.75"
+      },
+      {
+        "cell": "C55",
+        "value": "S6"
+      },
+      {
+        "cell": "D55",
+        "value": "0.0"
+      },
+      {
+        "cell": "E55",
+        "value": "1.0"
+      },
+      {
+        "cell": "A56",
+        "value": "S7"
+      },
+      {
+        "cell": "B56",
+        "value": "1.0"
+      },
+      {
+        "cell": "C56",
+        "value": "S7"
+      },
+      {
+        "cell": "D56",
+        "value": "1.0"
+      },
+      {
+        "cell": "E56",
+        "value": "2.0"
+      },
+      {
+        "cell": "A57",
+        "value": "S8"
+      },
+      {
+        "cell": "B57",
+        "value": "1.0"
+      },
+      {
+        "cell": "C57",
+        "value": "S8"
+      },
+      {
+        "cell": "D57",
+        "value": "5.0"
+      },
+      {
+        "cell": "E57",
+        "value": "7.0"
+      },
+      {
+        "cell": "A58",
+        "value": "S9"
+      },
+      {
+        "cell": "B58",
+        "value": "0.5454545455"
+      },
+      {
+        "cell": "C58",
+        "value": "S9"
+      },
+      {
+        "cell": "D58",
+        "value": "1.0"
+      },
+      {
+        "cell": "E58",
+        "value": "8.0"
+      },
+      {
+        "cell": "A59",
+        "value": "S10"
+      },
+      {
+        "cell": "B59",
+        "value": "0.4444444444"
+      },
+      {
+        "cell": "C59",
+        "value": "S10"
+      },
+      {
+        "cell": "D59",
+        "value": "2.0"
+      },
+      {
+        "cell": "E59",
+        "value": "10.0"
+      },
+      {
+        "cell": "A60",
+        "value": "S12"
+      },
+      {
+        "cell": "B60",
+        "value": "0.3"
+      },
+      {
+        "cell": "C60",
+        "value": "S12"
+      },
+      {
+        "cell": "D60",
+        "value": "0.0"
+      },
+      {
+        "cell": "E60",
+        "value": "10.0"
+      },
+      {
+        "cell": "A61",
+        "value": "S13"
+      },
+      {
+        "cell": "B61",
+        "value": "0.4166666667"
+      },
+      {
+        "cell": "C61",
+        "value": "S13"
+      },
+      {
+        "cell": "D61",
+        "value": "1.0"
+      },
+      {
+        "cell": "E61",
+        "value": "11.0"
+      },
+      {
+        "cell": "A62",
+        "value": "S14"
+      },
+      {
+        "cell": "B62",
+        "value": "1.0"
+      },
+      {
+        "cell": "C62",
+        "value": "S14"
+      },
+      {
+        "cell": "D62",
+        "value": "6.0"
+      },
+      {
+        "cell": "E62",
+        "value": "17.0"
+      },
+      {
+        "cell": "A63",
+        "value": "S16"
+      },
+      {
+        "cell": "B63",
+        "value": "0.3888888889"
+      },
+      {
+        "cell": "C63",
+        "value": "S16"
+      },
+      {
+        "cell": "D63",
+        "value": "0.0"
+      },
+      {
+        "cell": "E63",
+        "value": "17.0"
+      },
+      {
+        "cell": "A64",
+        "value": "S17"
+      },
+      {
+        "cell": "B64",
+        "value": "1.0"
+      },
+      {
+        "cell": "C64",
+        "value": "S17"
+      },
+      {
+        "cell": "D64",
+        "value": "3.0"
+      },
+      {
+        "cell": "E64",
+        "value": "20.0"
+      },
+      {
+        "cell": "A65",
+        "value": "S18"
+      },
+      {
+        "cell": "B65",
+        "value": "0.15"
+      },
+      {
+        "cell": "C65",
+        "value": "S18"
+      },
+      {
+        "cell": "D65",
+        "value": "0.0"
+      },
+      {
+        "cell": "E65",
+        "value": "20.0"
+      },
+      {
+        "cell": "A66",
+        "value": "S20"
+      },
+      {
+        "cell": "B66",
+        "value": "0.3333333333"
+      },
+      {
+        "cell": "C66",
+        "value": "S20"
+      },
+      {
+        "cell": "D66",
+        "value": "0.0"
+      },
+      {
+        "cell": "E66",
+        "value": "20.0"
+      },
+      {
+        "cell": "A67",
+        "value": "S21"
+      },
+      {
+        "cell": "B67",
+        "value": "0.75"
+      },
+      {
+        "cell": "C67",
+        "value": "S21"
+      },
+      {
+        "cell": "D67",
+        "value": "0.0"
+      },
+      {
+        "cell": "E67",
+        "value": "20.0"
+      },
+      {
+        "cell": "A68",
+        "value": "S22"
+      },
+      {
+        "cell": "B68",
+        "value": "0.75"
+      },
+      {
+        "cell": "C68",
+        "value": "S22"
+      },
+      {
+        "cell": "D68",
+        "value": "0.0"
+      },
+      {
+        "cell": "E68",
+        "value": "20.0"
+      },
+      {
+        "cell": "A69",
+        "value": "S23"
+      },
+      {
+        "cell": "B69",
+        "value": "0.7"
+      },
+      {
+        "cell": "C69",
+        "value": "S23"
+      },
+      {
+        "cell": "D69",
+        "value": "0.0"
+      },
+      {
+        "cell": "E69",
+        "value": "20.0"
+      },
+      {
+        "cell": "A70",
+        "value": "S25"
+      },
+      {
+        "cell": "B70",
+        "value": "0.6"
+      },
+      {
+        "cell": "C70",
+        "value": "S25"
+      },
+      {
+        "cell": "D70",
+        "value": "0.0"
+      },
+      {
+        "cell": "E70",
+        "value": "20.0"
+      },
+      {
+        "cell": "A71",
+        "value": "S26"
+      },
+      {
+        "cell": "B71",
+        "value": "0.5833333333"
+      },
+      {
+        "cell": "C71",
+        "value": "S26"
+      },
+      {
+        "cell": "D71",
+        "value": "5.0"
+      },
+      {
+        "cell": "E71",
+        "value": "25.0"
+      },
+      {
+        "cell": "A72",
+        "value": "S28"
+      },
+      {
+        "cell": "B72",
+        "value": "1.0"
+      },
+      {
+        "cell": "C72",
+        "value": "S28"
+      },
+      {
+        "cell": "D72",
+        "value": "4.0"
+      },
+      {
+        "cell": "E72",
+        "value": "29.0"
+      },
+      {
+        "cell": "A73",
+        "value": "S29"
+      },
+      {
+        "cell": "B73",
+        "value": "0.31"
+      },
+      {
+        "cell": "C73",
+        "value": "S29"
+      },
+      {
+        "cell": "D73",
+        "value": "0.0"
+      },
+      {
+        "cell": "E73",
+        "value": "29.0"
+      }
+    ]
+  },
+  {
+    "name": "OyGod",
+    "cells": [
+      {
+        "cell": "A1",
+        "value": "OyGod"
+      },
+      {
+        "cell": "D1",
+        "value": "Trophy Case"
+      },
+      {
+        "cell": "J1",
+        "value": "Trivia"
+      },
+      {
+        "cell": "E3",
+        "value": "2 Time UHC Victor\n(S15, S24)"
+      },
+      {
+        "cell": "G3",
+        "value": "1 First Blood\n(S27)"
+      },
+      {
+        "cell": "J3",
+        "value": "1 of 4 players to use an Enderpearl during a fight.\n1 of 2 players struck by lightning.\nGot a kill in first season.\n1 of 5 players alive for all their wins.\n1 of 7 players to eat an Enchanted Golden Apple."
+      },
+      {
+        "cell": "E8",
+        "value": "Enchanted Golden Apple (S15)"
+      },
+      {
+        "cell": "E13",
+        "value": "1 Time Final Boss\n(S27)"
+      },
+      {
+        "cell": "A17",
+        "value": "Participated in 16 Seasons (S13, 15-28, 30)"
+      },
+      {
+        "cell": "A18",
+        "value": "Most Frequent Victim(s): Karova, Nyamers, ShadowOfDeath64, Toastfliper, and Whealin_n_Dealin with 1"
+      },
+      {
+        "cell": "D18",
+        "value": "Player Description"
+      },
+      {
+        "cell": "D19",
+        "value": "OyGod is an underdog. No moment better defines this than his shocking upset of Karova in Season 15. Still considered by all as one of the greatest -- if not the greatest -- fight in UHC history. The triumphant victory over a seemingly unstoppable enemy made the fight legendary in the eyes of many. For those who watched, his victory was akin to that of David's over Goliath.\nOyGod has remained an underdog since then too, but that hasn't stopped him. In Seasons 16, 17, 22, 25, 27, and 30, his team has placed second. Many wins just within arms reach. That being said, OyGod has also had his fair share of heartbreaking defeats -- as underdogs do; to name them: seasons 21, 26, and 28.\nBesides giving us one of the greatest moments in UHC, OyGod has pushed the game forward into a new and better age. By his own design, OyGod developed a datapack to facilitate and automate key and tedious parts of the UHC gamemode. Starting with Season 26, OyGod's datapack has made games more fluid and enjoyable for all parties involved. His willingness to continue development has been crucial in the wonderful evolution of this gamemode.\nOyGod has also lended his hand in the creation of a UHC intro -- Season 21 --, which goes to show how diverse his skillset is.\nOyGod remains a sought after teammate for his ability to work with teammates and his overall level-headed attitude in games. His seemingly jack-of-all-trades nature in UHC makes him both a formidable opponent in both combat as well as the race for ironman. Do not underestimate this underdog; for your folly will be your last."
+      },
+      {
+        "cell": "A22",
+        "value": "Most Frequent Killer(s): coleam and Karova with 3"
+      },
+      {
+        "cell": "A23",
+        "value": "Most Frequent Teammate(s): arecue with 4"
+      },
+      {
+        "cell": "A25",
+        "value": "Teams Participated In: Carbon Monoxide (13), Third Wheel (15), Brutus (16), Straight ISIS (17), Asian Invasion (18), (19), StratoGods (20), Big Hummus Latina Bitches (21), God Squad (22), BWRE of God (23), Stacked (24), The Curse (25), Winning Team, The Green Team, The Team That WILL Win, The Winning Team (26), Stinky Pinky (27), Funny Monkey (28), Toast (30)"
+      },
+      {
+        "cell": "A52",
+        "value": "Season"
+      },
+      {
+        "cell": "B52",
+        "value": "Death Time"
+      },
+      {
+        "cell": "C52",
+        "value": "Season"
+      },
+      {
+        "cell": "D52",
+        "value": "Kills"
+      },
+      {
+        "cell": "E52",
+        "value": "Kills Over Time"
+      },
+      {
+        "cell": "A53",
+        "value": "S13"
+      },
+      {
+        "cell": "B53",
+        "value": "0.5"
+      },
+      {
+        "cell": "C53",
+        "value": "S13"
+      },
+      {
+        "cell": "D53",
+        "value": "1.0"
+      },
+      {
+        "cell": "E53",
+        "value": "1.0"
+      },
+      {
+        "cell": "A54",
+        "value": "S15"
+      },
+      {
+        "cell": "B54",
+        "value": "1"
+      },
+      {
+        "cell": "C54",
+        "value": "S15"
+      },
+      {
+        "cell": "D54",
+        "value": "2.0"
+      },
+      {
+        "cell": "E54",
+        "value": "3.0"
+      },
+      {
+        "cell": "A55",
+        "value": "S16"
+      },
+      {
+        "cell": "B55",
+        "value": "0.7777777778"
+      },
+      {
+        "cell": "C55",
+        "value": "S16"
+      },
+      {
+        "cell": "D55",
+        "value": "0.0"
+      },
+      {
+        "cell": "E55",
+        "value": "3.0"
+      },
+      {
+        "cell": "A56",
+        "value": "S17"
+      },
+      {
+        "cell": "B56",
+        "value": "0.652173913"
+      },
+      {
+        "cell": "C56",
+        "value": "S17"
+      },
+      {
+        "cell": "D56",
+        "value": "0.0"
+      },
+      {
+        "cell": "E56",
+        "value": "3.0"
+      },
+      {
+        "cell": "A57",
+        "value": "S18"
+      },
+      {
+        "cell": "B57",
+        "value": "0.5"
+      },
+      {
+        "cell": "C57",
+        "value": "S18"
+      },
+      {
+        "cell": "D57",
+        "value": "0.0"
+      },
+      {
+        "cell": "E57",
+        "value": "3.0"
+      },
+      {
+        "cell": "A58",
+        "value": "S19"
+      },
+      {
+        "cell": "B58",
+        "value": "0.75"
+      },
+      {
+        "cell": "C58",
+        "value": "S19"
+      },
+      {
+        "cell": "D58",
+        "value": "1.0"
+      },
+      {
+        "cell": "E58",
+        "value": "4.0"
+      },
+      {
+        "cell": "A59",
+        "value": "S20"
+      },
+      {
+        "cell": "B59",
+        "value": "0.6666666667"
+      },
+      {
+        "cell": "C59",
+        "value": "S20"
+      },
+      {
+        "cell": "D59",
+        "value": "0.0"
+      },
+      {
+        "cell": "E59",
+        "value": "4.0"
+      },
+      {
+        "cell": "A60",
+        "value": "S21"
+      },
+      {
+        "cell": "B60",
+        "value": "0.25"
+      },
+      {
+        "cell": "C60",
+        "value": "S21"
+      },
+      {
+        "cell": "D60",
+        "value": "0.0"
+      },
+      {
+        "cell": "E60",
+        "value": "4.0"
+      },
+      {
+        "cell": "A61",
+        "value": "S22"
+      },
+      {
+        "cell": "B61",
+        "value": "0.0"
+      },
+      {
+        "cell": "C61",
+        "value": "S22"
+      },
+      {
+        "cell": "D61",
+        "value": "0.0"
+      },
+      {
+        "cell": "E61",
+        "value": "4.0"
+      },
+      {
+        "cell": "A62",
+        "value": "S23"
+      },
+      {
+        "cell": "B62",
+        "value": "0.1"
+      },
+      {
+        "cell": "C62",
+        "value": "S23"
+      },
+      {
+        "cell": "D62",
+        "value": "0.0"
+      },
+      {
+        "cell": "E62",
+        "value": "4.0"
+      },
+      {
+        "cell": "A63",
+        "value": "S24"
+      },
+      {
+        "cell": "B63",
+        "value": "1.0"
+      },
+      {
+        "cell": "C63",
+        "value": "S24"
+      },
+      {
+        "cell": "D63",
+        "value": "0.0"
+      },
+      {
+        "cell": "E63",
+        "value": "4.0"
+      },
+      {
+        "cell": "A64",
+        "value": "S25"
+      },
+      {
+        "cell": "B64",
+        "value": "0.4"
+      },
+      {
+        "cell": "C64",
+        "value": "S25"
+      },
+      {
+        "cell": "D64",
+        "value": "0.0"
+      },
+      {
+        "cell": "E64",
+        "value": "4.0"
+      },
+      {
+        "cell": "A65",
+        "value": "S26"
+      },
+      {
+        "cell": "B65",
+        "value": "0.0"
+      },
+      {
+        "cell": "C65",
+        "value": "S26"
+      },
+      {
+        "cell": "D65",
+        "value": "0.0"
+      },
+      {
+        "cell": "E65",
+        "value": "4.0"
+      },
+      {
+        "cell": "A66",
+        "value": "S27"
+      },
+      {
+        "cell": "B66",
+        "value": "0.7727272727"
+      },
+      {
+        "cell": "C66",
+        "value": "S27"
+      },
+      {
+        "cell": "D66",
+        "value": "1.0"
+      },
+      {
+        "cell": "E66",
+        "value": "5.0"
+      },
+      {
+        "cell": "A67",
+        "value": "S28"
+      },
+      {
+        "cell": "B67",
+        "value": "0.5"
+      },
+      {
+        "cell": "C67",
+        "value": "S28"
+      },
+      {
+        "cell": "D67",
+        "value": "0.0"
+      },
+      {
+        "cell": "E67",
+        "value": "5.0"
+      },
+      {
+        "cell": "A68",
+        "value": "S30"
+      },
+      {
+        "cell": "B68",
+        "value": "0.64"
+      },
+      {
+        "cell": "C68",
+        "value": "S30"
+      },
+      {
+        "cell": "D68",
+        "value": "0.0"
+      },
+      {
+        "cell": "E68",
+        "value": "5.0"
+      }
+    ]
+  },
+  {
+    "name": "Karova",
+    "cells": [
+      {
+        "cell": "A1",
+        "value": "Karova"
+      },
+      {
+        "cell": "D1",
+        "value": "Trophy Case"
+      },
+      {
+        "cell": "J1",
+        "value": "Trivia"
+      },
+      {
+        "cell": "E3",
+        "value": "6 Time UHC Victor\n(S2, S13, S19-20, S22, S30)"
+      },
+      {
+        "cell": "G3",
+        "value": "1 Time Crown Holder\n(S15)"
+      },
+      {
+        "cell": "I3",
+        "value": "5 First Bloods\n(S15, 20, 22-23, 31)"
+      },
+      {
+        "cell": "J3",
+        "value": "- Got the 2nd most kills in a game, 7 in S20.\n- Is 1 of 2 players to win three games straight and get the most kills in each game.\n- Got a PVP and Team Kill in the same season.\n- Got a kill in his first season.\n- Has won two games back-to-back multiple times.\n- Won after taking the first damage of the game (S2).\n- Got in 2nd place twice in a row (S17-18).\n- Got the most kills but did not win (S15).\n- Found a Wither Skeleton Skull.\n- Lost the Crown due to a Team Kill (S16).\n- Wiped out 3 teams in S20."
+      },
+      {
+        "cell": "E8",
+        "value": "Longest Killstreak Ever - 12 Kills (S19-20 + 22)"
+      },
+      {
+        "cell": "G8",
+        "value": "1 Solo Victory (S19)"
+      },
+      {
+        "cell": "I8",
+        "value": "6 Teams Wiped\n(S13, 20, 22-23)"
+      },
+      {
+        "cell": "E13",
+        "value": "Most Kills in a Season' - 6 Times\n(S13, 15, 19, 20, 22, 23)"
+      },
+      {
+        "cell": "G13",
+        "value": "5 Time Final Boss\n(S11, 15, 17-18, 29)"
+      },
+      {
+        "cell": "A17",
+        "value": "Formerly Known As: Markvk2, RussianCows, and RussianCowReborn"
+      },
+      {
+        "cell": "D18",
+        "value": "Player Description"
+      },
+      {
+        "cell": "A19",
+        "value": "Participated in 16 Seasons\n(S2,6,11,13,15-20,22-24,29-31)"
+      },
+      {
+        "cell": "D19",
+        "value": "He's always scheming! Karova excels at finding new and inventive ways to win the game. He takes a win at whatever cost necessary approach to this game, and it certainly has paid off! [To Be Continued]"
+      },
+      {
+        "cell": "A21",
+        "value": "Most Frequent Victim(s): Enzo_ with 4"
+      },
+      {
+        "cell": "A22",
+        "value": "Most Frequent Killer(s): Enzo_ with 2"
+      },
+      {
+        "cell": "A23",
+        "value": "Most Frequent Teammate(s): arecue with 5"
+      },
+      {
+        "cell": "A25",
+        "value": "Teams Participated In: Hungry Moscow (2), CLRs (6), _CornCows_ (11), Revenge (13), Gainz (15), Fish Infestation (16), Straight ISIS (17), Dank Memes (18), (19), Shit (20), Teenage Skateboarders (22), Human Resources (23), Ocean Men (24), McDonald's Trapping (29), Toast (30), The Village People (S31)"
+      },
+      {
+        "cell": "A52",
+        "value": "Season"
+      },
+      {
+        "cell": "B52",
+        "value": "Death Time"
+      },
+      {
+        "cell": "C52",
+        "value": "Season"
+      },
+      {
+        "cell": "D52",
+        "value": "Kills"
+      },
+      {
+        "cell": "E52",
+        "value": "Kills Over Time"
+      },
+      {
+        "cell": "A53",
+        "value": "S2"
+      },
+      {
+        "cell": "B53",
+        "value": "0.25"
+      },
+      {
+        "cell": "C53",
+        "value": "S2"
+      },
+      {
+        "cell": "D53",
+        "value": "1.0"
+      },
+      {
+        "cell": "E53",
+        "value": "1.0"
+      },
+      {
+        "cell": "A54",
+        "value": "S6"
+      },
+      {
+        "cell": "B54",
+        "value": "0.0"
+      },
+      {
+        "cell": "C54",
+        "value": "S6"
+      },
+      {
+        "cell": "D54",
+        "value": "0.0"
+      },
+      {
+        "cell": "E54",
+        "value": "1.0"
+      },
+      {
+        "cell": "A55",
+        "value": "S11"
+      },
+      {
+        "cell": "B55",
+        "value": "0.7647058824"
+      },
+      {
+        "cell": "C55",
+        "value": "S11"
+      },
+      {
+        "cell": "D55",
+        "value": "0.0"
+      },
+      {
+        "cell": "E55",
+        "value": "1.0"
+      },
+      {
+        "cell": "A56",
+        "value": "S13"
+      },
+      {
+        "cell": "B56",
+        "value": "1.0"
+      },
+      {
+        "cell": "C56",
+        "value": "S13"
+      },
+      {
+        "cell": "D56",
+        "value": "2.0"
+      },
+      {
+        "cell": "E56",
+        "value": "3.0"
+      },
+      {
+        "cell": "A57",
+        "value": "S15"
+      },
+      {
+        "cell": "B57",
+        "value": "0.7692307692"
+      },
+      {
+        "cell": "C57",
+        "value": "S15"
+      },
+      {
+        "cell": "D57",
+        "value": "3.0"
+      },
+      {
+        "cell": "E57",
+        "value": "6.0"
+      },
+      {
+        "cell": "A58",
+        "value": "S16"
+      },
+      {
+        "cell": "B58",
+        "value": "0.0"
+      },
+      {
+        "cell": "C58",
+        "value": "S16"
+      },
+      {
+        "cell": "D58",
+        "value": "0.0"
+      },
+      {
+        "cell": "E58",
+        "value": "6.0"
+      },
+      {
+        "cell": "A59",
+        "value": "S17"
+      },
+      {
+        "cell": "B59",
+        "value": "0.8260869565"
+      },
+      {
+        "cell": "C59",
+        "value": "S17"
+      },
+      {
+        "cell": "D59",
+        "value": "1.0"
+      },
+      {
+        "cell": "E59",
+        "value": "7.0"
+      },
+      {
+        "cell": "A60",
+        "value": "S18"
+      },
+      {
+        "cell": "B60",
+        "value": "0.8"
+      },
+      {
+        "cell": "C60",
+        "value": "S18"
+      },
+      {
+        "cell": "D60",
+        "value": "1.0"
+      },
+      {
+        "cell": "E60",
+        "value": "8.0"
+      },
+      {
+        "cell": "A61",
+        "value": "S19"
+      },
+      {
+        "cell": "B61",
+        "value": "1.0"
+      },
+      {
+        "cell": "C61",
+        "value": "S19"
+      },
+      {
+        "cell": "D61",
+        "value": "5.0"
+      },
+      {
+        "cell": "E61",
+        "value": "13.0"
+      },
+      {
+        "cell": "A62",
+        "value": "S20"
+      },
+      {
+        "cell": "B62",
+        "value": "0.8333333333"
+      },
+      {
+        "cell": "C62",
+        "value": "S20"
+      },
+      {
+        "cell": "D62",
+        "value": "7.0"
+      },
+      {
+        "cell": "E62",
+        "value": "20.0"
+      },
+      {
+        "cell": "A63",
+        "value": "S22"
+      },
+      {
+        "cell": "B63",
+        "value": "1.0"
+      },
+      {
+        "cell": "C63",
+        "value": "S22"
+      },
+      {
+        "cell": "D63",
+        "value": "4.0"
+      },
+      {
+        "cell": "E63",
+        "value": "24.0"
+      },
+      {
+        "cell": "A64",
+        "value": "S23"
+      },
+      {
+        "cell": "B64",
+        "value": "0.6"
+      },
+      {
+        "cell": "C64",
+        "value": "S23"
+      },
+      {
+        "cell": "D64",
+        "value": "3.0"
+      },
+      {
+        "cell": "E64",
+        "value": "27.0"
+      },
+      {
+        "cell": "A65",
+        "value": "S24"
+      },
+      {
+        "cell": "B65",
+        "value": "0.09090909091"
+      },
+      {
+        "cell": "C65",
+        "value": "S24"
+      },
+      {
+        "cell": "D65",
+        "value": "0.0"
+      },
+      {
+        "cell": "E65",
+        "value": "27.0"
+      },
+      {
+        "cell": "A66",
+        "value": "S29"
+      },
+      {
+        "cell": "B66",
+        "value": "0.75"
+      },
+      {
+        "cell": "C66",
+        "value": "S29"
+      },
+      {
+        "cell": "D66",
+        "value": "0.0"
+      },
+      {
+        "cell": "E66",
+        "value": "27.0"
+      },
+      {
+        "cell": "A67",
+        "value": "S30"
+      },
+      {
+        "cell": "B67",
+        "value": "0.12"
+      },
+      {
+        "cell": "C67",
+        "value": "S30"
+      },
+      {
+        "cell": "D67",
+        "value": "0.0"
+      },
+      {
+        "cell": "E67",
+        "value": "27.0"
+      },
+      {
+        "cell": "A68",
+        "value": "S31"
+      },
+      {
+        "cell": "B68",
+        "value": "1.0"
+      },
+      {
+        "cell": "C68",
+        "value": "S31"
+      },
+      {
+        "cell": "D68",
+        "value": "1.0"
+      },
+      {
+        "cell": "E68",
+        "value": "28.0"
+      }
+    ]
+  },
+  {
+    "name": "Crack_Attack",
+    "cells": [
+      {
+        "cell": "A1",
+        "value": "Crack_Attack"
+      },
+      {
+        "cell": "D1",
+        "value": "Trophy Case"
+      },
+      {
+        "cell": "J1",
+        "value": "Trivia"
+      },
+      {
+        "cell": "E3",
+        "value": "5 Time UHC Victor\n(S23-25, 29-30)"
+      },
+      {
+        "cell": "G3",
+        "value": "1 Time Crown Holder\n(S24)"
+      },
+      {
+        "cell": "E8",
+        "value": "1 Time Ironman\n(S23)"
+      },
+      {
+        "cell": "G8",
+        "value": "1 Time Final Boss\n(S26)"
+      },
+      {
+        "cell": "E13",
+        "value": "'Most Kills in a Season' - 4 Times\n(S24-25, S29-30)"
+      },
+      {
+        "cell": "G13",
+        "value": "2 First Bloods\n(S24-25)"
+      },
+      {
+        "cell": "A17",
+        "value": "Formerly Known As: Strays"
+      },
+      {
+        "cell": "D18",
+        "value": "Player Description"
+      },
+      {
+        "cell": "A19",
+        "value": "Participated in 9 Seasons (S14, 23-30)"
+      },
+      {
+        "cell": "D19",
+        "value": "A man of many names, Crack_Attack..."
+      },
+      {
+        "cell": "A20",
+        "value": "Most Frequent Victim(s): Enzo_ with 2"
+      },
+      {
+        "cell": "A21",
+        "value": "Most Frequent Killer(s): coleam, iRubarb, Pecus with 1"
+      },
+      {
+        "cell": "A23",
+        "value": "Most Frequent Teammate(s): Many Players with 2"
+      },
+      {
+        "cell": "A25",
+        "value": "Teams Participated In: Feminist Sexists (14), The Bonald Beckoners (23), Stacked (24), The Royal Navy (25), #Kill Indept_ (26), Obama (27), Beckon or Bust (28), Beckoners (29), Jokers (30)"
+      }
+    ]
+  },
+  {
+    "name": "Enzo_",
+    "cells": [
+      {
+        "cell": "A1",
+        "value": "Enzo_"
+      },
+      {
+        "cell": "D1",
+        "value": "Trophy Case"
+      },
+      {
+        "cell": "J1",
+        "value": "Trivia"
+      },
+      {
+        "cell": "E3",
+        "value": "9 Time UHC Victor\n(S4, S9, S10, S12, S17, S18, S21, S23, S27)"
+      },
+      {
+        "cell": "G3",
+        "value": "4 Time Crown Holder\n(S6, S9, S12, S21)"
+      },
+      {
+        "cell": "I3",
+        "value": "1 First Blood (S12)"
+      },
+      {
+        "cell": "J3",
+        "value": "- Enzo_ was the 150th death.\n- Enzo_ has the second most kills with 33.\n- Enzo_ has only died to PvE once.\n- Enzo_ has gotten the most consecutive ironmen with four (S6-S9).\n- Enzo_ is the only player to get a kill, get the crown, achieve Ironman, and win all in the same season.\n- Enzo_ has been in every season except two.\n- Enzo_ took the first damage in a game (S12) and still won.\n- Enzo_ was the first player in UHC history to go to the Nether.\n"
+      },
+      {
+        "cell": "E8",
+        "value": "10 Time Ironman\n(S6-9, S16, S20, S22, S27-28, S31)"
+      },
+      {
+        "cell": "G8",
+        "value": "5 Time Final Boss\n(S3, S5, S8, S24, S31)"
+      },
+      {
+        "cell": "I8",
+        "value": "1 Solo Victory (S9)"
+      },
+      {
+        "cell": "E13",
+        "value": "'Most Kills in a Season' - 6 Times\n(S6, S9, S12, S16, S21, S27)"
+      },
+      {
+        "cell": "G13",
+        "value": "2 Teams Wiped (S12, S16)"
+      },
+      {
+        "cell": "A17",
+        "value": "Formerly Known As: usmeaglefan and Enzo_0"
+      },
+      {
+        "cell": "D18",
+        "value": "Player Description"
+      },
+      {
+        "cell": "A19",
+        "value": "Participated in 31 Seasons (S2-31)"
+      },
+      {
+        "cell": "D19",
+        "value": "Enzo_: One of the greats! He has taken part in every UHC other than the first and the \"Underdog Season 32\". Throughout his career, he has amassed over 30 kills, 10 Ironmans, 9 victories, 2 team wipes, and 1 First Blood. His playstyle is a deadly mix of defense and aggression, balancing his combat strategy depending on the situation. Known for his skill with a bow, Enzo_ has over 10 ranged kills, meaning he kills 1/3 of his enemies with a bow or crossbow!\n\nIf you try to outlast Enzo_ in order to gain victory over him, you'll be sorely disappointed. With 10 Ironman victories under his belt and a slew of final fight appearances, you can bet he'll be waiting for you at 0 0.\n\nA veteran of the gamestyle, Enzo_ has tried his hand at content creation multiple times. He's made UHC intro videos, UHC episodes, and UHC gameplay guides.\n\nEnzo_'s experience and skill combines into a deadly tornado of virtual vengeance. Godspeed, those who stand in his way!\n"
+      },
+      {
+        "cell": "A20",
+        "value": " Most Frequent Victims: arecue (6)"
+      },
+      {
+        "cell": "A21",
+        "value": "Most Frequent Killers: Karova, arecue, and coleam (4)"
+      },
+      {
+        "cell": "A23",
+        "value": "Most Frequent Teammate(s): Caenum (6)"
+      },
+      {
+        "cell": "A24",
+        "value": "Teams Participated In: Cesium (S2), Pocket Edition (S3), EA (S4), Elves (S5), Potato (S6), Crocs (S7), Push Pop (S8), Underdogs (S10), Ninjelves (S11), Baltimore (S12), Airplane (S13), IronGender (S14), Breast Cancer (S15), Caenum's Bitches (S16), White Supremacy (S17), G.E.E.K. Squad (S18), Damn Daniel is a Stupid Meme (S20), Downhill Fast (S21), Spongegar is a Dead Meme (S22), The Bonald Beckoners (S23), Ocean Men (S24), The Curse (S25), Just Sexy (S26), Winning Team, The Green Team, The Team That WON, The Winning Team (S27), Beckon or Bust (S28), CTE (S29), Toast (S30), Ironmen (S31)"
+      },
+      {
+        "cell": "A52",
+        "value": "Season"
+      },
+      {
+        "cell": "B52",
+        "value": "Death Time"
+      },
+      {
+        "cell": "C52",
+        "value": "Season"
+      },
+      {
+        "cell": "D52",
+        "value": "Kills"
+      },
+      {
+        "cell": "E52",
+        "value": "Kills Over Time"
+      },
+      {
+        "cell": "A53",
+        "value": "S2"
+      },
+      {
+        "cell": "B53",
+        "value": "0.375"
+      },
+      {
+        "cell": "C53",
+        "value": "S2"
+      },
+      {
+        "cell": "D53",
+        "value": "1.0"
+      },
+      {
+        "cell": "E53",
+        "value": "1.0"
+      },
+      {
+        "cell": "A54",
+        "value": "S3"
+      },
+      {
+        "cell": "B54",
+        "value": "0.7777777778"
+      },
+      {
+        "cell": "C54",
+        "value": "S3"
+      },
+      {
+        "cell": "D54",
+        "value": "0.0"
+      },
+      {
+        "cell": "E54",
+        "value": "1.0"
+      },
+      {
+        "cell": "A55",
+        "value": "S4"
+      },
+      {
+        "cell": "B55",
+        "value": "1.0"
+      },
+      {
+        "cell": "C55",
+        "value": "S4"
+      },
+      {
+        "cell": "D55",
+        "value": "0.0"
+      },
+      {
+        "cell": "E55",
+        "value": "1.0"
+      },
+      {
+        "cell": "A56",
+        "value": "S5"
+      },
+      {
+        "cell": "B56",
+        "value": "0.8333333333"
+      },
+      {
+        "cell": "C56",
+        "value": "S5"
+      },
+      {
+        "cell": "D56",
+        "value": "1.0"
+      },
+      {
+        "cell": "E56",
+        "value": "2.0"
+      },
+      {
+        "cell": "A57",
+        "value": "S6"
+      },
+      {
+        "cell": "C57",
+        "value": "S6"
+      },
+      {
+        "cell": "D57",
+        "value": "1.0"
+      },
+      {
+        "cell": "E57",
+        "value": "3.0"
+      },
+      {
+        "cell": "A58",
+        "value": "S7"
+      },
+      {
+        "cell": "B58",
+        "value": "0.25"
+      },
+      {
+        "cell": "C58",
+        "value": "S7"
+      },
+      {
+        "cell": "D58",
+        "value": "0.0"
+      },
+      {
+        "cell": "E58",
+        "value": "3.0"
+      },
+      {
+        "cell": "A59",
+        "value": "S8"
+      },
+      {
+        "cell": "B59",
+        "value": "0.8"
+      },
+      {
+        "cell": "C59",
+        "value": "S8"
+      },
+      {
+        "cell": "D59",
+        "value": "0.0"
+      },
+      {
+        "cell": "E59",
+        "value": "3.0"
+      },
+      {
+        "cell": "A60",
+        "value": "S9"
+      },
+      {
+        "cell": "B60",
+        "value": "1.0"
+      },
+      {
+        "cell": "C60",
+        "value": "S9"
+      },
+      {
+        "cell": "D60",
+        "value": "4.0"
+      },
+      {
+        "cell": "E60",
+        "value": "7.0"
+      },
+      {
+        "cell": "A61",
+        "value": "S10"
+      },
+      {
+        "cell": "B61",
+        "value": "0.1111111111"
+      },
+      {
+        "cell": "C61",
+        "value": "S10"
+      },
+      {
+        "cell": "D61",
+        "value": "0.0"
+      },
+      {
+        "cell": "E61",
+        "value": "7.0"
+      },
+      {
+        "cell": "A62",
+        "value": "S11"
+      },
+      {
+        "cell": "B62",
+        "value": "0.6470588235"
+      },
+      {
+        "cell": "C62",
+        "value": "S11"
+      },
+      {
+        "cell": "D62",
+        "value": "1.0"
+      },
+      {
+        "cell": "E62",
+        "value": "8.0"
+      },
+      {
+        "cell": "A63",
+        "value": "S12"
+      },
+      {
+        "cell": "B63",
+        "value": "1.0"
+      },
+      {
+        "cell": "C63",
+        "value": "S12"
+      },
+      {
+        "cell": "D63",
+        "value": "4.0"
+      },
+      {
+        "cell": "E63",
+        "value": "12.0"
+      },
+      {
+        "cell": "A64",
+        "value": "S13"
+      },
+      {
+        "cell": "B64",
+        "value": "0.6666666667"
+      },
+      {
+        "cell": "C64",
+        "value": "S13"
+      },
+      {
+        "cell": "D64",
+        "value": "0.0"
+      },
+      {
+        "cell": "E64",
+        "value": "12.0"
+      },
+      {
+        "cell": "A65",
+        "value": "S14"
+      },
+      {
+        "cell": "B65",
+        "value": "0.5454545455"
+      },
+      {
+        "cell": "C65",
+        "value": "S14"
+      },
+      {
+        "cell": "D65",
+        "value": "0.0"
+      },
+      {
+        "cell": "E65",
+        "value": "12.0"
+      },
+      {
+        "cell": "A66",
+        "value": "S15"
+      },
+      {
+        "cell": "B66",
+        "value": "0.3076923077"
+      },
+      {
+        "cell": "C66",
+        "value": "S15"
+      },
+      {
+        "cell": "D66",
+        "value": "2.0"
+      },
+      {
+        "cell": "E66",
+        "value": "14.0"
+      },
+      {
+        "cell": "A67",
+        "value": "S16"
+      },
+      {
+        "cell": "B67",
+        "value": "0.7222222222"
+      },
+      {
+        "cell": "C67",
+        "value": "S16"
+      },
+      {
+        "cell": "D67",
+        "value": "3.0"
+      },
+      {
+        "cell": "E67",
+        "value": "17.0"
+      },
+      {
+        "cell": "A68",
+        "value": "S17"
+      },
+      {
+        "cell": "B68",
+        "value": "0.2173913043"
+      },
+      {
+        "cell": "C68",
+        "value": "S17"
+      },
+      {
+        "cell": "D68",
+        "value": "1.0"
+      },
+      {
+        "cell": "E68",
+        "value": "18.0"
+      },
+      {
+        "cell": "A69",
+        "value": "S18"
+      },
+      {
+        "cell": "B69",
+        "value": "1.0"
+      },
+      {
+        "cell": "C69",
+        "value": "S18"
+      },
+      {
+        "cell": "D69",
+        "value": "2.0"
+      },
+      {
+        "cell": "E69",
+        "value": "20.0"
+      },
+      {
+        "cell": "A70",
+        "value": "S19"
+      },
+      {
+        "cell": "B70",
+        "value": "0.8125"
+      },
+      {
+        "cell": "C70",
+        "value": "S19"
+      },
+      {
+        "cell": "D70",
+        "value": "1.0"
+      },
+      {
+        "cell": "E70",
+        "value": "21.0"
+      },
+      {
+        "cell": "A71",
+        "value": "S20"
+      },
+      {
+        "cell": "B71",
+        "value": "0.7916666667"
+      },
+      {
+        "cell": "C71",
+        "value": "S20"
+      },
+      {
+        "cell": "D71",
+        "value": "0.0"
+      },
+      {
+        "cell": "E71",
+        "value": "21.0"
+      },
+      {
+        "cell": "A72",
+        "value": "S21"
+      },
+      {
+        "cell": "B72",
+        "value": "1.0"
+      },
+      {
+        "cell": "C72",
+        "value": "S21"
+      },
+      {
+        "cell": "D72",
+        "value": "4.0"
+      },
+      {
+        "cell": "E72",
+        "value": "25.0"
+      },
+      {
+        "cell": "A73",
+        "value": "S22"
+      },
+      {
+        "cell": "B73",
+        "value": "0.4166666667"
+      },
+      {
+        "cell": "C73",
+        "value": "S22"
+      },
+      {
+        "cell": "D73",
+        "value": "0.0"
+      },
+      {
+        "cell": "E73",
+        "value": "25.0"
+      },
+      {
+        "cell": "A74",
+        "value": "S23"
+      },
+      {
+        "cell": "B74",
+        "value": "1.0"
+      },
+      {
+        "cell": "C74",
+        "value": "S23"
+      },
+      {
+        "cell": "D74",
+        "value": "1.0"
+      },
+      {
+        "cell": "E74",
+        "value": "26.0"
+      },
+      {
+        "cell": "A75",
+        "value": "S24"
+      },
+      {
+        "cell": "B75",
+        "value": "0.5454545455"
+      },
+      {
+        "cell": "C75",
+        "value": "S24"
+      },
+      {
+        "cell": "D75",
+        "value": "1.0"
+      },
+      {
+        "cell": "E75",
+        "value": "27.0"
+      },
+      {
+        "cell": "A76",
+        "value": "S25"
+      },
+      {
+        "cell": "B76",
+        "value": "0.5"
+      },
+      {
+        "cell": "C76",
+        "value": "S25"
+      },
+      {
+        "cell": "D76",
+        "value": "0.0"
+      },
+      {
+        "cell": "E76",
+        "value": "27.0"
+      },
+      {
+        "cell": "A77",
+        "value": "S26"
+      },
+      {
+        "cell": "B77",
+        "value": "0.625"
+      },
+      {
+        "cell": "C77",
+        "value": "S26"
+      },
+      {
+        "cell": "D77",
+        "value": "0.0"
+      },
+      {
+        "cell": "E77",
+        "value": "27.0"
+      },
+      {
+        "cell": "A78",
+        "value": "S27"
+      },
+      {
+        "cell": "B78",
+        "value": "1.0"
+      },
+      {
+        "cell": "C78",
+        "value": "S27"
+      },
+      {
+        "cell": "D78",
+        "value": "2.0"
+      },
+      {
+        "cell": "E78",
+        "value": "29.0"
+      },
+      {
+        "cell": "A79",
+        "value": "S28"
+      },
+      {
+        "cell": "B79",
+        "value": "0.3"
+      },
+      {
+        "cell": "C79",
+        "value": "S28"
+      },
+      {
+        "cell": "D79",
+        "value": "0.0"
+      },
+      {
+        "cell": "E79",
+        "value": "29.0"
+      },
+      {
+        "cell": "A80",
+        "value": "S29"
+      },
+      {
+        "cell": "B80",
+        "value": "0.5"
+      },
+      {
+        "cell": "C80",
+        "value": "S29"
+      },
+      {
+        "cell": "D80",
+        "value": "0.0"
+      },
+      {
+        "cell": "E80",
+        "value": "29.0"
+      },
+      {
+        "cell": "A81",
+        "value": "S30"
+      },
+      {
+        "cell": "B81",
+        "value": "0.68"
+      },
+      {
+        "cell": "C81",
+        "value": "S30"
+      },
+      {
+        "cell": "D81",
+        "value": "1.0"
+      },
+      {
+        "cell": "E81",
+        "value": "30.0"
+      },
+      {
+        "cell": "A82",
+        "value": "S31"
+      },
+      {
+        "cell": "B82",
+        "value": "0.8235294118"
+      },
+      {
+        "cell": "C82",
+        "value": "S31"
+      },
+      {
+        "cell": "D82",
+        "value": "3.0"
+      },
+      {
+        "cell": "E82",
+        "value": "33.0"
+      }
+    ]
+  },
+  {
+    "name": "Axel__",
+    "cells": [
+      {
+        "cell": "A1",
+        "value": "Axel__"
+      },
+      {
+        "cell": "A17",
+        "value": "Formerly Known As: axelpopcorn"
+      },
+      {
+        "cell": "A19",
+        "value": "Participated in 10 Seasons (S4-6,9-11,13,16,19,21)"
+      },
+      {
+        "cell": "A21",
+        "value": " 5 Seasons Won (S2-4,10-11)"
+      },
+      {
+        "cell": "A22",
+        "value": " Most Frequent Victims: Enzo_ & OyGod each with 2"
+      },
+      {
+        "cell": "A24",
+        "value": " Most Frequent Killers: All"
+      },
+      {
+        "cell": "A27",
+        "value": "Most Frequent Teammates: tulltull with 3"
+      },
+      {
+        "cell": "A29",
+        "value": "Teams Participated In: Popcorn & Toast (S4), Sodium (S5), Dragons (S6), (S9), C.A.S.H. (S10), Goldilocks and the Four Bears (S11), Dr. Pepper (S13), nolove (S16), (S19), Neggas (S21)"
+      }
+    ]
+  },
+  {
+    "name": "Frozeninthesnow",
+    "cells": []
+  },
+  {
+    "name": "Hopalot202",
+    "cells": []
+  },
+  {
+    "name": "mattmmz123",
+    "cells": []
+  }
+]

@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/stats.js';let s=fs.readFileSync(p,'utf8');const start=s.indexOf('function timelineGraph('),end=s.indexOf('function statsGraph(',start);s=s.slice(0,start)+fs.readFileSync('timeline-function.txt','utf8')+s.slice(end);fs.writeFileSync(p,s);

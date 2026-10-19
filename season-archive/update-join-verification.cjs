@@ -1,0 +1,2 @@
+const fs=require('fs');let p='verify.cjs',s=fs.readFileSync(p,'utf8');s=s.replace("innerHTML.split('data-player=').length-1,515", "innerHTML.split('class=\"player-cell\"').length-1,515");fs.writeFileSync(p,s);
+p='profile-engine.cjs';s=fs.readFileSync(p,'utf8').replace('color:r.color,moleFor:r.moleFor||null,kills,ranged','color:r.color,moleFor:r.moleFor||null,joinedAt:r.joinedAt??null,roamer:!!r.roamer,kills,ranged');fs.writeFileSync(p,s);

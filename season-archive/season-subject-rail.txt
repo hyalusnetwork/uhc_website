@@ -1,0 +1,11 @@
+function seasonSubjectRail(table,row){
+ let teamColors=[];
+ if(table.id==='winners')teamColors=[row[1]];
+ else{
+  const subjects=Array.isArray(row[1])?row[1]:[row[1]],season=seasons.find(s=>s.id===row[0]);
+  teamColors=subjects.map(name=>season?.players.find(p=>profileIdentity(p.name)===profileIdentity(name))?.color).filter(Boolean);
+ }
+ const palette=[...new Set(teamColors.map(color=>colors[color]).filter(Boolean))];
+ if(!palette.length)return 'transparent';
+ return `linear-gradient(to bottom,${palette.map((color,i)=>`${color} ${100*i/palette.length}% ${100*(i+1)/palette.length}%`).join(',')})`;
+}

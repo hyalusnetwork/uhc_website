@@ -1,0 +1,14 @@
+function histogram(g){
+ const counts=g.bins.map(b=>b.groups.reduce((n,x)=>n+x.players.length,0)),max=Math.ceil(Math.max(1,...counts)/5)*5;
+ const left=52,top=28,height=280,width=1008,step=width/g.bins.length,baseline=top+height;
+ let bars='';
+ g.bins.forEach((bin,i)=>{let base=0;const x=left+i*step+1.5;
+  bars+=bin.groups.map(group=>{const count=group.players.length,y=baseline-(base+count)/max*height;base+=count;
+   return `<rect class="outcome-segment" x="${x}" y="${y}" width="${Math.max(1,step-3)}" height="${count/max*height}" fill="${colors[group.color]||'#a3ad9e'}" stroke="#191c21" stroke-width=".6" ${chartTip(`${duration(bin.start)}–${duration(bin.end)}\nSeason ${group.season} · ${group.color}\n${count} deaths: ${group.players.join(', ')}`)}/>`;
+  }).join('');
+  if(i%6===0)bars+=`<text class="outcome-axis-label" x="${x+step/2}" y="${baseline+24}" text-anchor="middle">${duration(bin.start).slice(0,-3)}</text>`;
+ });
+ const grid=Array.from({length:max/5+1},(_,i)=>{const value=i*5,y=baseline-value/max*height;return `<line class="outcome-gridline" x1="${left}" x2="${left+width}" y1="${y}" y2="${y}"/><text class="outcome-axis-label" x="${left-12}" y="${y+4}" text-anchor="end">${value}</text>`}).join('');
+ const total=counts.reduce((a,b)=>a+b,0),peak=Math.max(...counts),peakBin=g.bins[counts.indexOf(peak)];
+ return `<div class="outcome-visual"><div class="outcome-chart-meta"><span>RECORDED DEATHS</span><span>${statsData.counts.seasons} SEASONS · 5-MINUTE INTERVALS</span></div><div class="outcome-plot-scroll"><svg class="outcome-plot" viewBox="0 0 1084 354" role="group" aria-label="Death Time: recorded deaths in five-minute intervals">${grid}${bars}<text class="outcome-axis-title" x="556" y="351" text-anchor="middle">TIME INTO MATCH · HOURS:MINUTES</text></svg></div><div class="outcome-key"><span class="outcome-key-item"><span>Timed deaths</span><b>${total}</b></span><span class="outcome-key-item"><span>Busiest interval</span><b>${duration(peakBin.start).slice(0,-3)}–${duration(peakBin.end).slice(0,-3)}</b></span><span class="outcome-key-item"><span>Deaths in peak interval</span><b>${peak}</b></span></div></div><p class="chart-caption">Five-minute bins. Segments identify each season and team color. Counts actual PVP, PVE, and Team Kill deaths with known times. ${statsData.counts.seasons} seasons included; Season ${seasons.at(-1).id}: ${g.bins.flatMap(b=>b.groups).filter(group=>group.season===seasons.at(-1).id).reduce((n,group)=>n+group.players.length,0)} deaths.</p>`;
+}

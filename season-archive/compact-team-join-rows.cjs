@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/app.js';let s=fs.readFileSync(p,'utf8');s=s.replace('<strong>${escape(event.team)}</strong><small>${escape(event.color)}</small></div>','<strong title="${escape(event.color)}">${escape(event.team)}</strong></div>');fs.writeFileSync(p,s);

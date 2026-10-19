@@ -1,0 +1,12 @@
+function timingGraph(g){
+ const max=Math.ceil(Math.max(1,...g.data.map(r=>r.length))/3600)*3600;
+ const left=52,top=28,height=280,width=1008,step=width/g.data.length,baseline=top+height;
+ const metrics=[['length','Last elimination','#4fa5e6'],['firstBlood','First Blood','#e46b86'],['firstDeath','First Death','#e6b94e']];
+ const grid=Array.from({length:max/3600+1},(_,i)=>{const value=i*3600,y=baseline-value/max*height;return `<line class="outcome-gridline" x1="${left}" x2="${left+width}" y1="${y}" y2="${y}"/><text class="outcome-axis-label" x="${left-12}" y="${y+4}" text-anchor="end">${duration(value).slice(0,-3)}</text>`}).join('');
+ const bars=g.data.map((r,i)=>{const center=left+(i+.5)*step;
+  const tip=`Season ${r.season}\n`+metrics.map(([key,label])=>`${label}: ${r[key]==null?'Not recorded':duration(r[key])}`).join('\n');
+  return `<g class="outcome-season"><rect class="outcome-lane" x="${left+i*step}" y="${top}" width="${step}" height="${height}"/>${metrics.map(([key,label,color],j)=>r[key]==null?'':`<rect class="outcome-segment" x="${center-10+j*7}" y="${baseline-r[key]/max*height}" width="6" height="${Math.max(1,r[key]/max*height)}" fill="${color}" ${chartTip(tip+'\nHighlighted: '+label)}/>`).join('')}<text class="outcome-season-label" x="${center}" y="${baseline+24}" text-anchor="middle">${r.season}</text></g>`;
+ }).join('');
+ const legend=metrics.map(([key,label,color])=>{const values=g.data.map(r=>r[key]).filter(v=>v!=null),average=values.length?Math.round(values.reduce((a,b)=>a+b,0)/values.length):null;return `<span class="outcome-key-item"><i style="background:${color}"></i><span>${label}</span><b>${average==null?'—':duration(average)} avg.</b></span>`}).join('');
+ return `<div class="outcome-visual"><div class="outcome-chart-meta"><span>TIME INTO MATCH · HOURS:MINUTES</span><span>${g.data.length} SEASONS · THREE MILESTONES</span></div><div class="outcome-plot-scroll"><svg class="outcome-plot" viewBox="0 0 1084 354" role="group" aria-label="Match Milestones: first death, First Blood and last recorded elimination by season">${grid}${bars}<text class="outcome-axis-title" x="556" y="351" text-anchor="middle">SEASON</text></svg></div><div class="outcome-key">${legend}</div></div><p class="chart-caption">Times since match start. The workbook has no separate match-end field; last elimination is the final recorded death. Averages include only seasons with a recorded time for that milestone.</p>`;
+}

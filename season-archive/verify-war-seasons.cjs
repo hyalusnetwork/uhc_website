@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),window={};vm.runInNewContext(fs.readFileSync('dist/data.js','utf8'),{window});const wars=window.UHC_DATA.filter(s=>s.mode==='War');assert(wars.length>0);console.log('War seasons: '+wars.map(s=>s.id).join(', '));

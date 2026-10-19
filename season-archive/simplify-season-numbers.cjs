@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/stats.js';let s=fs.readFileSync(p,'utf8');s=s.replace('<span>S</span>${String(value).padStart(2,\'0\')}<span class="season-stat-arrow" aria-hidden="true">↗</span>', '${String(value).padStart(2,\'0\')}');fs.writeFileSync(p,s);

@@ -1,0 +1,26 @@
+const fs=require('fs');let s=fs.readFileSync('qa-season-filter-browser.cjs','utf8');s=s.slice(0,s.indexOf("await evaluate(`document.documentElement.style.scrollBehavior"));s+=`
+await evaluate(\`document.documentElement.style.scrollBehavior='auto';location.hash='#season-1';document.querySelector('#search').value='';document.querySelector('#year').value='';render();\`);
+await new Promise(r=>setTimeout(r,100));
+assert(await evaluate(\`!document.querySelector('[data-tab="links"]')&&document.querySelector('[data-tab="about"]').textContent==='About'\`));
+await evaluate(\`document.querySelector('#season-1 .crown-link').scrollIntoView({block:'center'})\`);
+const rect=await evaluate(\`(()=>{const r=document.querySelector('#season-1 .crown-link').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()\`);
+await send('Input.dispatchMouseEvent',{type:'mouseMoved',...rect});
+assert(await evaluate(\`getComputedStyle(document.querySelector('#season-1 .crown .tooltip')).display==='block'\`));
+await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:10,y:400});
+assert(await evaluate(\`getComputedStyle(document.querySelector('#season-1 .crown .tooltip')).display==='none'\`));
+await send('Input.dispatchMouseEvent',{type:'mouseMoved',...rect});await send('Input.dispatchMouseEvent',{type:'mousePressed',...rect,button:'left',clickCount:1});await send('Input.dispatchMouseEvent',{type:'mouseReleased',...rect,button:'left',clickCount:1});
+await new Promise(r=>setTimeout(r,100));
+assert(await evaluate(\`location.hash==='#about-crown'&&!document.querySelector('#about-view').hidden&&document.querySelector('#seasons-view').hidden&&document.querySelectorAll('.crown.open').length===0\`));
+assert(await evaluate(\`document.querySelector('#about-crown').getBoundingClientRect().top>=75&&document.querySelector('#about-crown').getBoundingClientRect().top<160\`));
+let shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync('about-crown-preview.png',Buffer.from(shot.data,'base64'));
+await evaluate(\`location.hash='#season-1'\`);await new Promise(r=>setTimeout(r,100));
+assert(await evaluate(\`const link=document.querySelector('#season-1 .season-team-link');link.getAttribute('href')==='#team-color-Green'\`));
+await evaluate(\`document.querySelector('#season-1 .season-team-link').click()\`);await new Promise(r=>setTimeout(r,100));
+assert(await evaluate(\`location.hash==='#team-color-Green'&&!document.querySelector('#rankings-view').hidden&&!document.querySelector('#team-rankings-panel').hidden&&document.querySelector('#team-color-Green').getBoundingClientRect().top<200\`));
+await evaluate(\`location.hash='#about'\`);await new Promise(r=>setTimeout(r,100));
+assert(await evaluate(\`Array.from(document.querySelectorAll('#about-view img')).every(i=>i.complete&&i.naturalWidth>0)\`));
+shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync('about-preview.png',Buffer.from(shot.data,'base64'));
+await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});assert(await evaluate('document.documentElement.scrollWidth<=window.innerWidth'));shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync('about-mobile.png',Buffer.from(shot.data,'base64'));
+console.log('Passed browser checks: About replaces Links, crown hover ends on exit, crown click navigates to Crown section, team links target correct color, embedded images and mobile layout.');await send('Browser.close');ws.close();
+})().catch(e=>{console.error(e);process.exit(1)});
+`;fs.writeFileSync('qa-about-browser.cjs',s);

@@ -1,0 +1,1 @@
+const fs=require('fs'),p='qa-about-browser.cjs';let s=fs.readFileSync(p,'utf8');s=s.replace("for(let i=0;i<40;i++){if(await evaluate('!!document.querySelector", "await send('Page.reload',{ignoreCache:true});await new Promise(r=>setTimeout(r,250));\nfor(let i=0;i<40;i++){if(await evaluate('!!document.querySelector");fs.writeFileSync(p,s);

@@ -1,0 +1,1 @@
+const fs=require('fs'),p='profile-engine.cjs';let s=fs.readFileSync(p,'utf8');s=s.replace('(${greenStreakPlayers.length} out of ${allPlayers.length} recorded players). Skipped seasons do not break this streak.', '(Only ${greenStreakPlayers.length} out of ${allPlayers.length} recorded players).');fs.writeFileSync(p,s);

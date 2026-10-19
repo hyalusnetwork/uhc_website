@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/stats.js';let s=fs.readFileSync(p,'utf8');const start=s.indexOf('function stackedDeathGraph('),end=s.indexOf('function histogram(',start);s=s.slice(0,start)+fs.readFileSync('outcome-chart-function.txt','utf8')+s.slice(end);fs.writeFileSync(p,s);

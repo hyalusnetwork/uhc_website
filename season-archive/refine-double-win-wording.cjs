@@ -1,0 +1,1 @@
+const fs=require('fs'),p='profile-engine.cjs';let s=fs.readFileSync(p,'utf8');s=s.replace('Won 2 consecutive matches played${doubleWins.length>1?\' on \'+doubleWins.length+\' occasions\':\'\'}','Won 2 consecutive matches${doubleWins.length>1?\' on \'+doubleWins.length+\' separate occasions\':\'\'}');fs.writeFileSync(p,s);

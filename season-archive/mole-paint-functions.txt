@@ -1,0 +1,9 @@
+function molePalette(seasonId){
+ const season=window.UHC_DATA.find(s=>s.id===seasonId);
+ const names=season?[...new Set(season.players.flatMap(p=>[p.color,p.moleFor]).filter(c=>c&&c!=='Mole'&&c!=='Solo'&&colors[c]))]:Object.keys(colors).filter(c=>!['Mole','Solo'].includes(c));
+ return names.map(name=>colors[name]);
+}
+function molePaint(seasonId){
+ const palette=molePalette(seasonId),size=palette.length*16;
+ return `--mole-paint:linear-gradient(to bottom,${palette.map((c,i)=>`${c} ${i*16}px ${(i+1)*16}px`).join(',')});--mole-cycle:${size}px;`;
+}

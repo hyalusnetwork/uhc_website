@@ -1,0 +1,1 @@
+const fs=require('fs');let s=fs.readFileSync('qa-outcomes-browser.cjs','utf8').replace("statsMode='graphs';statsTab='death-type'","statsMode='season';statsTab='winners'").replace('outcomes-preview.png','season-tables-preview.png').replace('outcomes-mobile.png','season-tables-mobile.png');fs.writeFileSync('qa-season-tables-browser.cjs',s);

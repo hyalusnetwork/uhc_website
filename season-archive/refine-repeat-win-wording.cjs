@@ -1,0 +1,1 @@
+const fs=require('fs'),p='profile-engine.cjs';let s=fs.readFileSync(p,'utf8').replace('`All ${wins.length} wins were on the ${color} team.`','`${wins.length===2?\'Both wins\':\'All \'+wins.length+\' wins\'} were on the ${color} team.`');fs.writeFileSync(p,s);

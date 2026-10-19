@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/stats.js';let s=fs.readFileSync(p,'utf8');s=s.replace("const grid=[0,.25,.5,.75,1].map(f=>{const value=max*f;", "const ticks=percent?[0,.25,.5,.75,1]:Array.from({length:max/5+1},(_,i)=>i*5/max);\n const grid=ticks.map(f=>{const value=max*f;");fs.writeFileSync(p,s);

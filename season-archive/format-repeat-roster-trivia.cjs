@@ -1,0 +1,1 @@
+const fs=require('fs'),p='profile-engine.cjs';let s=fs.readFileSync(p,'utf8');s=s.replace('Won with the exact same team roster ${wins.length} times, alongside ${listNames(roster.filter(n=>n!==name))}, in Seasons','Won with the exact same team roster ${wins.length} times (${listNames(roster)}) in Seasons');fs.writeFileSync(p,s);

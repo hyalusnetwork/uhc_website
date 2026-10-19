@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),window={};vm.runInNewContext(fs.readFileSync('dist/data.js','utf8'),{window});for(const s of window.UHC_DATA)if(s.crown)console.log('S'+s.id+': '+s.crown.method);console.log('Modes',Array.from(new Set(window.UHC_DATA.map(s=>s.mode))));

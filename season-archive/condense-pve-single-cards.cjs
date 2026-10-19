@@ -1,0 +1,1 @@
+const fs=require('node:fs');let s=fs.readFileSync('dist/stats.js','utf8');const old='<div class="pve-single">${icon(name)}<span>${escape(name)}</span><b>1</b></div>';if(!s.includes(old))throw Error('PVE single-cause card missing');s=s.replace(old,'<div class="pve-single">${icon(name)}<span>${escape(name)}</span></div>');fs.writeFileSync('dist/stats.js',s);

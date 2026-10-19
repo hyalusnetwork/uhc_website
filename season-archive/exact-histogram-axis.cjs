@@ -1,0 +1,3 @@
+const fs=require('node:fs');let s=fs.readFileSync('dist/stats.js','utf8');s=s.replace('max=Math.ceil(Math.max(1,...counts)/5)*5','max=Math.max(1,...counts)');
+const start=s.indexOf('function histogram(g)'),end=s.indexOf('function timingGraph',start);let part=s.slice(start,end);
+part=part.replace("const grid=Array.from({length:max/5+1},(_,i)=>{const value=i*5,y=baseline-value/max*height;", "const ticks=[0,...Array.from({length:Math.floor(max/5)},(_,i)=>(i+1)*5).filter(v=>v<max-2.5),max];\n const grid=ticks.map(value=>{const y=baseline-value/max*height;");s=s.slice(0,start)+part+s.slice(end);fs.writeFileSync('dist/stats.js',s);

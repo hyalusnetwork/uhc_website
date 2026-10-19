@@ -1,0 +1,1 @@
+const fs=require('fs'),p='qa-team-joins-browser.cjs';let s=fs.readFileSync(p,'utf8');s=s.replace('expression,returnByValue:true',"expression:'(()=>eval('+JSON.stringify(expression)+'))()',returnByValue:true");fs.writeFileSync(p,s);

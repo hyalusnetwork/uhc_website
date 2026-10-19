@@ -1,0 +1,24 @@
+{
+  "graphs": [
+    "Death Time",
+    "Death Type",
+    "Game Length, First Blood, & First Death",
+    "Team Size",
+    "Timeline",
+    "Season Death Pct"
+  ],
+  "tables": [
+    "Season Winners",
+    "First Damage",
+    "First Death",
+    "First Blood",
+    "Top Killer",
+    "Final Boss",
+    "Ironman",
+    "All-Time Wins",
+    "All-Time PVE Kills",
+    "All-Time PVP Kills",
+    "Favorite Victim",
+    "All-Time Ironmen"
+  ]
+}

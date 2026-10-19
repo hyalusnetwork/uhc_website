@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/ore-theme.css';let s=fs.readFileSync(p,'utf8').replace('.career-table td:first-child{border-left-width:4.5px}', '.career-table td:first-child{border-left-width:6.75px}').replace('.career-table .mole-row>td:first-child:before{left:-4.5px;width:4.5px}', '.career-table .mole-row>td:first-child:before{left:-6.75px;width:6.75px}');fs.writeFileSync(p,s);

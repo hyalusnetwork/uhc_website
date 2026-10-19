@@ -1,0 +1,16 @@
+function stackedDeathGraph(g,percent){
+ const palette={'Lived':'#8baea6','PVP':'#b7858e','PVE':'#c1ad83','Team Kill':'#a297bd','Disconnect':'#819bb3','Disqualification':'#a39a91'};
+ const labels={'Lived':'Survived','PVP':'PVP','PVE':'PVE','Team Kill':'Team Kills','Disconnect':'Disconnects','Disqualification':'Disqualifications'};
+ const totals=g.data.map(r=>g.types.reduce((n,t)=>n+r.counts[t],0)),max=percent?1:Math.ceil(Math.max(1,...totals)/5)*5;
+ const left=52,top=28,height=280,width=1008,step=width/g.data.length,baseline=top+height;
+ let bars='';
+ g.data.forEach((row,i)=>{const total=totals[i],x=Math.round(left+i*step+5),barWidth=Math.max(8,Math.floor(step-10));let base=0;
+  const segments=g.types.map(type=>{const count=row.counts[type];if(!count)return '';const value=percent?count/total:count,y=baseline-(base+value)/max*height,h=value/max*height;base+=value;
+   return `<rect class="outcome-segment" x="${x}" y="${y}" width="${barWidth}" height="${h}" fill="${palette[type]}" stroke="#191c21" stroke-width="1" ${chartTip(`Season ${row.season}\n${labels[type]}: ${count} (${(100*count/total).toFixed(1)}% of participants)\n${total} participants total`)}/>`;
+  }).join('');
+  bars+=`<g class="outcome-season"><rect class="outcome-lane" x="${left+i*step}" y="${top}" width="${step}" height="${height}"/>${segments}<text class="outcome-season-label" x="${x+barWidth/2}" y="${baseline+24}" text-anchor="middle">${row.season}</text></g>`;
+ });
+ const grid=[0,.25,.5,.75,1].map(f=>{const value=max*f;return `<line class="outcome-gridline" x1="${left}" x2="${left+width}" y1="${baseline-height*f}" y2="${baseline-height*f}"/><text class="outcome-axis-label" x="${left-12}" y="${baseline-height*f+4}" text-anchor="end">${percent?Math.round(value*100)+'%':Number(value.toFixed(1))}</text>`}).join('');
+ const legend=g.types.map(type=>{const count=g.data.reduce((n,r)=>n+r.counts[type],0);return `<span class="outcome-key-item"><i style="background:${palette[type]}"></i><span>${labels[type]}</span><b>${count}</b></span>`}).join('');
+ return `<div class="outcome-visual"><div class="outcome-chart-meta"><span>${percent?'SHARE OF PARTICIPANTS':'PARTICIPANTS'}</span><span>${g.data.length} SEASONS · ${totals.reduce((a,b)=>a+b,0)} PARTICIPATIONS</span></div><div class="outcome-plot-scroll"><svg class="outcome-plot" viewBox="0 0 1084 354" role="group" aria-label="Season outcomes by ${percent?'percentage':'count'}">${grid}${bars}<text class="outcome-axis-title" x="556" y="351" text-anchor="middle">SEASON</text></svg></div><div class="outcome-key">${legend}</div></div><p class="chart-caption">${percent?'Percentage of all participants in each season.':'Number of participants in each season.'} Includes survivors, PVP, PVE, Team Kills, disconnects, and disqualifications.</p>`;
+}

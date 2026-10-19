@@ -1,0 +1,1 @@
+const fs=require('node:fs');let p=fs.readFileSync('dist/players.js','utf8');p=p.replace('class="season-team-link" style="color:${ink}" href="#${teamAnchor(color)}"','class="season-team-link" href="#${teamAnchor(color)}" style="color:${ink}"');fs.writeFileSync('dist/players.js',p);

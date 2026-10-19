@@ -1,0 +1,792 @@
+{
+  "sheet": "UHC Records",
+  "rows": [
+    {
+      "row": "1",
+      "cells": [
+        {
+          "value": "All-Time Records",
+          "cell": "A1"
+        },
+        {
+          "value": "Single Season Records",
+          "cell": "D1"
+        },
+        {
+          "value": "Other Records",
+          "cell": "H1"
+        }
+      ]
+    },
+    {
+      "row": "2",
+      "cells": [
+        {
+          "value": "PVP Record",
+          "cell": "A2"
+        },
+        {
+          "value": "Player(s)",
+          "cell": "B2"
+        },
+        {
+          "value": "Stat",
+          "cell": "C2"
+        },
+        {
+          "value": "PVP Record",
+          "cell": "D2"
+        },
+        {
+          "value": "Player(s)",
+          "cell": "E2"
+        },
+        {
+          "value": "Season(s)",
+          "cell": "F2"
+        },
+        {
+          "value": "Stat",
+          "cell": "G2"
+        },
+        {
+          "value": "PVP Record",
+          "cell": "H2"
+        }
+      ]
+    },
+    {
+      "row": "3",
+      "cells": [
+        {
+          "value": "Most Kills",
+          "cell": "A3"
+        },
+        {
+          "value": "arecue",
+          "cell": "B3"
+        },
+        {
+          "value": "47",
+          "cell": "C3"
+        },
+        {
+          "value": "Most Kills in a Season",
+          "cell": "D3"
+        },
+        {
+          "value": "arecue, Crack_Attack",
+          "cell": "E3"
+        },
+        {
+          "value": "S31, S35",
+          "cell": "F3"
+        },
+        {
+          "value": "8",
+          "cell": "G3"
+        },
+        {
+          "value": "Season(s) with the Most PVP Kills",
+          "cell": "H3"
+        },
+        {
+          "value": "S34",
+          "cell": "I3"
+        },
+        {
+          "value": "17 Kills",
+          "cell": "J3"
+        }
+      ]
+    },
+    {
+      "row": "4",
+      "cells": [
+        {
+          "value": "Most Ranged Kills",
+          "cell": "A4"
+        },
+        {
+          "value": "Crack_Attack",
+          "cell": "B4"
+        },
+        {
+          "value": "17",
+          "cell": "C4"
+        },
+        {
+          "value": "Most Ranged Kills in a Season",
+          "cell": "D4"
+        },
+        {
+          "value": "Crack_Attack",
+          "cell": "E4"
+        },
+        {
+          "value": "S35",
+          "cell": "F4"
+        },
+        {
+          "value": "6",
+          "cell": "G4"
+        },
+        {
+          "value": "Season(s) with the Least PVP Kills",
+          "cell": "H4"
+        },
+        {
+          "value": "S1, S3, S6",
+          "cell": "I4"
+        },
+        {
+          "value": "2 Kills",
+          "cell": "J4"
+        }
+      ]
+    },
+    {
+      "row": "5",
+      "cells": [
+        {
+          "value": "Most Fall Damage Kills",
+          "cell": "A5"
+        },
+        {
+          "value": "Caenum_, coleam, Crack_Attack",
+          "cell": "B5"
+        },
+        {
+          "value": "2",
+          "cell": "C5"
+        },
+        {
+          "value": "Quickest First Blood",
+          "cell": "D5"
+        },
+        {
+          "value": "coleam",
+          "cell": "E5"
+        },
+        {
+          "value": "S26",
+          "cell": "F5"
+        },
+        {
+          "value": "0.003553240741",
+          "cell": "G5"
+        },
+        {
+          "value": "Season(s) with the Most Ranged Kills",
+          "cell": "H5"
+        },
+        {
+          "value": "S20, S21, S35",
+          "cell": "I5"
+        },
+        {
+          "value": "7 Kills",
+          "cell": "J5"
+        }
+      ]
+    },
+    {
+      "row": "6",
+      "cells": [
+        {
+          "value": "Most Fire Damage Kills",
+          "cell": "A6"
+        },
+        {
+          "value": "Enzo_",
+          "cell": "B6"
+        },
+        {
+          "value": "4",
+          "cell": "C6"
+        },
+        {
+          "value": "Longest Time for First Blood",
+          "cell": "D6"
+        },
+        {
+          "value": "arecue",
+          "cell": "E6"
+        },
+        {
+          "value": "S3",
+          "cell": "F6"
+        },
+        {
+          "value": "0.1257407407",
+          "cell": "G6"
+        }
+      ]
+    },
+    {
+      "row": "7",
+      "cells": [
+        {
+          "value": "Most First Bloods",
+          "cell": "A7"
+        },
+        {
+          "value": "coleam",
+          "cell": "B7"
+        },
+        {
+          "value": "9",
+          "cell": "C7"
+        }
+      ]
+    },
+    {
+      "row": "8",
+      "cells": [
+        {
+          "value": "Most Times as Final Boss",
+          "cell": "A8"
+        },
+        {
+          "value": "arecue, Enzo_, Karova",
+          "cell": "B8"
+        },
+        {
+          "value": "5",
+          "cell": "C8"
+        }
+      ]
+    },
+    {
+      "row": "9",
+      "cells": [
+        {
+          "value": "Most Times Killing Final Boss",
+          "cell": "A9"
+        },
+        {
+          "value": "arecue",
+          "cell": "B9"
+        },
+        {
+          "value": "6",
+          "cell": "C9"
+        },
+        {
+          "value": "Game Record",
+          "cell": "H9"
+        }
+      ]
+    },
+    {
+      "row": "10",
+      "cells": [
+        {
+          "value": "Most Team Wipes",
+          "cell": "A10"
+        },
+        {
+          "value": "Season(s) with Zero PVE Deaths",
+          "cell": "H10"
+        },
+        {
+          "value": "S8, S10, S15, S35",
+          "cell": "I10"
+        }
+      ]
+    },
+    {
+      "row": "11",
+      "cells": [
+        {
+          "value": "Most Times Taking the Crown",
+          "cell": "A11"
+        },
+        {
+          "value": "Enzo_",
+          "cell": "B11"
+        },
+        {
+          "value": "4",
+          "cell": "C11"
+        },
+        {
+          "value": "Season(s) with the Most PVE Deaths",
+          "cell": "H11"
+        },
+        {
+          "value": "S20",
+          "cell": "I11"
+        },
+        {
+          "value": "8 Deaths",
+          "cell": "J11"
+        }
+      ]
+    },
+    {
+      "row": "12",
+      "cells": [
+        {
+          "value": "Game Record",
+          "cell": "A12"
+        },
+        {
+          "value": "Player(s)",
+          "cell": "B12"
+        },
+        {
+          "value": "Stat",
+          "cell": "C12"
+        },
+        {
+          "value": "Game Record",
+          "cell": "D12"
+        },
+        {
+          "value": "Player(s)",
+          "cell": "E12"
+        },
+        {
+          "value": "Season(s)",
+          "cell": "F12"
+        },
+        {
+          "value": "Stat",
+          "cell": "G12"
+        },
+        {
+          "value": "Average Number of Players per Game",
+          "cell": "H12"
+        },
+        {
+          "value": "14.22857143",
+          "cell": "I12"
+        }
+      ]
+    },
+    {
+      "row": "13",
+      "cells": [
+        {
+          "value": "Most Wins",
+          "cell": "A13"
+        },
+        {
+          "value": "Enzo_",
+          "cell": "B13"
+        },
+        {
+          "value": "10",
+          "cell": "C13"
+        },
+        {
+          "value": "Most Players Beat for Ironman",
+          "cell": "D13"
+        },
+        {
+          "value": "Caenum_",
+          "cell": "E13"
+        },
+        {
+          "value": "S30",
+          "cell": "F13"
+        },
+        {
+          "value": "24",
+          "cell": "G13"
+        },
+        {
+          "value": "Season(s) with More PVE than PVP",
+          "cell": "H13"
+        },
+        {
+          "value": "S3, S24",
+          "cell": "I13"
+        }
+      ]
+    },
+    {
+      "row": "14",
+      "cells": [
+        {
+          "value": "Most Ironmen",
+          "cell": "A14"
+        },
+        {
+          "value": "Caenum_",
+          "cell": "B14"
+        },
+        {
+          "value": "11",
+          "cell": "C14"
+        },
+        {
+          "value": "Quickest First Death",
+          "cell": "D14"
+        },
+        {
+          "value": "OyGod",
+          "cell": "E14"
+        },
+        {
+          "value": "S26",
+          "cell": "F14"
+        },
+        {
+          "value": "0.003553240741",
+          "cell": "G14"
+        },
+        {
+          "value": "First Damage and First Death",
+          "cell": "H14"
+        },
+        {
+          "value": "Pecus, xblackwolfx7, rks33, tulltull, wolf401ofCA, Frunckle101",
+          "cell": "I14"
+        }
+      ]
+    },
+    {
+      "row": "15",
+      "cells": [
+        {
+          "value": "Most Ironman Runner-Ups",
+          "cell": "A15"
+        },
+        {
+          "value": "Enzo_",
+          "cell": "B15"
+        },
+        {
+          "value": "7",
+          "cell": "C15"
+        },
+        {
+          "value": "Longest Time for First Death",
+          "cell": "D15"
+        },
+        {
+          "value": "Table__",
+          "cell": "E15"
+        },
+        {
+          "value": "S15",
+          "cell": "F15"
+        },
+        {
+          "value": "0.1116666667",
+          "cell": "G15"
+        },
+        {
+          "value": "S1, S6, S23, S28, S29, S35",
+          "cell": "I15"
+        }
+      ]
+    },
+    {
+      "row": "16",
+      "cells": [
+        {
+          "value": "Most Times taking First Damage",
+          "cell": "A16"
+        },
+        {
+          "value": "wolf401ofCA",
+          "cell": "B16"
+        },
+        {
+          "value": "3",
+          "cell": "C16"
+        },
+        {
+          "value": "Most Kills by PVE Type",
+          "cell": "D16"
+        },
+        {
+          "value": "Creeper",
+          "cell": "E16"
+        },
+        {
+          "value": "S20",
+          "cell": "F16"
+        },
+        {
+          "value": "4",
+          "cell": "G16"
+        },
+        {
+          "value": "First Damage and still Win",
+          "cell": "H16"
+        },
+        {
+          "value": "Karova, Enzo_, arecue, KatieLAZ, wolf401ofCA, Frunckle101",
+          "cell": "I16"
+        }
+      ]
+    },
+    {
+      "row": "17",
+      "cells": [
+        {
+          "value": "Most Times as First Death",
+          "cell": "A17"
+        },
+        {
+          "value": "Karova, Axel__",
+          "cell": "B17"
+        },
+        {
+          "value": "3",
+          "cell": "C17"
+        },
+        {
+          "value": "S2, S12, S26, S30, S32, S35",
+          "cell": "I17"
+        }
+      ]
+    },
+    {
+      "row": "18",
+      "cells": [
+        {
+          "value": "Most PVE Kills",
+          "cell": "A18"
+        },
+        {
+          "value": "Creeper",
+          "cell": "B18"
+        },
+        {
+          "value": "22",
+          "cell": "C18"
+        },
+        {
+          "value": "First Death and still Win",
+          "cell": "H18"
+        },
+        {
+          "value": "mattmmz123, Toasty_boii, will012345678910, Frunckle101",
+          "cell": "I18"
+        }
+      ]
+    },
+    {
+      "row": "19",
+      "cells": [
+        {
+          "value": "Most Participations",
+          "cell": "A19"
+        },
+        {
+          "value": "Enzo_",
+          "cell": "B19"
+        },
+        {
+          "value": "33",
+          "cell": "C19"
+        },
+        {
+          "value": "S8, S13, S30, S35",
+          "cell": "I19"
+        }
+      ]
+    },
+    {
+      "row": "20",
+      "cells": [
+        {
+          "value": "Trivia",
+          "cell": "A20"
+        },
+        {
+          "value": "Final Boss Dies to PVE",
+          "cell": "H20"
+        },
+        {
+          "value": "Crack_Attack, arecue",
+          "cell": "I20"
+        },
+        {
+          "value": "S26, S33",
+          "cell": "J20"
+        }
+      ]
+    },
+    {
+      "row": "21",
+      "cells": [
+        {
+          "value": "Iroman, Win, Most Kills, and Crown in One Game",
+          "cell": "H21"
+        },
+        {
+          "value": "Enzo_",
+          "cell": "I21"
+        },
+        {
+          "value": "S9",
+          "cell": "J21"
+        }
+      ]
+    },
+    {
+      "row": "22",
+      "cells": [
+        {
+          "value": "Caenum_ is the only player to win a season without taking damage (S30). This was dubbed the \"Perfect Ironman.\"",
+          "cell": "A22"
+        }
+      ]
+    },
+    {
+      "row": "23",
+      "cells": [
+        {
+          "value": "This was the only time two players killed each other in the same season (S16): \"ShadowOfDeath64 was slain by Nword22\" and Nword22 burned to death (ShadowOfDeath64)\"",
+          "cell": "A23"
+        },
+        {
+          "value": "Longest Season",
+          "cell": "H23"
+        },
+        {
+          "value": "S27",
+          "cell": "I23"
+        },
+        {
+          "value": "0.1949189815",
+          "cell": "J23"
+        }
+      ]
+    },
+    {
+      "row": "24",
+      "cells": [
+        {
+          "value": "It took five seasons for the first ranged PVP kill with Enzo_ shooting pontoonman in S5.",
+          "cell": "A24"
+        },
+        {
+          "value": "Shortest Season",
+          "cell": "H24"
+        },
+        {
+          "value": "S1",
+          "cell": "I24"
+        },
+        {
+          "value": "0.05784722222",
+          "cell": "J24"
+        }
+      ]
+    },
+    {
+      "row": "25",
+      "cells": [
+        {
+          "value": "Players who got multiple kills in their first season are: Caenum_, SantisKnight, pontoonman, KotaJack, GreatDolphin16, iRubarb, Toastfish, ButterWarriorYT, KatieLAZ",
+          "cell": "A25"
+        },
+        {
+          "value": "Average Season Length",
+          "cell": "H25"
+        },
+        {
+          "value": "0.1263465608",
+          "cell": "I25"
+        }
+      ]
+    },
+    {
+      "row": "26",
+      "cells": [
+        {
+          "value": "The only players to use an ender pearl in a fight are: coleam, arecue, OyGod, Toasty_boii, ButterWarriorYT -- coleam was the first player to do this (S9).",
+          "cell": "A26"
+        }
+      ]
+    },
+    {
+      "row": "27",
+      "cells": [
+        {
+          "value": "The only time a player has earned Ironman yet died to PvE is: Caenum_ (S21)",
+          "cell": "A27"
+        }
+      ]
+    },
+    {
+      "row": "28",
+      "cells": [
+        {
+          "value": "In Season 18, arecue got his first Ironman after 17 seasons.",
+          "cell": "A28"
+        }
+      ]
+    },
+    {
+      "row": "29",
+      "cells": [
+        {
+          "value": "Enzo_ has gotten the most consecutive ironmen with four (S6-S9).",
+          "cell": "A29"
+        }
+      ]
+    },
+    {
+      "row": "30",
+      "cells": [
+        {
+          "value": "The only players to kill at least one player, achieve ironman, and win the game are: Enzo_ (S9, S27), Pecus (S10), tulltull (S11), Caenum (S17), Crack_Attack (S23), arecue (S25)",
+          "cell": "A30"
+        }
+      ]
+    },
+    {
+      "row": "31",
+      "cells": [
+        {
+          "value": "The only players to get ironman and win in the same season are: Jamesian (S1), Enzo_ (S9, S27), Pecus (S10), tulltull (S11), Caenum_ (S17, S30), Crack_Attack (S23), Hopalot202 (S24), arecue (S25)",
+          "cell": "A31"
+        }
+      ]
+    },
+    {
+      "row": "32",
+      "cells": [
+        {
+          "value": "In Season 8, coleam killed 4 different players using the four main forms of PVP (melee, ranged, burn, and fall) making him the only player to ever do so in a single game.",
+          "cell": "A32"
+        }
+      ]
+    },
+    {
+      "row": "33",
+      "cells": [
+        {
+          "value": "Skeletons got their first kill in Season 18 after killing Asian_Tango; it has since risen to 3rd place in PVE kill standings as a result of AI and mechanic changes.",
+          "cell": "A33"
+        }
+      ]
+    },
+    {
+      "row": "34",
+      "cells": [
+        {
+          "value": "S35 became the first in 20 seasons, since S15, to not have a PVE death.",
+          "cell": "A34"
+        }
+      ]
+    },
+    {
+      "row": "35",
+      "cells": [
+        {
+          "value": "The only non-war season to have every team earn a kill is S35.",
+          "cell": "A35"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+const fs=require('node:fs');let s=fs.readFileSync('dist/stats.js','utf8');const old='<div class="pve-single player-total-single">${statPlayer(name)}<b>1</b></div>';if(!s.includes(old))throw Error('Single-player card not found');s=s.replace(old,'<div class="pve-single player-total-single">${statPlayer(name)}</div>');fs.writeFileSync('dist/stats.js',s);

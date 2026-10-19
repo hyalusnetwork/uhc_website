@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),window={};vm.runInNewContext(fs.readFileSync('dist/trivia-data.js','utf8'),{window});const f=window.UHC_TRIVIA.facts.find(f=>f.id==='most-distinct-pvp-killers');console.log(f.text);console.log(f.instances.map(i=>i.name).join(', '));

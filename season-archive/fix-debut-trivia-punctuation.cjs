@@ -1,0 +1,1 @@
+const fs=require('fs'),p='profile-engine.cjs';let s=fs.readFileSync(p,'utf8');s=s.replace('`${t} (one of ${multiKillDebuts.length} recorded players to earn multiple kills on debut).`','`${t.replace(/\\.$/,\'\')} (one of ${multiKillDebuts.length} recorded players to earn multiple kills on debut).`');fs.writeFileSync(p,s);

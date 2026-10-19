@@ -1,0 +1,1 @@
+const fs=require('fs'),p='dist/stats.js';let s=fs.readFileSync(p,'utf8');s=s.replace("$('stats-content').querySelector('[data-outcome-toggle]').focus();","if(event.detail===0)$('stats-content').querySelector('[data-outcome-toggle]').focus();");fs.writeFileSync(p,s);

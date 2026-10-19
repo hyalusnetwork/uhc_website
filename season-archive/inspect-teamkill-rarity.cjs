@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),window={};vm.runInNewContext(fs.readFileSync('dist/profiles.js','utf8'),{window});console.log(window.UHC_PROFILES.profiles.find(p=>p.name==='Karova').trivia.find(t=>t.includes('Has both killed a teammate')));

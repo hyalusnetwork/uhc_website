@@ -1,0 +1,14 @@
+function seasonStatCell(value,kind,title){
+ if(kind==='season')return `<a class="season-stat-link" href="#season-${value}"><span>S</span>${String(value).padStart(2,'0')}<span class="season-stat-arrow" aria-hidden="true">↗</span></a>`;
+ if(kind==='players')return value.length?`<div class="season-stat-people">${value.map(name=>`<span class="season-stat-person">${statPlayer(name)}</span>`).join('')}</div>`:'<span class="season-stat-missing">Not recorded</span>';
+ if(kind==='player')return `<span class="season-stat-person">${statPlayer(value)}</span>`;
+ if(kind==='number')return `<strong class="season-stat-number">${value}</strong>`;
+ if(/time/i.test(title))return `<span class="season-stat-time">${escape(value)}</span>`;
+ if(title==='Team Color')return `<span class="season-stat-color"><i style="background:${colors[value]||'#949ba5'}"></i>${escape(value)}</span>`;
+ if(title==='Death Message')return `<span class="season-stat-message">${escape(value)}</span>`;
+ return escape(value);
+}
+function seasonStatsTable(table,rows){
+ const count=new Set(rows.map(r=>r[0])).size;
+ return `<div class="stats-section-heading"><div><p class="eyebrow">THE SEASON LEDGER</p><h2>${escape(table.title)}<span>.</span></h2></div><span>${count} of ${statsData.counts.seasons} seasons${rows.length!==count?' · '+rows.length+' entries':''}</span></div>${table.note?`<p class="stats-note">${escape(table.note)}</p>`:''}<div class="season-stat-frame"><div class="table-wrap season-stat-scroll" tabindex="0" role="region" aria-label="${escape(table.title)} table"><table class="stats-table season-stat-table"><caption>${escape(table.title)}</caption><thead><tr>${table.columns.map(([title],i)=>`<th scope="col" aria-sort="${statsSort.column===i?(statsSort.direction===1?'ascending':'descending'):'none'}"><button data-sort-column="${i}">${escape(title)} <span aria-hidden="true">${statsSort.column===i?(statsSort.direction===1?'↑':'↓'):'↕'}</span></button></th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr${table.id==='winners'?` style="--season-team:${colors[row[1]]||'#949ba5'}"`:''}>${row.map((v,i)=>`<td${table.columns[i][1]==='number'?' class="season-stat-numeric"':''}>${seasonStatCell(v,table.columns[i][1],table.columns[i][0])}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${table.columns.length}" class="season-stat-empty">No records match your search.</td></tr>`}</tbody></table></div><div class="season-stat-footer"><span>Click a season or player to explore their records.</span><span>All recorded ties included</span></div></div>`;
+}

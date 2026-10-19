@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),window={};vm.runInNewContext(fs.readFileSync('dist/data.js','utf8'),{window});for(const s of window.UHC_DATA)for(const p of s.players)if(/axel/i.test(p.name))console.log(JSON.stringify({season:s.id,...p}));

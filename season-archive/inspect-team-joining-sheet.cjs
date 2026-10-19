@@ -1,0 +1,1 @@
+const fs=require('fs');const raw=JSON.parse(fs.readFileSync('../workbook-extracted.json','utf8').replace(/^\uFEFF/,''));for(const r of raw[4].rows)console.log(JSON.stringify(Object.fromEntries(r.cells.map(c=>[c.cell,c.value]))));console.log('METADATA');for(const r of raw[1].rows)console.log(JSON.stringify(Object.fromEntries(r.cells.map(c=>[c.cell,c.value]))));

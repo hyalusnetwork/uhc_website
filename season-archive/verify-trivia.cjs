@@ -1,0 +1,17 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');const w={};for(const file of ['data','profiles','stats-data','trivia-data'])vm.runInNewContext(fs.readFileSync(`dist/${file}.js`,'utf8'),{window:w});
+const data=w.UHC_TRIVIA,records=data.records,facts=data.facts,record=id=>records.find(r=>r.id===id),fact=id=>facts.find(f=>f.id===id);
+assert.equal(data.counts.seasons,36);assert.equal(data.counts.deaths,435);
+const profiles=w.UHC_PROFILES.profiles;
+assert.equal(record('kills').value,Math.max(...profiles.map(p=>p.kills)));assert.equal(record('kills').holders[0].name,'Happy_Guy555');
+assert.equal(record('longest').value,Math.max(...w.UHC_DATA.map(s=>s.seconds)));assert.equal(record('shortest').value,Math.min(...w.UHC_DATA.map(s=>s.seconds)));
+assert.equal(record('season-kills').value,8);assert(record('season-kills').holders.some(h=>h.name==='Crack_Attack'&&h.season===35));
+assert.equal(record('season-ranged').value,6);assert.equal(record('iron-field').value,24);
+assert(fact('grand').instances.some(h=>h.name==='Enzo_'&&h.season===9));
+assert.equal(fact('death-milestones').instances.find(h=>h.number===150).name,'Nateninjaman');
+assert.equal(fact('first-pvp').instances[0].name,'Caenum_');assert.equal(fact('first-shot').instances[0].name,'Enzo_');
+assert(fact('zero-pve').instances.some(h=>h.season===35));
+const docFacts=facts.filter(f=>f.source.type==='document');assert.equal(docFacts.length,9);assert(docFacts.every(f=>f.source.locator.startsWith('UHC Trivia')));
+assert(docFacts.find(f=>f.title==='Three kills without damage').text.startsWith('Enzo_ killed 3'));const location=facts.find(f=>f.title==='Last deaths outside the Overworld');assert.equal(location.source.type,'user');assert.deepEqual(JSON.parse(JSON.stringify(location.instances)),[{name:'Happy_Guy555',season:33,details:'was slain by Enderman'},{name:'Enzo_',season:36,details:'was slain by Karova'}]);assert(record('overpowered-record').value>0);assert(facts.some(f=>f.title==='Overpowered'));assert(!facts.some(f=>f.text.includes('always taken place in the Overworld')));
+assert(!JSON.stringify(data).toLowerCase().includes('arecue'));assert(data.referenceRows.length>20);assert(data.legacyRecords.length>20);
+assert.equal(new Set([...records,...facts].map(r=>r.id)).size,records.length+facts.length);
+console.log(`Passed: ${records.length} records, ${facts.length} trivia entries, current ledger milestones, first kills, tied records, 9 sourced stories and confirmed location exceptions and both historical record books.`);

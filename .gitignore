@@ -1,0 +1,24 @@
+# Local browser profiles used by website QA (caches, history, session data)
+/season-archive/.*browser*/
+
+# Development screenshots; production images in dist/ stay tracked
+/season-archive/*.png
+
+# Manual data backups; keep the current source workbooks and JSON
+/*.before-*.xlsx
+/*.before-*.json
+
+# Local dependencies, caches, and logs
+node_modules/
+.cache/
+*.log
+
+# Local environment secrets
+.env
+.env.*
+!.env.example
+
+# Operating system clutter
+.DS_Store
+Thumbs.db
+Desktop.ini
