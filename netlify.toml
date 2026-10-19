@@ -1,0 +1,4 @@
+# Deploy the ready-to-serve site, excluding workbooks and development files.
+[build]
+  publish = "season-archive/dist"
+  command = ""
