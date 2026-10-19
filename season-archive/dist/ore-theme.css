@@ -127,8 +127,10 @@ input::placeholder{color:#a9afb8}
 .season-stat-number{font:600 20px Consolas,monospace;color:#d6e4fd}.season-stat-time{display:inline-block;font:12px Consolas,monospace;white-space:nowrap;color:#c4d2e7;background:#10141b66;padding:5px 8px;border:1px solid #394556}.season-stat-color{display:inline-flex;align-items:center;gap:8px;font-size:11px}.season-stat-color i{width:10px;height:10px;box-shadow:inset 0 0 0 1px #ffffff30}.season-stat-message{color:#aeb9c9;font-size:11px;line-height:1.6}.season-stat-missing{font-size:11px;color:#818c9d}.season-stat-numeric{width:140px}.season-stat-footer{display:flex;justify-content:space-between;gap:14px;border-top:1px solid #3b4350;padding:13px 18px;font-size:10px;color:#8c9bad;background:#20252d}.season-stat-empty{text-align:center;padding:40px!important}
 @media(max-width:700px){.season-stat-table th,.season-stat-table td{padding:11px 12px}.season-stat-footer{flex-wrap:wrap}.season-stat-table td:first-child{min-width:82px;width:82px}}
 .season-winners-table td:first-child{border-left-width:7.5px}
-.season-stat-table td:first-child{position:relative;border-left:7.5px solid transparent}
-.season-stat-table td:first-child:before{content:'';position:absolute;left:-7.5px;top:0;bottom:0;width:7.5px;background:var(--season-rail,transparent);pointer-events:none}
+/* Paint rails directly on cells to avoid positioned-overlay table seams. */
+.season-stat-table{border-collapse:separate;border-spacing:0}
+.season-stat-table td:first-child{position:static;border-left:7.5px solid transparent;background-image:var(--season-rail);background-origin:border-box;background-clip:border-box;background-size:7.5px 100%;background-repeat:no-repeat}
+.season-stat-table td:first-child:before{content:none;display:none}
 .mole-cover{display:block;margin-top:4px;color:var(--muted);font-size:10px;line-height:1.5}.mole-cover b{font-weight:600}
 /* Mole colors are horizontal blocks travelling straight down, never diagonal. */
 @keyframes mole-colors-down{from{background-position:0 0}to{background-position:0 var(--mole-cycle)}}
@@ -304,3 +306,50 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .pve-ledger .pve-single-grid{grid-template-columns:repeat(auto-fit,minmax(min(185px,100%),1fr));gap:8px}
 .pve-single{padding:8px;gap:8px}
 .pve-single .face{width:23px;height:23px}
+/* Player directory: portraits and stories on the original OreUI surfaces. */
+#player-directory .player-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+#player-directory .player-introduction{display:flex;align-items:flex-start;gap:16px;padding:22px;background:#242629;border:2px solid var(--line);border-top-color:#62656a;box-shadow:0 4px 0 #08090b,inset 0 1px 0 #ffffff06;transition:background .12s,border-color .12s}
+#player-directory .player-introduction:hover{background:#2d3035;border-color:#92abd2}
+#player-directory .player-introduction:focus-visible{outline:3px solid var(--green);outline-offset:4px}
+.directory-portrait{padding:6px;background:#191b1f;border:2px solid #505358;border-bottom:4px solid #08090b;flex-shrink:0;box-shadow:inset 0 2px 0 #ffffff08}
+.directory-portrait .face{display:block;width:56px;height:56px;border:0;image-rendering:pixelated}
+.directory-person{flex:1;min-width:0}
+.directory-person h3{font-size:19px;line-height:1.3;letter-spacing:-.3px;margin:0;color:var(--cream);overflow-wrap:anywhere}
+.directory-debut{margin:6px 0 0;font-size:11px;color:var(--muted)}
+.directory-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.directory-heading h3{flex:1;min-width:0}
+.directory-heading .directory-link{font-size:10px;white-space:nowrap}
+.directory-story{font-size:12px;line-height:1.75;color:#c7ccd5;margin:15px 0 0;overflow-wrap:anywhere}
+.directory-footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px;font-size:10px;color:var(--muted)}
+.directory-link{color:var(--green);font-weight:650}.directory-link>span{margin-left:5px}
+@media(max-width:1100px){#player-directory .player-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){#player-directory .player-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:480px){#player-directory .player-introduction{padding:19px 16px;gap:15px}.directory-portrait{padding:5px}.directory-portrait .face{width:48px;height:48px}}
+@media(prefers-reduced-motion:reduce){#player-directory .player-introduction{transition:none}}
+/* Separate the identity header from the rotating career notes. */
+#player-directory .player-introduction{display:flex;flex-direction:column;gap:0;padding:0;min-width:0}
+.directory-header{display:flex;align-items:center;gap:16px;padding:20px;width:100%;min-height:112px;box-sizing:border-box}
+.directory-trivia{background:#181a1e;border-top:2px solid #101113;box-shadow:inset 0 1px 0 #ffffff06;padding:15px 20px;box-sizing:border-box;width:100%;height:158px;overflow:auto;scrollbar-width:thin;scrollbar-color:#505358 #181a1e}
+.directory-trivia-label{display:flex;justify-content:space-between;gap:12px;font-size:9px;letter-spacing:1.2px;color:var(--muted)}
+.directory-slide-count{letter-spacing:0;font-variant-numeric:tabular-nums}
+.directory-trivia .directory-story{margin:10px 0 0;font-size:12px;line-height:1.75}
+@media(max-width:480px){#player-directory .player-introduction{padding:0;gap:0}.directory-header{padding:16px;gap:12px}.directory-trivia{padding:14px 16px}}
+
+/* Season tables share team shading and the animated Mole palette. */
+.season-stat-table tbody tr,.season-stat-table tbody tr:nth-child(even){--season-tint:30%;background:var(--season-team-background,var(--panel))}
+.season-stat-table tbody tr:hover{--season-tint:40%;background:var(--season-team-background,var(--panel))}
+.season-stat-table tbody tr.mole-row,.season-stat-table tbody tr.mole-row:hover{background-image:var(--mole-tint-paint);background-size:100% var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down 8s linear infinite}
+@media(prefers-reduced-motion:reduce){.season-stat-table tbody tr.mole-row{animation:none}}
+.career-rank.debut-badge strong{font-size:clamp(22px,2.6vw,36px);white-space:nowrap}.career-rank.debut-badge>span{display:block;margin-top:8px;font-size:10px;letter-spacing:2px}
+/* Shared name/season baseline; an optional alias never moves the name. */
+.profile-hero{display:grid;grid-template-columns:120px minmax(0,1fr) auto;grid-template-rows:auto auto minmax(16px,auto);column-gap:30px;row-gap:10px;align-items:baseline}
+.profile-hero>.portrait{grid-column:1;grid-row:1/4;align-self:center}
+.profile-identity{display:contents}
+.profile-identity>.eyebrow{grid-column:2;grid-row:1;margin:0}
+.profile-identity>h1{grid-column:2;grid-row:2;margin:0;line-height:1.1}
+.profile-identity>.aliases{grid-column:2;grid-row:3;margin:0;align-self:start}
+.profile-hero>.debut-badge{display:contents}
+.profile-hero>.debut-badge strong{grid-column:3;grid-row:2;align-self:baseline;text-align:right;line-height:1.1}
+.profile-hero>.debut-badge>span{grid-column:3;grid-row:3;margin:0;text-align:right;align-self:start}
+@media(max-width:800px){.profile-hero{grid-template-columns:120px minmax(0,1fr)}.profile-hero>.debut-badge{display:none}}
+@media(max-width:600px){.profile-hero{grid-template-columns:70px minmax(0,1fr);column-gap:15px;row-gap:8px}}

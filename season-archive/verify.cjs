@@ -123,4 +123,15 @@ const aboutHtml=fs.readFileSync('dist/index.html','utf8');assert(aboutHtml.inclu
 const seasonOne=vm.runInContext('card(seasons[0])',ctx);assert(seasonOne.includes('class="crown-link" href="#about-crown"'));assert(seasonOne.includes('season-team-link" href="#team-color-Green"'));assert(!seasonOne.includes('aria-expanded='));console.log('Verified About sections and route, Crown link behavior markup, and season-team links.');
 
 const weekdays=ctx.window.UHC_STATS.graphs.find(g=>g.id==='day-of-week');assert.equal(weekdays.data.length,7);assert.equal(weekdays.data.reduce((n,r)=>n+r.count,0),36);assert.equal(new Set(weekdays.data.flatMap(r=>Array.from(r.seasons))).size,36);
+assert.equal(weekdays.title,'Calendar');assert.equal(weekdays.months.length,12);
+assert.equal(weekdays.months.reduce((n,r)=>n+r.count,0),ctx.window.UHC_DATA.length);
+assert.equal(new Set(weekdays.months.flatMap(r=>Array.from(r.seasons))).size,ctx.window.UHC_DATA.length);
+weekdays.months.forEach((r,i)=>{assert.equal(r.count,r.seasons.length);assert.deepEqual(Array.from(r.seasons),Array.from(ctx.window.UHC_DATA.filter(s=>Number(s.date.slice(5,7))===i+1),s=>s.id));});
+vm.runInContext("statsTab='day-of-week';statsGraph()",ctx);
+assert(els['stats-content'].innerHTML.includes('MONTH OF YEAR DISTRIBUTION'));
+assert.equal((els['stats-content'].innerHTML.match(/calendar-column calendar-month/g)||[]).length,12);
+assert.equal((els['stats-content'].innerHTML.match(/calendar-column calendar-day/g)||[]).length,7);
+assert(!els['stats-content'].innerHTML.includes('<svg'));
+assert(!/NaN|Infinity/.test(els['stats-content'].innerHTML));
+assert(els['stats-content'].innerHTML.includes('November'));
 vm.runInContext("statsTab='day-of-week';statsGraph()",ctx);assert(els['stats-content'].innerHTML.includes('DAY OF WEEK DISTRIBUTION'));assert(!els['stats-content'].innerHTML.includes('NaN'));console.log('Verified weekday donut: '+weekdays.data.map(r=>r.day+' '+r.count).join(', '));

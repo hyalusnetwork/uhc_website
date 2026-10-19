@@ -142,6 +142,8 @@ function buildProfiles(seasons,bios,specials){
     p.trophies.sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
   }
   const allPlayers=[...players.values()];
+  const killInEveryWinPlayers=allPlayers.filter(p=>p.wins>=2&&p.history.filter(h=>h.win).every(h=>h.kills>0));
+  for(const p of killInEveryWinPlayers)p.trivia.push(`Got at least one PVP kill in all ${p.wins} of ${p.pronouns.possessive} wins (${killInEveryWinPlayers.length===1?'the only recorded player':'one of '+killInEveryWinPlayers.length+' recorded players'} to do so, with at least two wins).`);
   const ironmanPvePlayers=allPlayers.filter(p=>p.history.some(h=>h.iron&&h.type==='PVE'));
   for(const player of ironmanPvePlayers){
     const ids=player.history.filter(h=>h.iron&&h.type==='PVE').map(h=>h.season).sort((a,b)=>a-b);
