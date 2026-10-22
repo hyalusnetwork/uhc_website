@@ -9,28 +9,48 @@ function triviaPerson(instance){
  if(instance.details)html+=`<span class="trivia-instance-detail">${escape(instance.details)}</span>`;
  return `<div class="trivia-instance">${instance.number?`<b class="trivia-milestone-number">#${instance.number}</b>`:''}${html}</div>`;
 }
-function triviaRecord(record,featured=false){
+function triviaRecord(record){
  const display=record.unit==='time'?duration(record.value):record.value;
- return `<article class="trivia-record ${featured?'trivia-featured':''}"><div class="trivia-record-top"><span>${escape(record.scope)}</span><img src="${window.UHC_ICONS[record.icon]}" alt="" width="34" height="34"></div><h3>${escape(record.title)}</h3><div class="trivia-record-value"><strong>${display}</strong>${record.unit!=='time'?`<span>${escape(record.unit)}</span>`:''}</div><div class="trivia-record-holders">${record.holders.map(triviaPerson).join('')}</div><div class="trivia-record-bottom"><span>${escape(triviaCategoryLabel(record.category))}</span><button type="button" class="trivia-info" aria-label="How ${escape(record.title)} is calculated" ${chartTip(record.detail+'\nSource: UHC_Data.xlsx')}>ⓘ</button></div></article>`;
+ const scope=record.scope==='All time'?'all-time':'season';
+ return `<article class="trivia-record trivia-record--${scope}"><div class="trivia-record-top"><span>${scope==='all-time'?'All-time record':'Single-season record'}</span><img src="${window.UHC_ICONS[record.icon]}" alt="" width="28" height="28"></div><h3>${escape(record.title)}</h3><div class="trivia-record-value"><strong>${display}</strong>${record.unit!=='time'?`<span>${escape(record.unit)}</span>`:''}</div><div class="trivia-record-holders">${record.holders.map(triviaPerson).join('')}</div><button type="button" class="trivia-info" aria-label="How ${escape(record.title)} is calculated" ${chartTip(record.detail+'\n\nCategory: '+triviaCategoryLabel(record.category)+'\nSource: UHC_Data.xlsx')}>ⓘ</button></article>`;
 }
 function triviaFact(fact){
  const archived=fact.source.type==='document',confirmed=fact.source.type==='user';
- return `<article class="trivia-fact ${archived?'trivia-archival':''}"><div class="trivia-fact-top"><span>${escape(triviaCategoryLabel(fact.category))}</span><img src="${window.UHC_ICONS[fact.icon||'helmet']}" alt="" width="28" height="28"></div><h3>${escape(fact.title)}</h3><p>${escape(fact.text)}</p>${fact.instances.length?`<div class="trivia-fact-preview">${fact.instances.slice(0,3).map(triviaPerson).join('')}</div>${fact.instances.length>3?`<details class="trivia-instances"><summary>All ${fact.instances.length} instances</summary><div>${fact.instances.slice(3).map(triviaPerson).join('')}</div></details>`:''}`:''}<div class="trivia-fact-source"><span>${archived?'◷ Historical document note':confirmed?'✓ User-confirmed trivia':'↻ Calculated from current records'}</span>${archived?`<span ${chartTip('Hyalus UHC Trivia & Charts.docx\n'+fact.source.locator+'\nThis is a historical observation, not a statistic recalculated from the ledger.')} tabindex="0">ⓘ</span>`:''}</div></article>`;
+ return `<article class="trivia-fact ${archived?'trivia-archival':''}"><div class="trivia-fact-top"><span>${escape(triviaCategoryLabel(fact.category))}</span><img src="${window.UHC_ICONS[fact.icon||'helmet']}" alt="" width="28" height="28"></div><h3>${escape(fact.title)}</h3><p>${escape(fact.text)}</p>${fact.instances.length?`<div class="trivia-fact-preview">${fact.instances.slice(0,3).map(triviaPerson).join('')}</div>${fact.instances.length>3?`<details class="trivia-instances"><summary>All ${fact.instances.length} instances</summary><div>${fact.instances.slice(3).map(triviaPerson).join('')}</div></details>`:''}`:''}${archived||confirmed?`<div class="trivia-fact-source"><span>${archived?'◷ Historical document note':confirmed?'✓ User-confirmed trivia':'↻ Calculated from current records'}</span>${archived?`<span ${chartTip('Hyalus UHC Trivia & Charts.docx\n'+fact.source.locator+'\nThis is a historical observation, not a statistic recalculated from the ledger.')} tabindex="0">ⓘ</span>`:''}</div>`:''}</article>`;
 }
 function triviaMatches(item,query){return (!query||[item.title,item.text,item.detail,item.scope,...(item.holders||item.instances||[]).flatMap(h=>[h.name,h.victim,h.other,h.details,...(h.seasons||[h.season]).filter(Boolean).map(s=>'S'+s)])].filter(Boolean).some(v=>String(v).toLowerCase().includes(query)))&&(triviaCategory==='all'||item.category===triviaCategory);}
+let triviaLayoutFrame=0,triviaLayoutObserver;
+function scheduleTriviaLayout(){
+ cancelAnimationFrame(triviaLayoutFrame);
+ triviaLayoutFrame=requestAnimationFrame(()=>{
+  const grid=$('trivia-grid');if(!grid.offsetWidth)return;
+  grid.classList.add('trivia-grid--packed');
+  grid.querySelectorAll('.trivia-entry').forEach(entry=>{entry.style.gridRowEnd=`span ${Math.ceil(entry.firstElementChild.getBoundingClientRect().height)+14}`;});
+ });
+}
 function renderTrivia(){
  const query=$('trivia-search').value.trim().toLowerCase(),type=$('trivia-type').value||'all';
- $('trivia-featured').hidden=!!query||type!=='all'||triviaCategory!=='all';
  const records=type==='facts'||type==='stories'?[]:triviaData.records.filter(r=>triviaMatches(r,query));
  const facts=type==='records'?[]:triviaData.facts.filter(f=>triviaMatches(f,query)&&(type!=='stories'||f.source.type==='document'));
  $('trivia-count').textContent=`${records.length} records · ${facts.length} trivia entries`;
- $('trivia-record-grid').innerHTML=records.map(r=>triviaRecord(r)).join('');$('trivia-record-section').hidden=!records.length;
- $('trivia-fact-grid').innerHTML=facts.map(triviaFact).join('');$('trivia-fact-section').hidden=!facts.length;
+ // Keep each topic's records and stories together, without a featured tier.
+ const entries=[];
+ for(const category of triviaData.categories.filter(c=>c.id!=='all')){
+  const topicRecords=records.filter(r=>r.category===category.id),topicFacts=facts.filter(f=>f.category===category.id);
+  while(topicRecords.length||topicFacts.length){
+   entries.push(...topicRecords.splice(0,2).map(triviaRecord));
+   if(topicFacts.length)entries.push(triviaFact(topicFacts.shift()));
+  }
+ }
+ triviaLayoutObserver?.disconnect();
+ $('trivia-grid').innerHTML=entries.map(html=>`<div class="trivia-entry">${html}</div>`).join('');
+ if(triviaLayoutObserver){triviaLayoutObserver.observe($('trivia-grid'));$('trivia-grid').querySelectorAll('article').forEach(card=>triviaLayoutObserver.observe(card));}
+ scheduleTriviaLayout();
  $('trivia-empty').hidden=records.length+facts.length>0;
  document.querySelectorAll('[data-trivia-category]').forEach(b=>{const active=b.dataset.triviaCategory===triviaCategory;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
 }
 function initializeTrivia(){
- $('trivia-featured').innerHTML=['kills','killStreak','ironmen'].map(id=>triviaRecord(triviaData.records.find(r=>r.id===id),true)).join('');
+ if(typeof ResizeObserver!=='undefined')triviaLayoutObserver=new ResizeObserver(scheduleTriviaLayout);
  $('trivia-summary').textContent=`${triviaData.counts.seasons} seasons · ${triviaData.records.length} current records · ${triviaData.facts.length} trivia entries`;
  $('trivia-categories').innerHTML=triviaData.categories.map(c=>`<button data-trivia-category="${c.id}" aria-pressed="${c.id==='all'}" class="${c.id==='all'?'active':''}">${escape(c.label)}</button>`).join('');
  $('trivia-search').addEventListener('input',renderTrivia);$('trivia-type').addEventListener('change',renderTrivia);

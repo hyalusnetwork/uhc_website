@@ -1,1 +1,66 @@
-.trivia-page{max-width:1400px;margin:auto;padding:50px 5% 70px}.trivia-hero{display:flex;justify-content:space-between;gap:30px;align-items:center;margin-bottom:30px}.trivia-hero h1{font-size:clamp(38px,5vw,60px);letter-spacing:-2px}.trivia-hero .intro{margin:18px 0 16px;max-width:700px}.trivia-hero>img{width:90px;height:90px;object-fit:contain;image-rendering:pixelated;opacity:.9}#trivia-summary{font-size:11px;color:var(--muted)}.trivia-featured-grid,.trivia-record-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.trivia-featured-grid{margin-bottom:32px}.trivia-record{padding:22px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;min-width:0}.trivia-featured{border-color:#e9c67d44;background:radial-gradient(ellipse at top right,#e9c67d0b,transparent 75%),var(--panel)}.trivia-record-top{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:13px}.trivia-record-top>span{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}.trivia-record-top img,.trivia-fact-top img{image-rendering:pixelated;object-fit:contain}.trivia-record h3{font-size:14px;font-weight:600;margin:0 0 15px}.trivia-record-value{display:flex;align-items:baseline;gap:9px;margin-bottom:18px}.trivia-record-value strong{font:34px Consolas,monospace;color:var(--cream);letter-spacing:-1px}.trivia-record-value>span{font-size:10px;color:var(--muted)}.trivia-record-holders{margin-bottom:18px}.trivia-instance{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;margin-bottom:9px}.trivia-instance:last-child{margin:0}.trivia-person{display:inline-flex;gap:6px;align-items:center;overflow-wrap:anywhere}.trivia-person .face{width:21px;height:21px}.trivia-person a,.trivia-seasons a{color:var(--green);text-decoration:none}.trivia-seasons{display:inline-flex;gap:5px;flex-wrap:wrap;font:10px Consolas,monospace;margin-left:4px}.trivia-instance-detail{font-size:10px;color:var(--muted);line-height:1.6}.trivia-connect{color:var(--muted)}.trivia-record-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:13px;border-top:1px solid var(--line);font-size:9px;color:var(--muted)}.trivia-info{background:none;border:0;color:var(--muted);font-size:15px;padding:0 3px;cursor:help}.trivia-controls{display:flex;gap:12px;margin-bottom:17px;align-items:center}.trivia-controls .search{flex:1}.trivia-controls select{font-size:12px}.trivia-categories{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 28px}.trivia-categories button{font-size:10px;padding:8px 12px;background:var(--panel);border:1px solid var(--line);color:var(--muted)}.trivia-categories button.active{border-color:var(--green);color:var(--green);background:#9dbbff0b}.trivia-section-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin:25px 0 20px}.trivia-section-heading h2{font-size:27px}.trivia-section-heading>span{font-size:10px;color:var(--muted)}.trivia-fact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.trivia-fact{background:var(--panel);border:1px solid var(--line);padding:23px;display:flex;flex-direction:column;min-width:0}.trivia-fact-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.trivia-fact-top>span{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}.trivia-fact h3{font-size:19px;letter-spacing:-.4px;font-weight:600;margin:0 0 12px}.trivia-fact>p{color:#c7ccd5;font-size:12px;line-height:1.8;margin:0 0 18px}.trivia-fact-source{border-top:1px solid var(--line);padding-top:14px;margin-top:auto;display:flex;gap:10px;justify-content:space-between;font-size:9px;color:var(--muted)}.trivia-archival{border-top:2px solid #e9c67d77}.trivia-archival .trivia-fact-source{color:var(--gold)}.trivia-fact-preview{margin-bottom:17px}.trivia-instances{border-top:1px solid var(--line);padding-top:12px;margin-bottom:18px;font-size:10px;color:var(--muted)}.trivia-instances summary{cursor:pointer;color:var(--green)}.trivia-instances>div{margin-top:16px;max-height:300px;overflow:auto;padding-right:10px}.trivia-milestone-number{font:11px Consolas,monospace;color:var(--gold);min-width:32px}.trivia-sources{margin-top:32px;border:1px solid var(--line);background:var(--panel);padding:20px 24px;color:var(--muted);font-size:11px}.trivia-sources summary{color:var(--green);cursor:pointer}.trivia-sources p{line-height:1.8}.trivia-sources>details{margin:17px 0}.trivia-reference-table{min-width:600px;font-size:10px}.trivia-reference-table td>span{display:inline-block;margin:3px 12px 3px 0}.trivia-reference-table b{font:9px Consolas,monospace;color:var(--green);margin-right:5px}.trivia-sources .table-wrap{max-height:450px}.trivia-sources td:first-child{border-left:0;width:auto}.trivia-sources table{font-size:11px;min-width:500px}@media(max-width:1000px){.trivia-record-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.trivia-record-value strong{font-size:29px}}@media(max-width:700px){.trivia-featured-grid{grid-template-columns:1fr}.trivia-featured-grid .trivia-record:not(:first-child){display:none}.trivia-fact-grid{grid-template-columns:1fr}.trivia-record-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.trivia-controls{flex-wrap:wrap}.trivia-controls .search{flex-basis:100%}.trivia-hero>img{display:none}.trivia-record{padding:17px}.trivia-record h3{font-size:12px}.trivia-instance{font-size:10px}.trivia-section-heading{align-items:flex-start}.trivia-section-heading>span{max-width:170px;text-align:right}}@media(max-width:420px){.trivia-record-grid{grid-template-columns:1fr}.trivia-page{padding-top:30px}.trivia-record-value strong{font-size:32px}}
+/* Compact, shared record book. Diamond = all time; emerald = one season. */
+.trivia-page{max-width:1480px;margin:auto;padding:30px 4% 50px}
+.trivia-hero{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:22px}
+.trivia-hero .eyebrow{margin-bottom:8px}
+.trivia-hero h1{font-size:clamp(32px,4vw,48px);letter-spacing:-1.5px;line-height:1.12}
+.trivia-hero>img{width:52px;height:52px;object-fit:contain;image-rendering:pixelated}
+#trivia-summary{font-size:11px;color:var(--muted);margin:10px 0 0}
+.trivia-controls{display:flex;gap:10px;margin-bottom:12px;align-items:center}
+.trivia-controls .search{flex:1;min-width:0}
+.trivia-controls select{font-size:12px}
+.trivia-categories{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px}
+.trivia-categories button{font-size:10px;padding:8px 12px}
+#trivia-count{font-size:10px;margin:0;color:var(--muted)}
+.trivia-feed-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:16px 0 14px;padding-top:16px;border-top:1px solid var(--line)}
+.trivia-feed-heading h2{font-size:22px;margin:0;letter-spacing:-.5px}
+.trivia-key{display:flex;gap:16px;flex-wrap:wrap;font-size:10px;color:var(--muted)}
+.trivia-key>span{display:inline-flex;align-items:center;gap:6px}
+.trivia-key>span:before{content:'';width:8px;height:8px;background:var(--record-accent,#aeb4bf);box-shadow:inset 2px 2px 0 #ffffff30,inset -2px -2px 0 #0005}
+.trivia-key-all-time,.trivia-record--all-time{--record-accent:#55ffff;--record-edge:#286b70;--record-wash:#203236}
+.trivia-key-season,.trivia-record--season{--record-accent:#55ff55;--record-edge:#39763b;--record-wash:#253324}
+.trivia-grid{columns:3;column-gap:14px}
+.trivia-entry{break-inside:avoid;margin-bottom:14px;min-width:0}
+.trivia-grid--packed{display:grid;columns:auto;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:1px;column-gap:14px;align-items:start}
+.trivia-grid--packed .trivia-entry{margin:0}
+.trivia-page .trivia-record,.trivia-page .trivia-fact{padding:15px 16px;background:var(--panel);display:flex;flex-direction:column;min-width:0;box-shadow:0 3px 0 #08090b,inset 0 1px 0 #ffffff06}
+.trivia-page .trivia-record{position:relative;padding-bottom:22px;border:1px solid var(--record-edge);border-top:3px solid var(--record-accent);background:linear-gradient(135deg,var(--record-wash),var(--panel) 65%)}
+.trivia-page .trivia-fact{border:1px solid #4b5058;border-top:3px solid #aeb4bf}
+.trivia-record-top,.trivia-fact-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px;min-height:28px}
+.trivia-record-top>span,.trivia-fact-top>span{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--record-accent,var(--muted));font-weight:650}
+.trivia-record-top img,.trivia-fact-top img{image-rendering:pixelated;object-fit:contain;flex:none}
+.trivia-page .trivia-record h3,.trivia-page .trivia-fact h3{font-size:14px;line-height:1.4;font-weight:650;margin:0 0 10px;letter-spacing:0}
+.trivia-record-value{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.trivia-record-value strong{font:30px Consolas,monospace;color:var(--record-accent);letter-spacing:-1px;line-height:1.1}
+.trivia-record-value>span{font-size:10px;color:var(--muted)}
+.trivia-record-holders{margin-bottom:0;padding-right:24px}
+.trivia-instance{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;margin-bottom:7px;line-height:1.5}
+.trivia-instance:last-child{margin-bottom:0}
+.trivia-person{display:inline-flex;gap:6px;align-items:center;overflow-wrap:anywhere;min-width:0;max-width:100%}
+.trivia-person .face{width:21px;height:21px;flex:none}
+.trivia-person a,.trivia-seasons a{color:var(--green);text-decoration:none;overflow-wrap:anywhere}
+.trivia-person a:hover,.trivia-seasons a:hover{text-decoration:underline}
+.trivia-seasons{display:inline-flex;gap:5px;flex-wrap:wrap;font:10px Consolas,monospace;margin-left:4px}
+.trivia-instance-detail{font-size:10px;color:var(--muted);line-height:1.6}
+.trivia-connect{color:var(--muted)}
+.trivia-info{position:absolute;right:14px;bottom:10px;background:none;border:0;font-size:15px;line-height:20px;padding:0 3px;cursor:help}
+.trivia-fact>p{color:#c7ccd5;font-size:12px;line-height:1.65;margin:0 0 12px}
+.trivia-fact-source{border-top:1px solid var(--line);padding-top:10px;margin-top:auto;display:flex;gap:10px;justify-content:space-between;font-size:9px;color:var(--muted);line-height:1.5}
+.trivia-page .trivia-archival{border-top-color:#d5bc79}
+.trivia-archival .trivia-fact-source{color:#d5bc79}
+.trivia-fact-preview{margin-bottom:12px}
+.trivia-instances{border-top:1px solid var(--line);padding-top:10px;margin-bottom:12px;font-size:10px;color:var(--muted)}
+.trivia-instances summary{cursor:pointer;color:var(--green)}
+.trivia-instances>div{margin-top:12px;max-height:300px;overflow:auto;padding-right:8px}
+.trivia-milestone-number{font:11px Consolas,monospace;color:var(--gold);min-width:32px}
+.trivia-sources{margin-top:24px;border:1px solid var(--line);background:var(--panel);padding:16px 18px;color:var(--muted);font-size:11px}
+.trivia-sources summary{color:var(--green);cursor:pointer}
+.trivia-sources p{line-height:1.8}
+.trivia-sources>details{margin:17px 0}
+.trivia-reference-table{min-width:600px;font-size:10px}
+.trivia-reference-table td>span{display:inline-block;margin:3px 12px 3px 0}
+.trivia-reference-table b{font:9px Consolas,monospace;color:var(--green);margin-right:5px}
+.trivia-sources .table-wrap{max-height:450px}
+.trivia-sources td:first-child{border-left:0;width:auto}
+.trivia-sources table{font-size:11px;min-width:500px}
+@media(max-width:1050px){.trivia-grid{columns:2}.trivia-grid--packed{columns:auto;grid-template-columns:repeat(2,minmax(0,1fr))}.trivia-feed-heading{align-items:flex-start}.trivia-key{gap:8px 14px;justify-content:flex-end;max-width:270px}}
+@media(max-width:600px){.trivia-page{padding:24px 4% 40px}.trivia-hero{margin-bottom:18px}.trivia-hero .eyebrow{font-size:8px;letter-spacing:1.5px}.trivia-hero>img{width:36px;height:36px}.trivia-controls{flex-wrap:wrap}.trivia-controls .search{flex-basis:100%}.trivia-controls>label:not(.search){flex:1}.trivia-controls select{width:100%}.trivia-categories{gap:6px}.trivia-categories button{padding:7px 9px}.trivia-feed-heading{flex-direction:column;gap:10px}.trivia-key{justify-content:flex-start;max-width:none;font-size:9px}.trivia-grid{columns:1}.trivia-grid--packed{columns:auto;grid-template-columns:minmax(0,1fr)}.trivia-hero h1{font-size:32px}}

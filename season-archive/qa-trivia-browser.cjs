@@ -6,18 +6,36 @@ const send=(method,params={})=>new Promise((resolve,reject)=>{const n=++id,timer
 const evaluate=async expression=>{const r=await send('Runtime.evaluate',{expression,returnByValue:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description||r.exceptionDetails.text);return r.result.value};
 await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1150,deviceScaleFactor:1,mobile:false});await send('Page.navigate',{url:'file:///E:/Games/Minecraft/UHC/Website/UHC.html#trivia'});
 for(let i=0;i<40;i++){if(await evaluate('!!document.querySelector(".trivia-record")'))break;await new Promise(r=>setTimeout(r,250))}
-assert.equal(await evaluate('document.querySelectorAll("#trivia-record-grid .trivia-record").length'),38);
+assert.equal(await evaluate('document.querySelectorAll("#trivia-grid .trivia-record").length'),38);
+assert(await evaluate(`!document.querySelector('.trivia-record-bottom')&&document.querySelectorAll('.trivia-record > .trivia-info').length===38`));
 assert.equal(await evaluate('document.querySelectorAll(".trivia-fact").length'),await evaluate('window.UHC_TRIVIA.facts.length'));
-assert(await evaluate(`document.querySelector('[data-trivia-category="combat"]').click();Array.from(document.querySelectorAll('#trivia-record-grid .trivia-record-bottom>span')).every(s=>s.textContent==='Combat')`));
+assert(await evaluate(`!document.querySelector('#trivia-featured')&&!document.querySelector('#trivia-fact-section')&&!document.querySelector('#trivia-view').textContent.includes('Beyond the totals')`));
+assert(await evaluate(`document.querySelectorAll('.trivia-record--all-time').length===window.UHC_TRIVIA.records.filter(r=>r.scope==='All time').length && document.querySelectorAll('.trivia-record--season').length===window.UHC_TRIVIA.records.filter(r=>r.scope!=='All time').length`));
+assert(await evaluate(`Array.from(document.querySelectorAll('.trivia-entry')).slice(0,3).some(e=>e.querySelector('.trivia-fact'))`));
+assert(await evaluate(`document.querySelector('[data-trivia-category="combat"]').click();document.querySelectorAll('#trivia-grid .trivia-record').length===window.UHC_TRIVIA.records.filter(r=>r.category==='combat').length`));
 assert(await evaluate(`document.querySelector('#trivia-reset').click();document.querySelector('#trivia-search').value='half a heart';renderTrivia();document.querySelectorAll('.trivia-fact').length===1&&document.querySelector('.trivia-fact').textContent.includes('Happy_Guy555')`));
 assert(await evaluate(`document.querySelector('#trivia-search').value='unmatched-search-987';renderTrivia();!document.querySelector('#trivia-empty').hidden`));
 await evaluate(`document.querySelector('#trivia-reset').click();document.querySelector('#trivia-type').value='stories';renderTrivia()`);
 assert.equal(await evaluate('document.querySelectorAll(".trivia-archival").length'),9);
 await evaluate(`document.querySelector('#trivia-reset').click()`);
+for(const [type,count] of [['records',38],['facts',await evaluate('window.UHC_TRIVIA.facts.length')]]){
+ await evaluate(`document.querySelector('#trivia-type').value='${type}';renderTrivia()`);
+ assert.equal(await evaluate(`document.querySelectorAll('.trivia-entry').length`),count);
+}
+await evaluate(`document.querySelector('#trivia-reset').click()`);
 assert(await evaluate(`const target=document.querySelector('.trivia-info');target.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,clientX:500,clientY:600}));!document.querySelector('#chart-tooltip').hidden&&document.querySelector('#chart-tooltip').textContent.includes('UHC_Data.xlsx')`));
 assert(await evaluate(`Array.from(document.querySelectorAll('#trivia-view img')).every(i=>i.complete&&i.naturalWidth>0)`));
 await evaluate(`hideChartTooltip();window.scrollTo(0,0)`);await new Promise(r=>setTimeout(r,100));let shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync('trivia-preview.png',Buffer.from(shot.data,'base64'));
-await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});assert(await evaluate(`document.documentElement.scrollWidth<=window.innerWidth`));
+for(const width of [1440,1050,768,600,390,320]){
+ await send('Emulation.setDeviceMetricsOverride',{width,height:844,deviceScaleFactor:1,mobile:width<600});
+ await new Promise(r=>setTimeout(r,150));
+ assert(await evaluate(`document.documentElement.scrollWidth<=window.innerWidth`),`Overflow at ${width}`);
+ assert(await evaluate(`(()=>{const cards=Array.from(document.querySelectorAll('.trivia-entry article')).map(e=>e.getBoundingClientRect());return cards.every((a,i)=>cards.slice(i+1).every(b=>a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top));})()`),`Overlapping cards at ${width}`);
+}
+await evaluate(`document.querySelector('.trivia-instances').open=true`);await new Promise(r=>setTimeout(r,150));
+assert(await evaluate(`(()=>{const entry=document.querySelector('.trivia-instances').closest('.trivia-entry');return entry.getBoundingClientRect().height>=entry.firstElementChild.getBoundingClientRect().height;})()`),'Expanded instances fit their grid slot');
+await evaluate(`document.querySelector('.trivia-instances').open=false`);
+await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await new Promise(r=>setTimeout(r,150));
 shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync('trivia-mobile.png',Buffer.from(shot.data,'base64'));
 console.log('Passed browser checks: all record/fact cards, topic filters, search, empty state, historical-story filter, source tooltips, images and mobile layout.');await send('Browser.close');ws.close();
 })().catch(e=>{console.error(e);process.exit(1)});

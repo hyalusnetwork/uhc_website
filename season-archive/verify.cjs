@@ -1,8 +1,8 @@
 const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
 const els={};
-function el(id){return els[id]??={value:id==='order'?'old':'',innerHTML:'',textContent:'',hidden:false,addEventListener(){},insertAdjacentHTML(){},querySelector(){return el('close')},classList:{toggle(){},remove(){}},setAttribute(){},removeAttribute(){}};}
+function el(id){return els[id]??={value:id==='order'?'old':'',innerHTML:'',textContent:'',hidden:false,addEventListener(){},insertAdjacentHTML(){},querySelector(){return el('close')},querySelectorAll(){return []},classList:{toggle(){},remove(){}},setAttribute(){},removeAttribute(){}};}
 const doc={getElementById:el,querySelectorAll(){return []},addEventListener(){}};
-const ctx={document:doc,window:{addEventListener(){}},location:{hash:''},IntersectionObserver:class{observe(){}disconnect(){}},console,requestAnimationFrame:f=>f()};
+const ctx={document:doc,window:{addEventListener(){}},location:{hash:''},IntersectionObserver:class{observe(){}disconnect(){}},console,setInterval(){},clearInterval(){},cancelAnimationFrame(){},requestAnimationFrame:f=>f()};
 vm.createContext(ctx);
 vm.runInContext(fs.readFileSync('dist/data.js','utf8'),ctx);
 vm.runInContext(fs.readFileSync('dist/profiles.js','utf8'),ctx);
@@ -35,7 +35,9 @@ el('year').value='';el('order').value='new';vm.runInContext('render()',ctx);
 assert(el('season-list').innerHTML.startsWith('<article class="season-card" id="season-36"'));
 ctx.location.hash='#trivia';vm.runInContext('tab()',ctx);
 assert.equal(el('trivia-view').hidden,false);
-assert(el('trivia-record-grid').innerHTML.includes('Most PVP kills'));
+assert(el('trivia-grid').innerHTML.includes('Most PVP kills'));
+assert(el('trivia-grid').innerHTML.includes('trivia-record--season'));
+assert(el('trivia-grid').innerHTML.includes('trivia-fact'));
 assert.equal(el('seasons-view').hidden,true);
 ctx.location.hash='#rankings';vm.runInContext('tab()',ctx);
 assert.equal(el('rankings-view').hidden,false);
@@ -47,7 +49,7 @@ assert.equal(el('ranking-list').innerHTML.split('class="team-ranking-card"').len
 ctx.location.hash='#players';vm.runInContext('tab()',ctx);
 assert.equal(el('players-view').hidden,false);
 assert.equal(el('placeholder-view').hidden,true);
-assert.equal(el('player-grid').innerHTML.split('class="player-card"').length-1,31);
+assert.equal(el('player-grid').innerHTML.split('class="player-card ').length-1,31);
 el('player-search').value='Happy_Guy555';vm.runInContext('playerCards()',ctx);
 assert.equal(el('player-count').textContent,'1 of 31 profiles');
 assert(el('player-grid').innerHTML.includes('Happy_Guy555'));

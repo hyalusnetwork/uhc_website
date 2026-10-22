@@ -1,6 +1,6 @@
 const fs=require('node:fs');
 let html=fs.readFileSync('dist/index.html','utf8');
-const css=fs.readFileSync('dist/styles.css','utf8')+'\n'+fs.readFileSync('dist/players.css','utf8')+'\n'+fs.readFileSync('dist/stats.css','utf8')+'\n'+fs.readFileSync('dist/rankings.css','utf8')+'\n'+fs.readFileSync('dist/player-rankings.css','utf8')+'\n'+fs.readFileSync('dist/trivia.css','utf8')+'\n'+fs.readFileSync('dist/ore-theme.css','utf8');
+const css=fs.readFileSync('dist/styles.css','utf8')+'\n'+fs.readFileSync('dist/players.css','utf8')+'\n'+fs.readFileSync('dist/stats.css','utf8')+'\n'+fs.readFileSync('dist/rankings.css','utf8')+'\n'+fs.readFileSync('dist/player-rankings.css','utf8')+'\n'+fs.readFileSync('dist/trivia.css','utf8')+'\n'+fs.readFileSync('dist/ore-theme.css','utf8')+'\n'+fs.readFileSync('dist/about.css','utf8');
 const face='data:image/png;base64,'+fs.readFileSync('dist/steve.png').toString('base64');
 const heart='data:image/png;base64,'+fs.readFileSync('dist/hardcore-heart.png').toString('base64');
 const data=fs.readFileSync('dist/data.js','utf8');
@@ -10,6 +10,9 @@ const iconScript='window.UHC_ICONS = '+JSON.stringify(icons)+';';
 fs.writeFileSync('dist/icons.js',iconScript);
 html=html.replaceAll('src="icons/crown.png"',`src="${icons.crown}"`);
 html=html.replaceAll('src="icons/apple.png"',`src="${icons.apple}"`);
+html=html.replace(/src="icons\/([a-z-]+)\.png"/g,(match,name)=>{if(!icons[name])throw Error('Missing icon: '+name);return `src="${icons[name]}"`});
+html=html.replaceAll('src="images/end-portal.webp"',`src="data:image/webp;base64,${fs.readFileSync('dist/images/end-portal.webp').toString('base64')}"`);
+html=html.replace('<link rel="stylesheet" href="about.css">','');
 const players=fs.readFileSync('dist/players.js','utf8');
 const manifest=JSON.parse(fs.readFileSync('face-manifest.json','utf8'));
 const faceMap=Object.fromEntries(Object.entries(manifest.mapping).map(([name,file])=>[name,'data:image/png;base64,'+fs.readFileSync('dist/faces/'+file).toString('base64')]));

@@ -6,9 +6,9 @@ const send=(method,params={})=>new Promise((resolve,reject)=>{const n=++id,timer
 const evaluate=async expression=>{const r=await send('Runtime.evaluate',{expression,returnByValue:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description||r.exceptionDetails.text);return r.result.value};
 await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1150,deviceScaleFactor:1,mobile:false});await send('Page.navigate',{url:'file:///E:/Games/Minecraft/UHC/Website/UHC.html#trivia'});
 for(let i=0;i<40;i++){if(await evaluate('!!document.querySelector(".trivia-record")'))break;await new Promise(r=>setTimeout(r,250))}
-assert.equal(await evaluate('document.querySelectorAll("#trivia-record-grid .trivia-record").length'),38);
+assert.equal(await evaluate('document.querySelectorAll("#trivia-grid .trivia-record").length'),38);
 assert.equal(await evaluate('document.querySelectorAll(".trivia-fact").length'),await evaluate('window.UHC_TRIVIA.facts.length'));
-assert(await evaluate(`document.querySelector('[data-trivia-category="combat"]').click();Array.from(document.querySelectorAll('#trivia-record-grid .trivia-record-bottom>span')).every(s=>s.textContent==='Combat')`));
+assert(await evaluate(`document.querySelector('[data-trivia-category="combat"]').click();document.querySelectorAll('#trivia-grid .trivia-record').length===window.UHC_TRIVIA.records.filter(r=>r.category==='combat').length`));
 assert(await evaluate(`document.querySelector('#trivia-reset').click();document.querySelector('#trivia-search').value='half a heart';renderTrivia();document.querySelectorAll('.trivia-fact').length===1&&document.querySelector('.trivia-fact').textContent.includes('Happy_Guy555')`));
 assert(await evaluate(`document.querySelector('#trivia-search').value='unmatched-search-987';renderTrivia();!document.querySelector('#trivia-empty').hidden`));
 await evaluate(`document.querySelector('#trivia-reset').click();document.querySelector('#trivia-type').value='stories';renderTrivia()`);
