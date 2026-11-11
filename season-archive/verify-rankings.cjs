@@ -13,5 +13,5 @@ assert.equal(tied.teams[0].rank,tied.teams[1].rank);
 const w={};for(const f of ['data','rankings-data'])vm.runInNewContext(fs.readFileSync(`dist/${f}.js`,'utf8'),{window:w});
 assert.equal(w.UHC_RANKINGS.teams.reduce((n,t)=>n+t.participants,0),w.UHC_DATA.reduce((n,s)=>n+s.players.length,0));
 for(const t of w.UHC_RANKINGS.teams){assert.equal(t.appearances,new Set(t.history.map(h=>h.season)).size);assert.equal(t.eligible,t.isColor&&t.appearances>5);if(t.eligible)assert(t.score>=0&&t.score<=100);else assert.equal(t.rank,null);}
-const html=fs.readFileSync('../UHC.html','utf8');assert(/rel="icon" type="image\/png" href="data:image\/png;base64,/.test(html));assert(html.includes('class="navbar-heart" src="data:image/png;base64,'));
+const html=fs.readFileSync('../UHC.html','utf8');assert(/rel="icon" type="image\/webp" href="data:image\/webp;base64,/.test(html));assert(html.includes('class="navbar-heart" src="data:image/webp;base64,'));
 console.log('Passed: six-appearance boundary, raw ratios, weighted score, ties, all participant entries, unranked histories and embedded Hardcore-heart favicon.');

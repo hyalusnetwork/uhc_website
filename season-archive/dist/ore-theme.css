@@ -353,3 +353,129 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .profile-hero>.debut-badge>span{grid-column:3;grid-row:3;margin:0;text-align:right;align-self:start}
 @media(max-width:800px){.profile-hero{grid-template-columns:120px minmax(0,1fr)}.profile-hero>.debut-badge{display:none}}
 @media(max-width:600px){.profile-hero{grid-template-columns:70px minmax(0,1fr);column-gap:15px;row-gap:8px}}
+/* Profile overview: career context on the left, trophies and stories on the right. */
+.profile-body{display:grid;grid-template-columns:minmax(275px, .34fr) minmax(0,1fr);gap:24px;align-items:start}
+.profile-sidebar{display:block}
+.profile-season-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+.profile-season-grid>a,.profile-season-grid>span{display:grid;place-items:center;min-height:30px;border:2px solid #54595f;border-top-color:#777b80;border-bottom:4px solid #111315;background:#35383d;color:#f4f4f5;font:700 11px Consolas,monospace;text-decoration:none}
+.profile-season-grid>a:hover,.profile-season-grid>a:focus-visible{color:#dbe8ff;background:#333e50;border-color:#a8c7ff}
+.profile-season-grid>span{background:#202225;color:#888d95;border-color:#303236;border-bottom-color:#191a1d}
+.profile-common-colors{display:grid;gap:5px}
+.profile-color-note{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding:6px 8px;background:#1c1e20;border:1px solid var(--line)}
+.profile-color-note i{width:13px;height:13px;border:1px solid #ffffff55;box-shadow:0 2px 0 #08090b}
+.profile-color-note span{color:var(--muted)}
+@media(max-width:800px){.profile-body{grid-template-columns:minmax(0,1fr);gap:0}}
+.profile-body .profile-section>h2:first-child,.profile-body .trophy-case-title{margin:0 0 12px}
+.profile-body .trophy-case-title>h2{margin:0}
+@media(min-width:1051px){.profile-primary .trophy-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.profile-primary .trophy summary>span:first-of-type{min-width:0;overflow-wrap:anywhere}
+.profile-primary .trophy summary>img,.profile-primary .trophy-expand{flex-shrink:0}
+/* Identity and notes, with a trophy and trivia row above shared detail panels. */
+.profile-body{grid-template-columns:minmax(235px,1fr) minmax(0,3fr);gap:18px}
+.profile-primary{display:grid;grid-template-columns:minmax(0,2fr) minmax(225px,1fr);gap:18px;align-items:start}
+.profile-followup{grid-column:1/-1;min-width:0}
+.profile-trophies,.profile-trivia{margin-bottom:0;padding:16px}
+.profile-sidebar .profile-hero{grid-template-columns:84px minmax(0,1fr);grid-template-rows:auto auto;gap:8px 12px;align-items:center;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.profile-sidebar .profile-hero>.portrait{width:84px;height:84px;min-width:0;grid-row:1;align-self:center;background:none;border:0;box-shadow:none}
+.profile-sidebar .portrait .face{width:84px;height:84px;border:0;box-shadow:none}
+.profile-sidebar .profile-identity>h1{grid-row:1;font-size:clamp(21px,2.2vw,32px);letter-spacing:-.5px}
+.profile-sidebar .profile-identity>.aliases{grid-column:1/-1;grid-row:2}
+.profile-sidebar .stat-person .face,.profile-color-note i{box-sizing:border-box;aspect-ratio:1;border-radius:0;flex-shrink:0}
+.profile-sidebar .stat-person .face{width:22px;height:22px;object-fit:cover}
+.profile-sidebar .profile-pvp-pair{flex-wrap:wrap}
+.profile-primary .trophy-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.profile-primary .trophy summary{position:relative;display:grid;grid-template-columns:minmax(0,1fr);align-content:start;gap:5px;padding:8px;height:100%;box-sizing:border-box}
+.profile-primary .trophy summary>img{width:54px;height:54px;max-width:100%}
+.profile-primary .trophy summary small{margin-top:4px;line-height:1.5}
+.profile-primary .trophy-expand{position:absolute;top:7px;right:8px}
+.profile-primary .trophy[open] summary{height:auto}
+.profile-trivia .trivia-list li{margin-bottom:10px}
+@media(max-width:1080px){.profile-body{grid-template-columns:minmax(215px,1fr) minmax(0,2.5fr)}.profile-primary{grid-template-columns:minmax(0,1fr) minmax(175px,.65fr)}.profile-primary .trophy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){.profile-body{grid-template-columns:minmax(0,1fr)}.profile-sidebar>.profile-section{margin-bottom:0}.profile-primary .trophy-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:580px){.profile-primary{grid-template-columns:minmax(0,1fr)}}
+.profile-sidebar .profile-hero{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;justify-items:start;gap:12px}
+.profile-sidebar .profile-hero>h1,.profile-sidebar .profile-identity>.aliases{grid-area:auto}
+.profile-sidebar .profile-hero>h1{font-size:clamp(21px,2.2vw,32px);letter-spacing:-.5px;margin:0}
+.profile-sidebar .profile-hero>.portrait{grid-area:auto;width:104px;height:104px}
+.profile-sidebar .portrait .face{width:104px;height:104px;box-shadow:4px 5px 0 #0b0c0e}
+.profile-followup .chart-first-title{margin:0 0 10px}
+@media(min-width:851px){.profile-sidebar{position:sticky;top:min(96px,calc(100dvh - var(--profile-sidebar-height,100dvh) - 16px))}.profile-sidebar>.profile-section{margin-bottom:0}}
+.profile-trivia .trivia-list{max-height:clamp(240px,42vh,460px);overflow:auto;scrollbar-width:thin;padding-right:8px}
+.profile-primary .trophy-tile{position:relative;display:grid;justify-items:center;align-content:start;gap:8px;min-width:0;padding:12px 21px 14px 10px;text-align:center;color:var(--cream);cursor:pointer;border:1px solid var(--line);border-top-color:#65686e;box-shadow:0 3px 0 #0d0e10}
+.profile-primary .trophy-tile:hover,.profile-primary .trophy-tile:focus-visible{background:#303740;border-color:var(--green)}
+.trophy-tile img{width:68px;height:68px;max-width:100%}
+.trophy-tile small{font-size:10px;line-height:1.4;color:var(--muted);overflow-wrap:anywhere}
+.trophy-plus{position:absolute;right:7px;top:50%;transform:translateY(-50%);color:var(--green);line-height:1}
+.trophy-dialog{width:min(520px,calc(100% - 32px));max-height:80dvh;padding:0;background:#242629;color:var(--cream);border:2px solid var(--line);border-top-color:#777b80;box-shadow:0 8px 0 #08090b}
+.trophy-dialog::backdrop{background:#090a0cc4}
+.trophy-dialog-header{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--line);background:#2b2d31}
+.trophy-dialog-header img{width:48px;height:48px;image-rendering:pixelated}
+.trophy-dialog-header h2{margin:0;font-size:21px}
+.trophy-dialog-header form{margin-left:auto}
+.trophy-dialog-header button{width:34px;height:34px;background:#373b42;color:var(--cream);border:1px solid #727781;cursor:pointer}
+.trophy-dialog ul{list-style:none;margin:0;padding:4px 16px}
+.trophy-dialog li{display:grid;grid-template-columns:3em minmax(0,1fr);gap:10px;padding:10px 0;font-size:13px}
+.trophy-dialog li+li{border-top:1px solid var(--line)}
+.trophy-dialog a{color:var(--green);font-weight:700}
+.profile-followup .chart-bar::before{background:#85b8ff}
+.profile-followup .chart-line::before{background:#f2bc79}
+.profile-sidebar .profile-hero>h1{justify-self:stretch;min-width:0;white-space:nowrap}
+.profile-trivia{display:flex;flex-direction:column;max-height:var(--profile-trophy-height,none);box-sizing:border-box}
+.profile-trivia .trivia-list{max-height:none;min-height:0}
+.profile-followup{display:grid;gap:18px}
+.profile-followup>.profile-section,.profile-followup>.original-bio{margin-bottom:0}
+.enchanted-trophy{position:relative;display:inline-grid;max-width:100%}
+.enchanted-trophy img{display:block}
+.enchanted-trophy::after{content:'';position:absolute;inset:0;pointer-events:none;mask:var(--item-mask) center/100% 100% no-repeat;background:repeating-linear-gradient(to right,#a658ff40 0px,#eeaaffb0 24px,#a658ff40 48px) 0 0/48px 100% repeat-x;animation:trophy-glint 2.8s linear infinite}
+@keyframes trophy-glint{to{background-position:96px 0}}
+@media(prefers-reduced-motion:reduce){.enchanted-trophy::after{animation:none}}
+
+#player-directory .player-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,178px),1fr));gap:9px}
+#player-directory .directory-header{min-height:66px;padding:9px;gap:9px}
+#player-directory .directory-portrait{padding:3px}
+#player-directory .directory-portrait .face{width:34px;height:34px}
+#player-directory .directory-person h3{font-size:13px;letter-spacing:0}
+#player-directory .directory-debut{font-size:10px;margin-top:3px}
+#player-directory .player-grid>.empty{grid-column:1/-1}
+/* Faint stone in the profile gutters; keep the reading area charcoal. */
+#full-profile{isolation:isolate}
+#full-profile::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("data:image/webp;base64,UklGRoQAAABXRUJQVlA4THcAAAAvD8ADAB+gkG0EOASw+zBPIdsIcAhg92GeQrYR4BDA7sO8+Y//JQFsA6cBACBNgg/gB7iDB9yy+zXeXbvfoHnZ1/2NiP7H38OLKEdFEHKLV9MymvRLmwJezie2AHAhn6+t3r2ucwCETDEVT8ZGMEeLD68o/oUwJQA=") repeat;background-size:64px 64px;image-rendering:pixelated;opacity:.10;mask-image:linear-gradient(to right,#000,transparent min(24%,260px),transparent max(76%,calc(100% - 260px)),#000)}
+@media(max-width:850px){#full-profile::before{display:none}}
+.profile-season-grid>a.profile-season-team{background:color-mix(in srgb,var(--season-team) 40%,#282b30);border-color:color-mix(in srgb,var(--season-team) 55%,#474a4f);border-top-color:color-mix(in srgb,var(--season-team) 70%,#777b80);border-bottom-color:#111315}
+.profile-season-grid>a.profile-season-team:hover,.profile-season-grid>a.profile-season-team:focus-visible{border-color:var(--green);outline:1px solid var(--green)}
+.profile-season-preview{position:fixed;inset:auto;margin:0;box-sizing:border-box;width:max-content;min-width:92px;max-width:min(160px,calc(100vw - 16px));padding:7px 9px;color:var(--cream);background:color-mix(in srgb,var(--preview-team) 28%,#181a1e);border:1px solid color-mix(in srgb,var(--preview-team) 65%,#777);box-shadow:0 3px 0 #08090b;pointer-events:none;font-size:11px;line-height:1.4}
+.season-preview-title{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.season-preview-win{color:#ffe09a;font-size:10px;font-weight:700}
+.season-preview-team{margin-top:3px;overflow-wrap:anywhere}
+.season-preview-heads{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.season-preview-heads>span,.season-preview-heads .face{display:block;width:14px;height:14px;border:0;border-radius:0;box-shadow:none;image-rendering:pixelated}
+
+.search>input[type="search"]:focus{outline:none;box-shadow:none}
+.profile-season-grid>a.profile-season-mole,.profile-season-preview.profile-season-mole{background-image:linear-gradient(#14161bc4,#14161bc4),var(--mole-paint);background-size:100% 100%,100% var(--mole-cycle);background-repeat:no-repeat,repeat-y;animation:profile-season-mole-colors 8s linear infinite}
+@keyframes profile-season-mole-colors{to{background-position:0 0,0 var(--mole-cycle)}}
+@media(prefers-reduced-motion:reduce){.profile-season-grid>a.profile-season-mole,.profile-season-preview.profile-season-mole{animation:none}}
+.color-ranking-hero{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}
+.color-ranking-intro>.intro{max-width:780px;margin-bottom:10px}
+.color-ranking-hero .color-ranking-help{flex-shrink:0;display:inline-flex;align-items:center;gap:8px;color:#dbe8ff}
+.color-ranking-help>span{color:var(--green);font-size:16px}
+.color-ranking-dialog{box-sizing:border-box;width:min(620px,calc(100% - 32px));max-height:80dvh;padding:0;background:var(--panel);color:var(--cream);border:2px solid var(--line);border-top-color:#777b80;box-shadow:0 6px 0 #08090b}
+.color-ranking-dialog::backdrop{background:#090a0cc4}
+.color-ranking-dialog-header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--line);background:#2b2d31}
+.color-ranking-dialog-header h2{font-size:21px;margin:0}
+.color-ranking-dialog-copy{padding:16px 20px;font-size:14px;line-height:1.65}
+.color-ranking-dialog-copy p{margin:0}
+.color-ranking-dialog-copy p+p{margin-top:12px;color:var(--muted)}
+@media(max-width:760px){.color-ranking-hero{flex-direction:column;align-items:flex-start;gap:10px}}
+#back-to-top-pearl{position:fixed;z-index:35;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));display:grid;place-items:center;width:48px;height:48px;padding:0;background:#222e2e;border:2px solid #627873;border-bottom:4px solid #0b1516;box-shadow:0 3px 0 #08090b;cursor:pointer}
+#back-to-top-pearl:hover,#back-to-top-pearl:focus-visible{background:#314746;border-color:#94d5c6}
+#back-to-top-pearl img,.pearl-projectile{image-rendering:pixelated}
+.pearl-projectile,.pearl-particle{position:fixed;z-index:36;pointer-events:none}
+.pearl-particle{width:5px;height:5px;box-shadow:2px 2px 0 #2f194d}
+.stats-header{display:grid;grid-template-columns:minmax(225px,1fr) minmax(0,2.4fr);gap:24px;align-items:center;margin-bottom:24px}
+.stats-header-controls{min-width:0;display:grid;gap:10px}
+.stats-header-controls :is(.stats-mode,.stats-subtabs,.stats-table-controls){margin:0}
+.stats-header-controls .stats-mode{flex-wrap:wrap}
+.stats-header-controls .stats-table-controls .search{width:100%}
+.stats-heading #stats-summary{margin-bottom:0}
+@media(max-width:800px){.stats-header{grid-template-columns:minmax(0,1fr);gap:16px}}
+.chart-tooltip.colored-chart-tooltip{border-color:var(--tip-chart-accent);border-top-width:3px;background:color-mix(in srgb,var(--tip-chart-accent) 19%,#191c22);box-shadow:0 5px 24px #0009;color:var(--cream)}

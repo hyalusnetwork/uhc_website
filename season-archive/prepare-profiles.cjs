@@ -11,7 +11,8 @@ fs.writeFileSync('dist/stats-data.js','window.UHC_STATS = '+JSON.stringify(stats
 const {buildRankings}=require('./rankings-engine.cjs');
 fs.writeFileSync('dist/rankings-data.js','window.UHC_RANKINGS = '+JSON.stringify(buildRankings(window.UHC_DATA,output))+';\n');
 const {buildPlayerRankings}=require('./player-rankings-engine.cjs');
-fs.writeFileSync('dist/player-rankings-data.js','window.UHC_PLAYER_RANKINGS = '+JSON.stringify(buildPlayerRankings(output))+';\n');
+const playerRankings=buildPlayerRankings(output,window.UHC_DATA);
+fs.writeFileSync('dist/player-rankings-data.js','window.UHC_PLAYER_RANKINGS = '+JSON.stringify(playerRankings)+';\n');
 if(fs.existsSync('trivia-document-reference.json')&&fs.existsSync('trivia-records-reference.json')){
  const {buildTrivia}=require('./trivia-engine.cjs');
  fs.writeFileSync('dist/trivia-data.js','window.UHC_TRIVIA = '+JSON.stringify(buildTrivia(window.UHC_DATA,output,stats,{document:read('trivia-document-reference.json'),workbook:read('trivia-records-reference.json'),legacy:read('trivia-legacy-records.json')}))+';\n');

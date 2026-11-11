@@ -17,6 +17,13 @@ function renderRankings(){
 }
 function rankingsRoute(){const mode=location.hash==='#rankings-players'||location.hash.startsWith('#rank-player-')?'players':'teams';switchRankingsMode(mode);if(mode==='players'){if(location.hash.startsWith('#rank-player-')){let name;try{name=decodeURIComponent(location.hash.slice(13))}catch{return}const player=playerRankingData.players.find(p=>p.name===profileIdentity(name));if(player){$('pr-search').value='';$('pr-tier-filter').value='all';renderPlayerRankings();requestAnimationFrame(()=>{const row=document.getElementById(rankingPlayerAnchor(player.name));if(row){row.open=true;row.scrollIntoView();}});}}return;}renderRankings();if(location.hash.startsWith('#team-color-')){let color;try{color=decodeURIComponent(location.hash.slice(12))}catch{return}const team=rankingsData.teams.find(t=>t.color===color);if(!team)return;if(!rankingTeams().some(t=>t.color===color)){$('ranking-search').value='';$('ranking-filter').value='all';renderRankings();}requestAnimationFrame(()=>document.getElementById(teamAnchor(color))?.scrollIntoView());}}
 function initializeRankings(){
+ const help=$('ranking-help-dialog');
+ $('ranking-help').addEventListener('click',()=>help.showModal());
+ help.addEventListener('click',e=>{
+  if(e.target!==help)return;
+  const r=help.getBoundingClientRect();
+  if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)help.close();
+ });
  $('ranking-search').addEventListener('input',renderRankings);$('ranking-filter').addEventListener('change',renderRankings);$('ranking-order').addEventListener('change',renderRankings);
  $('ranking-reset').addEventListener('click',()=>{$('ranking-search').value='';$('ranking-filter').value='all';$('ranking-order').value='rank';renderRankings();});
  $('ranking-method').textContent=rankingsData.method;$('ranking-notes').textContent=rankingsData.notes;

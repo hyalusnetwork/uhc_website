@@ -39,3 +39,15 @@ Team joins are imported from sheet 5 (`Season`, `Player`, `Team Joined`, `Time`)
 ## Preserved material from the original site
 
 Downloaded site pages, source code, browser profiles, and one-time extraction scripts have been removed. The current site keeps its local images in dist/faces/ and dist/icons/, face-manifest.json for image mappings and provenance, and trivia-legacy-records.json for carried-over historical records. The document and workbook reference files remain available for rebuilding historical text. stats-category-reference.json preserves only the original category names used by the statistics checks. Normal refreshes use these local assets and do not require the old website.
+
+
+
+## Historical player rankings: teammate adjustment
+
+Player rankings remain unlisted at #rankings-players. The public Teams navigation still opens #rankings, the player/team mode switch remains hidden, and the team-color page and scoring are unchanged. Only players with at least five recorded matches appear in the player leaderboard. There is no separate contribution view, provisional-player list, awaiting-data status, damage/resource import, or future-data dependency.
+
+The existing kills, victories, Defense (Ironman and durability), survival and Team Kill scoring now uses joint teammate-adjusted historical rates. teammate-model.cjs fits the individual and teammate effects for each positive statistic, with shared match/team effects and ruleset/field/team-size controls. Individual effects have penalty 5; influence has penalty 20. Players below five matches supply internal context with conservative estimates but receive no published ranking. Missing durability stays missing. Changing/unknown allegiance is not used to infer teammates; such games still contribute recorded individual statistics. Relationships are estimated from historical co-occurrence, not assumed from someone's final rank.
+
+For each metric, the average plus individual effect gives the personal estimate; adding the player's own influence gives the combined contribution rate. Existing benchmarks, component caps, 0–100 tiers and direct Team Kill deduction remain. Binary/proportion estimates are bounded to 0–1 and kills are bounded below at zero. Expanded rows show personal score, the change from including teammate influence, and the overall score. That influence is already included in the displayed components and is not added twice. The per-component caps can reduce the displayed influence relative to the underlying fitted coefficients. Stronger evidence is needed to separate players who always play together; influence is an association rather than causal proof.
+
+Refresh with the existing workbook workflow. The same player-rankings output is embedded in ../UHC.html and served in dist/index.html. Damage and resource scoring are deferred until actual records exist.

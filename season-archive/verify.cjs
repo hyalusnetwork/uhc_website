@@ -73,7 +73,7 @@ for(const p of ctx.window.UHC_PROFILES.profiles){
 }
 const standalone=fs.readFileSync('../UHC.html','utf8');
 assert(!/<(?:script|link)[^>]+(?:src|href)="(?:dist\/|(?:app|players|profiles|icons|data)\.(?:js|css))/.test(standalone));
-assert(!standalone.includes('src="steve.png"'));assert(!standalone.includes('src="hardcore-heart.png"'));
+assert(!standalone.includes('src="steve.webp"'));assert(!standalone.includes('src="hardcore-heart.webp"'));
 vm.runInContext(standalone.match(/<script>([\s\S]*)<\/script>/)[1],vm.createContext({...ctx,location:{hash:'#players'}}));
 console.log('Passed: seasons, alias search, all 31 profiles, five-game gating, navigation, charts, trophy assets, historical bios, and the standalone HTML.');
 for(const [mode,count] of [['season',7],['all-time',5],['graphs',7]]){

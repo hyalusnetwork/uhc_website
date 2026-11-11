@@ -57,7 +57,7 @@ function buildProfiles(seasons,bios,specials){
       if(victim.type==='PVP'&&killerRecord&&killer!==victim.id){
         const kp=ensure(killer);kp.kills++;inc(kp.victims,victim.id);inc(p.killers,killer);inc(killCounts,killer);
         activeStreaks.set(killer,(activeStreaks.get(killer)||0)+1);kp.killStreak=Math.max(kp.killStreak,activeStreaks.get(killer));
-        if(victim.seconds!=null&&victim.seconds===firstTime&&!kp.trophies.find(t=>t.key==='first-blood')?.events.some(e=>e.season===s.id))add(kp,'first-blood','First Blood',s.id,`First PVP kill: ${victim.id}${pvp.filter(v=>v.seconds===firstTime).length>1?' (tied recorded time)':''}`,'sword');
+        if(victim.seconds!=null&&victim.seconds===firstTime&&!kp.trophies.find(t=>t.key==='first-blood')?.events.some(e=>e.season===s.id))add(kp,'first-blood','First Blood',s.id,`First PVP kill: ${victim.id}${pvp.filter(v=>v.seconds===firstTime).length>1?' (tied recorded time)':''}`,'golden-sword');
       }else if(victim.type==='Team Kill'&&killerRecord)ensure(killer).teamKills++;
       activeStreaks.set(victim.id,0);
       if(victim.type==='PVP'&&victim.seconds!=null&&victim.seconds===lastTime)add(p,'final-boss','Final Boss',s.id,`Last PVP victim: killed by ${killer}${pvp.filter(v=>v.seconds===lastTime).length>1?' (tied recorded time)':''}`,'creeper');
@@ -88,15 +88,15 @@ function buildProfiles(seasons,bios,specials){
       if(maxKills>0&&kills===maxKills)add(p,'top-fragger','Most Kills',s.id,`${kills} PVP kills${Object.values(killCounts).filter(k=>k===maxKills).length>1?' (tied)':''}.`,'diamond-sword');
       if(ranged>=2)add(p,'sharpshooter','Sharpshooter',s.id,`${ranged} Ranged Kills, recorded as “shot by”.`,'bow');
       if(debut&&kills)add(p,'first-impression','First Impression',s.id,`${kills} PVP kill${kills===1?'':'s'} in their first recorded game.`,'sword');
-      if(win&&iron&&kills)add(p,'triple-threat','Triple Threat',s.id,'Win + at least one PVP kill + Ironman.','armor');
-      if(win&&iron&&kills&&crownAcquired)add(p,'grand-slam','Grand Slam',s.id,'Win + PVP kill + Ironman + newly acquired crown.','crown');
-      if(win&&r.achievement==='First Damage')add(p,'phoenix','Phoenix',s.id,'Took first damage and still won with their team.','apple');
+      if(win&&iron&&kills)add(p,'triple-threat','Triple Threat',s.id,'Win + at least one PVP kill + Ironman.','trident');
+      if(win&&iron&&kills&&crownAcquired)add(p,'grand-slam','Grand Slam',s.id,'Win + PVP kill + Ironman + newly acquired crown.','diamond-block');
+      if(win&&r.achievement==='First Damage')add(p,'phoenix','Phoenix',s.id,'Took first damage and still won with their team.','blaze-powder');
       for(const [key,members] of groups){if(key===r.key||members.length<2||key.startsWith('unassigned:'))continue;if(members.every(v=>v.type==='PVP'&&identity(v.result)===r.id))add(p,'team-wipe','Team Wipe',s.id,`Killed all ${members.length} members of ${members[0].team||members[0].color} (${members.map(m=>m.id).join(', ')}).`,'tnt');}
     }
   }
   for(const event of specials){
     const name=identity(event.name),p=players.get(name);if(!p||!p.history.some(h=>h.season===event.season))continue;
-    const labels={'Perfect Ironman':['perfect-ironman','Perfect Ironman','Took no damage during the match.','armor'],'Overpowered':['overpowered','Overpowered','Ate an Enchanted Golden Apple.','enchanted-apple'],'Struck by Lightning':['lightning','Struck by Lightning','Explicitly recorded in the workbook.','lightning'],'Rocket Science':['rocket-science','Rocket Science','Used fireworks with a crossbow, explicitly recorded in the workbook.','rocket-science'],'Firework + Crossbow':['rocket-science','Rocket Science','Used fireworks with a crossbow, explicitly recorded in the workbook.','rocket-science'],'The End?':['the-end','The End?','Entered the End during the match, explicitly recorded in the workbook.','ender-eye']};
+    const labels={'Perfect Ironman':['perfect-ironman','Perfect Ironman','Took no damage during the match.','diamond-chestplate'],'Overpowered':['overpowered','Overpowered','Ate an Enchanted Golden Apple.','enchanted-apple'],'Struck by Lightning':['lightning','Struck by Lightning','Explicitly recorded in the workbook.','lightning'],'Rocket Science':['rocket-science','Rocket Science','Used fireworks with a crossbow, explicitly recorded in the workbook.','rocket-science'],'Firework + Crossbow':['rocket-science','Rocket Science','Used fireworks with a crossbow, explicitly recorded in the workbook.','rocket-science'],'The End?':['the-end','The End?','Entered the End during the match, explicitly recorded in the workbook.','ender-eye']};
     const spec=labels[event.stat];if(spec)add(p,spec[0],spec[1],event.season,spec[2],spec[3]);
   }
   const topEntries=o=>{const entries=Object.entries(o).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));return entries.length?entries.filter(e=>e[1]===entries[0][1]).map(([name,count])=>({name,count})):[]};

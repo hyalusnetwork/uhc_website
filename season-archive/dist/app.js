@@ -5,7 +5,7 @@ const colors = {Green:'#68c185',Purple:'#b294ef',Blue:'#78b6ff',Yellow:'#ffe052'
 const date = value => new Date(value+'T12:00:00Z').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'UTC'});
 const duration = seconds => seconds == null ? 'N/A' : `${Math.floor(seconds/3600)}:${String(Math.floor(seconds%3600/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
 const minecraftVersion = value => String(value ?? '').split('.').map(part => /^\d+$/.test(part) ? String(Number(part)) : part).join('.');
-const face = '<img src="steve.png" class="face" alt="" width="25" height="25">';
+const face = '<img src="steve.webp" class="face" alt="" width="25" height="25">';
 const crown = s => s.crown ? `<span class="crown"><a class="crown-link" href="#about-crown" aria-label="About the Crown; held by ${escape(s.crown.name)}" aria-describedby="crown-tooltip-${s.id}"><img class="crown-icon" src="${window.UHC_ICONS.crown}" alt="" width="22" height="14"></a><span class="tooltip" role="tooltip" id="crown-tooltip-${s.id}"><b>${escape(s.crown.name)} · Season ${s.id}</b>${escape(s.crown.method)}${s.crown.acquired ? '' : '<br>Crown retained from an earlier season.'}</span></span>` : '';
 function placeTooltip(button){const tip=button.parentElement.querySelector('.tooltip'),r=button.getBoundingClientRect();tip.style.position='fixed';tip.style.left=Math.max(12,Math.min(window.innerWidth-252,r.left-60))+'px';tip.style.top=(r.bottom+120>window.innerHeight?Math.max(12,r.top-115):r.bottom+8)+'px';}
 document.addEventListener('pointerover',e=>{const b=e.target.closest('.crown-link');if(b)placeTooltip(b);});
@@ -75,3 +75,43 @@ $('player-dialog').addEventListener('click',e=>{if(e.target.closest('.history-li
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.crown.open').forEach(c=>{c.classList.remove('open');c.querySelector('button').setAttribute('aria-expanded','false');});});
 window.addEventListener('hashchange',()=>{tab();if(location.hash==='#players'||location.hash.startsWith('#player-'))window.scrollTo({top:0,behavior:'instant'});if(/^#season-\d+$/.test(location.hash)){const id=Number(location.hash.split('-')[1]);if(seasons.some(s=>s.id===id)&&!document.getElementById(`season-${id}`)){$('search').value='';$('year').value='';render();}document.getElementById(`season-${id}`)?.scrollIntoView();}});
 $('season-total').textContent=seasons.length;$('archive-years').textContent=seasons[0].date.slice(0,4)+'–'+seasons.at(-1).date.slice(0,4);$('season-range').textContent=String(seasons[0].id).padStart(2,'0')+'—'+String(seasons.at(-1).id).padStart(2,'0');$('archive-footer').textContent=seasons.length+' matches. A decade of stories.';initializeStats();initializePlayers();initializeRankings();initializePlayerRankings();initializeTrivia();render();tab();if(/^#season-\d+$/.test(location.hash))requestAnimationFrame(()=>document.querySelector(location.hash)?.scrollIntoView());
+
+function initializeBackToTopPearl(){
+ const button=$('back-to-top-pearl'),icon=button.querySelector('img');
+ icon.src=window.UHC_ICONS['ender-pearl'];
+ const motion=matchMedia('(prefers-reduced-motion: reduce)');
+ let throwing=false;
+ const sync=()=>{button.hidden=scrollY<=0||throwing;};
+ function burst(x,y){
+  for(let i=0;i<20;i++){
+   const speck=document.createElement('i'),angle=i*Math.PI*2/20,range=24+i%5*11;
+   speck.className='pearl-particle';speck.style.left=x+'px';speck.style.top=y+'px';
+   speck.style.background=['#ca83ff','#8f5bd3','#edbaff','#653ba8'][i%4];
+   document.body.append(speck);
+   speck.animate([{transform:'translate(0,0)',opacity:1},{transform:'translate('+Math.cos(angle)*range+'px,'+Math.sin(angle)*range+'px) scale(.35)',opacity:0}],{duration:380+i%4*75,easing:'ease-out'}).finished.then(()=>speck.remove());
+  }
+ }
+ button.addEventListener('click',async()=>{
+  if(throwing)return;
+  const r=button.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+  const finishX=Math.max(26,x-56),finishY=Math.min(96,innerHeight/3);
+  const keyboard=button.matches(':focus-visible');
+  throwing=true;sync();
+  try{
+   if(!motion.matches){
+    const pearl=icon.cloneNode();pearl.className='pearl-projectile';pearl.style.left=x-15+'px';pearl.style.top=y-15+'px';document.body.append(pearl);
+    try{await pearl.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:'translate(-85px,'+(finishY-y)*.56+'px) rotate(-100deg)',offset:.55},{transform:'translate('+(finishX-x)+'px,'+(finishY-y)+'px) rotate(-200deg) scale(.7)'}],{duration:360,easing:'ease-out'}).finished;}finally{pearl.remove();}
+   }
+   if(keyboard){
+    const heading=[...document.querySelectorAll('h1')].find(el=>el.getClientRects().length);
+    if(heading){heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});}
+   }
+   window.scrollTo({top:0,behavior:'instant'});
+   if(!motion.matches)burst(finishX,finishY);
+  }finally{throwing=false;sync();}
+ });
+ window.addEventListener('scroll',sync,{passive:true});
+ window.addEventListener('pageshow',sync);
+ sync();
+}
+initializeBackToTopPearl();
