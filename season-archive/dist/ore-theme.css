@@ -451,7 +451,8 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .season-preview-heads>span,.season-preview-heads .face{display:block;width:14px;height:14px;border:0;border-radius:0;box-shadow:none;image-rendering:pixelated}
 
 .search>input[type="search"]:focus{outline:none;box-shadow:none}
-.profile-season-grid>a.profile-season-mole,.profile-season-preview.profile-season-mole{background-image:linear-gradient(#14161bc4,#14161bc4),var(--mole-paint);background-size:100% 100%,100% var(--mole-cycle);background-repeat:no-repeat,repeat-y;animation:profile-season-mole-colors 8s linear infinite}
+.profile-season-grid>a.profile-season-mole{background-image:var(--mole-paint);background-size:100% var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down 8s linear infinite;text-shadow:0 0 2px #000,0 1px 2px #000,0 -1px 2px #000}
+.profile-season-preview.profile-season-mole{background-image:linear-gradient(#14161bc4,#14161bc4),var(--mole-paint);background-size:100% 100%,100% var(--mole-cycle);background-repeat:no-repeat,repeat-y;animation:profile-season-mole-colors 8s linear infinite}
 @keyframes profile-season-mole-colors{to{background-position:0 0,0 var(--mole-cycle)}}
 @media(prefers-reduced-motion:reduce){.profile-season-grid>a.profile-season-mole,.profile-season-preview.profile-season-mole{animation:none}}
 .color-ranking-hero{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}
@@ -479,3 +480,13 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .stats-heading #stats-summary{margin-bottom:0}
 @media(max-width:800px){.stats-header{grid-template-columns:minmax(0,1fr);gap:16px}}
 .chart-tooltip.colored-chart-tooltip{border-color:var(--tip-chart-accent);border-top-width:3px;background:color-mix(in srgb,var(--tip-chart-accent) 19%,#191c22);box-shadow:0 5px 24px #0009;color:var(--cream)}
+.chart-tooltip.mole-chart-tooltip{
+  border:2px solid transparent;
+  background-image:linear-gradient(#191c22cf,#191c22cf),var(--mole-paint);
+  background-origin:border-box;
+  background-clip:padding-box,border-box;
+  background-size:100% 100%,100% var(--mole-cycle);
+  background-repeat:repeat;
+  animation:mole-colors-down 8s linear infinite;
+}
+@media(prefers-reduced-motion:reduce){.chart-tooltip.mole-chart-tooltip{animation:none}}

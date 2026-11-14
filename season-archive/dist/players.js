@@ -63,7 +63,7 @@ function survivalChart(p){
 }
 function teamColorChart(p){
   const percent=c=>c.percent.toFixed(1)+'%';
-  return `<section class="profile-section team-color-section"><div class="profile-section-title"><div><p class="eyebrow">THE COLORS OF A CAREER</p><h2>Team colors<span>.</span></h2></div><span>${p.games} recorded games</span></div><div class="team-color-bar" aria-label="Team color distribution">${p.teamColors.map(c=>`<button class="team-color-segment ${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}flex:${c.count};background:${colors[c.color]||'#798372'}" data-chart-tip="${escape(`${teamDisplayName(c.color)}\n${c.count} of ${p.games} games · ${percent(c)}\nSeasons: ${c.seasons.map(s=>'S'+s).join(', ')}`)}" aria-label="${escape(teamDisplayName(c.color))}: ${c.count} games, ${percent(c)}">${c.percent>=12?`<span>${percent(c)}</span>`:''}</button>`).join('')}</div><div class="team-color-key">${p.teamColors.map(c=>`<span><i class="${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}background:${colors[c.color]||'#798372'}"></i><b>${escape(teamDisplayName(c.color))}</b> ${percent(c)} <small>(${c.count})</small></span>`).join('')}</div><p class="chart-caption">Share of games played on each recorded color. Hover, focus, or tap a segment for its seasons.</p></section>`;
+  return `<section class="profile-section team-color-section"><div class="profile-section-title"><div><p class="eyebrow">THE COLORS OF A CAREER</p><h2>Team colors<span>.</span></h2></div><span>${p.games} recorded games</span></div><div class="team-color-bar" aria-label="Team color distribution">${p.teamColors.map(c=>`<button class="team-color-segment ${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}flex:${c.count};--team-color:${colors[c.color]||'#798372'};background:var(--team-color)" data-chart-tip="${escape(`${teamDisplayName(c.color)}\n${c.count} of ${p.games} games · ${percent(c)}\nSeasons: ${c.seasons.map(s=>'S'+s).join(', ')}`)}" aria-label="${escape(teamDisplayName(c.color))}: ${c.count} games, ${percent(c)}">${c.percent>=12?`<span>${percent(c)}</span>`:''}</button>`).join('')}</div><div class="team-color-key">${p.teamColors.map(c=>`<span><i class="${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}background:${colors[c.color]||'#798372'}"></i><b>${escape(teamDisplayName(c.color))}</b> ${percent(c)} <small>(${c.count})</small></span>`).join('')}</div><p class="chart-caption">Share of games played on each recorded color. Hover, focus, or tap a segment for its seasons.</p></section>`;
 }
 let activeChartTarget,chartTooltipHideTimer;
 function deferChartTooltipHide(){clearTimeout(chartTooltipHideTimer);chartTooltipHideTimer=setTimeout(hideChartTooltip,100);}
@@ -72,8 +72,13 @@ function displayChartTooltip(target,event){
   clearTimeout(chartTooltipHideTimer);
   const tip=$('chart-tooltip');if(activeChartTarget&&activeChartTarget!==target){activeChartTarget.removeAttribute('aria-describedby');activeChartTarget.classList.remove('chart-active');}activeChartTarget=target;target.classList.add('chart-active');
   tip.classList.toggle('death-time-tooltip',!!target.dataset.deathTip);
-  const chartAccent=target.matches('.team-size-arc, .milestone-dot, .outcome-segment')?target.getAttribute('fill'):target.style.getPropertyValue('--calendar-color')||(target.matches('.pve-bar-row')?target.style.getPropertyValue('--cause'):'');
+  const chartAccent=target.matches('.team-size-arc, .milestone-dot, .outcome-segment')?target.getAttribute('fill'):target.style.getPropertyValue('--calendar-color')||target.style.getPropertyValue('--team-color')||(target.matches('.pve-bar-row')?target.style.getPropertyValue('--cause'):'');
   tip.classList.toggle('colored-chart-tooltip',!!chartAccent);
+  const mole=target.matches('.team-color-segment.mole-color');
+  tip.classList.toggle('mole-chart-tooltip',mole);
+  if(mole){
+    for(const prop of ['--mole-paint','--mole-cycle'])tip.style.setProperty(prop,target.style.getPropertyValue(prop));
+  }
   if(chartAccent)tip.style.setProperty('--tip-chart-accent',chartAccent);
   else tip.style.removeProperty('--tip-chart-accent');
   if(target.dataset.deathTip){

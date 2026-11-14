@@ -56,7 +56,7 @@ function buildTrivia(seasons,data,stats,references){
  feat('iron-victory','Ironman and victory','ironman',`${pairs(h=>h.iron&&h.win).length} player-season combinations earned Ironman and a team win.`,pairs(h=>h.iron&&h.win),'armor');
  addFact('stolen-valor','Stolen Valor','ironman','Instances where a player damages his teammate to take Ironman for himself. In Season 27, Enzo_ damaged Lukeyvonswaggle to claim Ironman.',[{name:'Enzo_',victim:'Lukeyvonswaggle',season:27}],{icon:'armor',source:{type:'user',label:'User-confirmed trivia'}});
  feat('triple','A kill, Ironman, and a win','ironman','These player-season combinations brought combat and damage avoidance together.',pairs(h=>h.iron&&h.win&&h.kills>0),'armor');
- feat('grand','The Grand Slam','crown','Win, at least one PVP kill, Ironman, and a new crown in the same match.',pairs(h=>h.iron&&h.win&&h.kills>0&&h.crownAcquired),'crown');
+ feat('grand','The Grand Slam','crown','Win, get at least one PVP kill, earn Ironman, and acquire or retain the crown in the same match.',pairs((h,p)=>p.trophies.some(t=>t.key==='grand-slam'&&t.events.some(e=>e.season===h.season))),'crown');
  feat('iron-pve','Ironman, then a PVE death','ironman','Explicit Ironman holders whose recorded exit was PVE.',pairs(h=>h.iron&&h.type==='PVE'),'armor');
  feat('damage-win','First damage, eventual victory','victory','The first player to take damage still won with his or her team.',pairs((h,p)=>seasonOf(h.season).players.some(r=>identity(r.name)===p.name&&r.achievement==='First Damage')&&h.win),'apple');
  feat('first-win','First death, but still a winner','victory','Winning teammates count even after death.',pairs(h=>h.diedFirst&&h.win),'apple');

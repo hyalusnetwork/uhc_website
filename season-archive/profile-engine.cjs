@@ -6,6 +6,14 @@ const seasonNumbers = text => {
     const start=Number(m[1]),end=Number(m[2]||m[1]);return end>=start&&end-start<100?Array.from({length:end-start+1},(_,i)=>start+i):[];
   }))];
 };
+const pvpKillTypes=[
+  {cause:'Fire',message:/^(?:was )?(?:burnt|burned|went up in flames|(?:tried to )?swim in lava|walked into (?:a )?fire|discovered the floor was lava)\b/i,icon:'lava-bucket'},
+  {cause:'Fall Damage',message:/^(?:fell|hit the ground|was doomed to fall)\b/i,trophyCause:'Fall',icon:'wind-charge'},
+  {cause:'Pet',message:/^was slain by (?:a )?wolf(?=\s*\(|\s*$)/i,icon:'wolf-face'},
+  {cause:'Melee',message:/^was (?:slain|stabbed|pummeled) by\b/i},
+  {cause:'Ranged',message:/^was (?:shot|sniped|impaled) by\b/i},
+  {cause:'TNT',message:/\b(?:blew up|blown up|exploded)\b.*\bTNT\b/i}
+];
 function buildProfiles(seasons,bios,specials){
   const names=new Map(),canonical=new Map();
   for(const bio of bios){
@@ -48,7 +56,7 @@ function buildProfiles(seasons,bios,specials){
     let winMethod=winKeys.length?'Only one team has players without a recorded death.':'';
     if(!winKeys.length){winKeys=[...new Set(roster.filter(p=>names.get(p.id)?.documentedWins.includes(s.id)).map(p=>p.key))];winMethod=winKeys.length?'Winning team documented in the historical bios.':'Winner not established.';}
     winnerSources.push({season:s.id,teams:winKeys,method:winMethod});
-    const killCounts={};
+    const killCounts={},killCauses=new Map();
     for(const victim of ordered){
       const p=ensure(victim.id);deathNumber++;
       if(deathNumber%50===0){const milestone={number:deathNumber,season:s.id,name:victim.id,detail:`${victim.death} · ${victim.seconds==null?'time not recorded':victim.seconds+' seconds'}`};milestoneList.push(milestone);p.milestones.push(milestone);}
@@ -56,6 +64,11 @@ function buildProfiles(seasons,bios,specials){
       const killer=identity(victim.result),killerRecord=roster.find(r=>r.id===killer);
       if(victim.type==='PVP'&&killerRecord&&killer!==victim.id){
         const kp=ensure(killer);kp.kills++;inc(kp.victims,victim.id);inc(p.killers,killer);inc(killCounts,killer);
+        const cause=pvpKillTypes.find(rule=>rule.message.test(victim.death))?.cause;
+        if(cause){
+          if(!killCauses.has(killer))killCauses.set(killer,{});
+          inc(killCauses.get(killer),cause);
+        }
         activeStreaks.set(killer,(activeStreaks.get(killer)||0)+1);kp.killStreak=Math.max(kp.killStreak,activeStreaks.get(killer));
         if(victim.seconds!=null&&victim.seconds===firstTime&&!kp.trophies.find(t=>t.key==='first-blood')?.events.some(e=>e.season===s.id))add(kp,'first-blood','First Blood',s.id,`First PVP kill: ${victim.id}${pvp.filter(v=>v.seconds===firstTime).length>1?' (tied recorded time)':''}`,'golden-sword');
       }else if(victim.type==='Team Kill'&&killerRecord)ensure(killer).teamKills++;
@@ -78,7 +91,8 @@ function buildProfiles(seasons,bios,specials){
       const firstDeathTime=Math.min(...ordered.filter(v=>v.seconds!=null).map(v=>v.seconds));
       const diedFirst=deathEvents.some(v=>v.id===r.id)&&r.seconds!=null&&r.seconds===firstDeathTime;
       const runnerUp=p.trophies.some(t=>t.key==='final-boss'&&t.events.some(e=>e.season===s.id));
-      const crownAcquired=s.crown?.acquired&&identity(s.crown.name)===r.id;
+      const crownAtEnd=identity(s.crown?.name)===r.id;
+      const crownAcquired=s.crown?.acquired&&crownAtEnd;
       const outlived=r.seconds==null&&!r.death&&!r.type?roster.length-1:deathEvents.filter(v=>v.id!==r.id&&v.seconds!=null&&r.seconds!=null&&v.seconds<r.seconds).length;
       p.history.push({season:s.id,date:s.date,recordedName:r.name,team:r.team||r.color||'Not recorded',color:r.color,moleFor:r.moleFor||null,joinedAt:r.joinedAt??null,roamer:!!r.roamer,kills,ranged,teamKills,diedFirst,runnerUp,win,winMethod:win?winMethod:'',iron,death:r.death,type:r.type,seconds:r.seconds,outlivedPercent:roster.length>1?Math.round(100*outlived/(roster.length-1)):0,outlivedAvailable:r.seconds!=null||(!r.death&&!r.type),participants:roster.length,crownAcquired});
       if(r.type&&!['PVP','PVE','Team Kill'].includes(r.type)){p.otherExits++;activeStreaks.set(r.id,0)}
@@ -89,7 +103,15 @@ function buildProfiles(seasons,bios,specials){
       if(ranged>=2)add(p,'sharpshooter','Sharpshooter',s.id,`${ranged} Ranged Kills, recorded as “shot by”.`,'bow');
       if(debut&&kills)add(p,'first-impression','First Impression',s.id,`${kills} PVP kill${kills===1?'':'s'} in their first recorded game.`,'sword');
       if(win&&iron&&kills)add(p,'triple-threat','Triple Threat',s.id,'Win + at least one PVP kill + Ironman.','trident');
-      if(win&&iron&&kills&&crownAcquired)add(p,'grand-slam','Grand Slam',s.id,'Win + PVP kill + Ironman + newly acquired crown.','diamond-block');
+      if(win&&iron&&kills&&crownAtEnd)add(p,'grand-slam','Grand Slam',s.id,`Win + PVP kill + Ironman + ${crownAcquired?'earned':'retained'} the crown.`,'diamond-block');
+      const causes=killCauses.get(r.id);
+      for(const {cause,trophyCause=cause,icon} of pvpKillTypes){
+        const count=causes?.[cause]||0;
+        if(icon&&count>=2)add(p,`multiple-${trophyCause.toLowerCase()}-kills`,`Multiple ${trophyCause} PVP Kills`,s.id,`${count} ${trophyCause} PVP kills in one match.`,icon);
+      }
+      if(causes?.Pet)p.trivia.push(`Season ${s.id}: Got ${causes.Pet===1?'a Pet PVP kill':causes.Pet+' Pet PVP kills'}.`);
+      const killTypes=Object.keys(causes||{}).sort();
+      if(killTypes.length>=3)p.trivia.push(`Season ${s.id}: Got PVP kills with ${killTypes.length} different kill types (${killTypes.join(', ')}).`);
       if(win&&r.achievement==='First Damage')add(p,'phoenix','Phoenix',s.id,'Took first damage and still won with their team.','blaze-powder');
       for(const [key,members] of groups){if(key===r.key||members.length<2||key.startsWith('unassigned:'))continue;if(members.every(v=>v.type==='PVP'&&identity(v.result)===r.id))add(p,'team-wipe','Team Wipe',s.id,`Killed all ${members.length} members of ${members[0].team||members[0].color} (${members.map(m=>m.id).join(', ')}).`,'tnt');}
     }
@@ -133,6 +155,11 @@ function buildProfiles(seasons,bios,specials){
       if(victims.length){const names=victims.length>1?victims.slice(0,-1).join(', ')+' and '+victims.at(-1):victims[0];p.trivia.push(`Season ${h.season}: While a mole on the ${h.moleFor} team, killed ${victims.length} of their cover teammates: ${names}.`);}else p.trivia.push(`Season ${h.season}: Was a mole planted on the ${h.moleFor} team, secretly playing for ${h.team}.`);
     }
     const first=p.history[0];if(first.win)p.trivia.push(`Won their first season (Season ${first.season}).`);if(first.kills)p.trivia.push(`Made their debut in Season ${first.season} with ${first.kills} PVP kill${first.kills===1?'':'s'}.`);
+    const wipesBySeason={};
+    for(const {season} of p.trophies.find(t=>t.key==='team-wipe')?.events||[])inc(wipesBySeason,season);
+    for(const [season,count] of Object.entries(wipesBySeason)){
+      if(count>=2)p.trivia.push(`Season ${season}: Wiped ${count} teams in a single match.`);
+    }
     const combos=p.history.map(h=>({season:h.season,labels:p.trophies.filter(t=>t.events.some(e=>e.season===h.season)&&['first-blood','team-wipe','ironman','crown','perfect-ironman','overpowered'].includes(t.key)).map(t=>t.label)})).filter(c=>c.labels.length>=3);
     combos.forEach(c=>p.trivia.push(`Season ${c.season}: ${c.labels.join(' + ')}.`));
     p.pronouns=p.name==='Hopalot202'?{subject:'she',possessive:'her',object:'her'}:{subject:'he',possessive:'his',object:'him'};
@@ -142,6 +169,11 @@ function buildProfiles(seasons,bios,specials){
     p.trophies.sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
   }
   const allPlayers=[...players.values()];
+  const debutIronmen=allPlayers.filter(p=>p.history[0].iron);
+  for(const p of debutIronmen){
+    const rarity=debutIronmen.length===1?'the only recorded player to do so':`one of ${debutIronmen.length} recorded players to do so`;
+    p.trivia.push(`Earned Ironman on ${p.pronouns.possessive} debut (Season ${p.history[0].season}) (${rarity}).`);
+  }
   const killInEveryWinPlayers=allPlayers.filter(p=>p.wins>=2&&p.history.filter(h=>h.win).every(h=>h.kills>0));
   for(const p of killInEveryWinPlayers)p.trivia.push(`Got at least one PVP kill in all ${p.wins} of ${p.pronouns.possessive} wins (${killInEveryWinPlayers.length===1?'the only recorded player':'one of '+killInEveryWinPlayers.length+' recorded players'} to do so, with at least two wins).`);
   const ironmanPvePlayers=allPlayers.filter(p=>p.history.some(h=>h.iron&&h.type==='PVE'));
