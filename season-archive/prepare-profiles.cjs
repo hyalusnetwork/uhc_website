@@ -6,9 +6,8 @@ const raw=read('../workbook-extracted.json');
 const specials=raw[3].rows.slice(1).map(r=>Object.fromEntries(r.cells.map(c=>[c.cell.replace(/\d/g,''),c.value]))).filter(r=>r.A&&r.B&&r.C).map(r=>({season:Number(r.A),stat:r.B,name:r.C}));
 const bios=read('../bios-extracted.json');
 bios.push({
- name:'ButterDucksy',
- cells:[{value:'Formerly Known As: ButterWarriorYT'}],
- recordedNames:['ButterDuckys']
+ name:'ButterDuckys',
+ cells:[{value:'Formerly Known As: ButterWarriorYT'}]
 });
 const output=buildProfiles(window.UHC_DATA,bios,specials);
 const {buildStats}=require('./stats-engine.cjs');

@@ -23,7 +23,7 @@ function buildProfiles(seasons,bios,specials){
     if(currentName==='Happy_Guy555')aliases=[...new Set([...aliases,'arecue'])].filter(n=>n.toLowerCase()!=='happy_guy555');
     const displayText=text=>String(text||'').replace(/\barecue\b/gi,'Happy_Guy555');
     const entry={name:currentName,aliases,description:displayText(bio.cells.find(c=>c.cell==='D19')?.value),historicalTrivia:displayText(bio.cells.find(c=>c.cell==='J3')?.value),documentedWins:seasonNumbers(bio.cells.find(c=>/UHC Victor/.test(c.value))?.value||'')};
-    names.set(currentName,entry);for(const n of [bio.name,currentName,...aliases,...(bio.recordedNames||[])])canonical.set(n.toLowerCase(),currentName);
+    names.set(currentName,entry);for(const n of [bio.name,currentName,...aliases])canonical.set(n.toLowerCase(),currentName);
   }
   const unsquaredBio=names.get('Unsquared_')||{name:'Unsquared_',aliases:[],description:'',historicalTrivia:'',documentedWins:[]};
   unsquaredBio.aliases=[...new Set([...unsquaredBio.aliases,'Minecraftian8888'])];
