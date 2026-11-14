@@ -9,10 +9,15 @@ const namedRows = s => {
 };
 const teamJoins=namedRows(5).map(r=>({season:Number(r.Season),name:r.Player,color:r['Team Joined'],seconds:r.Time==null?null:Math.round(Number(r.Time)*86400)}));
 const first = new Map();
-const players = rows(1).filter(r => r.B).map(r => {
+const metricLabels=['Diamond Ore','Gold Ore','Potions Drank','Golden Apples','Enchant. Apples','Ender Pearls'];
+const players = namedRows(1).filter(r=>r['Player Name']).map(row => {
+  const [A,B,C,D,E,F,G,H,I,J]=['Season','Player Name','Death Type','Death Message','Death Result','Death Time','Team Color','Team Name','First Damage/Ironman','Mole For'].map(key=>row[key]);
+  const r={A,B,C,D,E,F,G,H,I,J};
+  const metrics=metricLabels.map(key=>row[key]==null||String(row[key]).trim()===''?null:Number(row[key]));
+  if(metrics.some(v=>v!==null&&(!Number.isInteger(v)||v<0)))throw Error('Invalid activity counts: '+A+' '+B);
   const season = Number(r.A);
   if (!first.has(r.B)) first.set(r.B, season);
-  return {season, name:r.B, type:r.C, death:r.D, result:r.E, seconds:r.F == null ? null : Math.round(Number(r.F)*86400), color:r.G, team:r.H, achievement:r.I, moleFor:r.J||null, debut:first.get(r.B)===season};
+  return {season, metrics, name:r.B, type:r.C, death:r.D, result:r.E, seconds:r.F == null ? null : Math.round(Number(r.F)*86400), color:r.G, team:r.H, achievement:r.I, moleFor:r.J||null, debut:first.get(r.B)===season};
 });
 const crowns = rows(3);
 const seasons = namedRows(2).map(r => {

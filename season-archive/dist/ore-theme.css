@@ -490,3 +490,20 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
   animation:mole-colors-down 8s linear infinite;
 }
 @media(prefers-reduced-motion:reduce){.chart-tooltip.mole-chart-tooltip{animation:none}}
+
+.career-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}.career-tabs button{min-height:40px;padding:7px 11px;cursor:pointer}
+
+.career-metric-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 14px;color:#dce5f0;font-size:.82rem}
+.career-metric-legend>span{display:inline-flex;align-items:center;gap:7px}
+.career-metric-legend img,.career-metric-bar img{width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle}
+.career-metric-plot{display:grid;gap:8px}
+.career-metric-season{display:grid;grid-template-columns:3.25rem minmax(0,1fr);align-items:start;gap:8px;padding:8px 10px;background:#1a1e24;border:1px solid #424b58}
+.career-metric-season>a{color:#b9d4ff;font-weight:700;line-height:22px}
+.career-metric-bars{display:grid;gap:4px}
+.career-metric-bar{display:grid;grid-template-columns:20px minmax(0,1fr) 2.5rem;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.career-metric-track{height:10px;background:#111418}
+.career-metric-track>span{display:block;width:var(--bar-width);height:100%;background:var(--bar-color)}
+
+.damage-table tbody th[scope="row"]{border-left:0;text-align:left}.damage-value,.damage-heart-preview{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.damage-heart-preview{font-size:.8em;color:#d0d5dd}.damage-heart-preview img{width:14px;height:14px;image-rendering:pixelated}
+
+.mob-damage-ledger summary{cursor:pointer;list-style:none}.mob-damage-ledger summary::-webkit-details-marker{display:none}.mob-damage-ledger summary .pve-cause::before{content:"▸"}.mob-damage-ledger details[open] summary .pve-cause::before{content:"▾"}.mob-damage-players{padding:8px 12px 12px}

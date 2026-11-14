@@ -1,0 +1,282 @@
+{
+  "season": 37,
+  "players": {
+    "AdaTheLynn": [
+      0.0,
+      0.0,
+      19.9999999
+    ],
+    "ButterDuckys": [
+      140.95603712,
+      44.66497681,
+      30.15787814
+    ],
+    "Caenum_": [
+      28.20602925,
+      16.6302935,
+      1.96500015
+    ],
+    "coleam": [
+      3.02024266,
+      11.71200055,
+      20.28799933
+    ],
+    "Enzo_": [
+      14.7229537,
+      43.1500001,
+      6.8500004
+    ],
+    "Happy_Guy555": [
+      12.08909517,
+      39.94239985,
+      11.6100006
+    ],
+    "Karova": [
+      75.18768046,
+      144.88645992,
+      40.01179837
+    ],
+    "KingPipPap": [
+      0.0,
+      0.0,
+      19.9999998
+    ],
+    "Lukeyvonswaggel": [
+      0.0,
+      0.0,
+      20.00000065
+    ],
+    "Nickitar": [
+      107.59929803,
+      40.87675361,
+      34.30267311
+    ],
+    "OyGod": [
+      0.0,
+      13.954791,
+      18.04520870
+    ],
+    "Pecus__": [
+      12.5823866,
+      11.9999989,
+      24.00000105
+    ],
+    "Pontoonman31": [
+      14.22852604,
+      17.49087765,
+      35.35340645
+    ],
+    "Sllipp": [
+      1.2242393,
+      7.25,
+      12.750
+    ],
+    "THE_CORN_GOD": [
+      0.0,
+      11.6640416,
+      20.33595854
+    ],
+    "toastiertooth88": [
+      0.0,
+      0.0,
+      32.0000000
+    ],
+    "Wegsway": [
+      11.38770416,
+      5.361599,
+      18.63840100
+    ],
+    "Wheellerr": [
+      0.0,
+      11.62,
+      8.3800001
+    ]
+  },
+  "hits": [
+    {
+      "attacker": "ButterDuckys",
+      "target": "coleam",
+      "points": 11.0751397
+    },
+    {
+      "attacker": "ButterDuckys",
+      "target": "Enzo_",
+      "points": 3.1737595
+    },
+    {
+      "attacker": "ButterDuckys",
+      "target": "Karova",
+      "points": 110.13093527999996
+    },
+    {
+      "attacker": "ButterDuckys",
+      "target": "Nickitar",
+      "points": 12.471010940000001
+    },
+    {
+      "attacker": "ButterDuckys",
+      "target": "OyGod",
+      "points": 4.1051917
+    },
+    {
+      "attacker": "Caenum_",
+      "target": "ButterDuckys",
+      "points": 6.0543995
+    },
+    {
+      "attacker": "Caenum_",
+      "target": "coleam",
+      "points": 0.63686085
+    },
+    {
+      "attacker": "Caenum_",
+      "target": "Karova",
+      "points": 7.441584300000001
+    },
+    {
+      "attacker": "Caenum_",
+      "target": "Nickitar",
+      "points": 2.409143
+    },
+    {
+      "attacker": "Caenum_",
+      "target": "THE_CORN_GOD",
+      "points": 11.664041600000001
+    },
+    {
+      "attacker": "coleam",
+      "target": "ButterDuckys",
+      "points": 3.02024266
+    },
+    {
+      "attacker": "Enzo_",
+      "target": "Nickitar",
+      "points": 2.4091425
+    },
+    {
+      "attacker": "Enzo_",
+      "target": "Pecus__",
+      "points": 5.3013323
+    },
+    {
+      "attacker": "Enzo_",
+      "target": "Pontoonman31",
+      "points": 1.6508799
+    },
+    {
+      "attacker": "Enzo_",
+      "target": "Wegsway",
+      "points": 5.361599
+    },
+    {
+      "attacker": "Happy_Guy555",
+      "target": "Nickitar",
+      "points": 9.614428570000001
+    },
+    {
+      "attacker": "Happy_Guy555",
+      "target": "Pecus__",
+      "points": 2.4746666
+    },
+    {
+      "attacker": "Karova",
+      "target": "ButterDuckys",
+      "points": 33.94393421
+    },
+    {
+      "attacker": "Karova",
+      "target": "Caenum_",
+      "points": 11.4307199
+    },
+    {
+      "attacker": "Karova",
+      "target": "Nickitar",
+      "points": 13.9730286
+    },
+    {
+      "attacker": "Karova",
+      "target": "Pontoonman31",
+      "points": 15.83999775
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "ButterDuckys",
+      "points": 1.64640044
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "Caenum_",
+      "points": 5.1995736
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "Enzo_",
+      "points": 32.1816811
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "Happy_Guy555",
+      "points": 31.00801305
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "Karova",
+      "points": 12.39040284
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "OyGod",
+      "points": 3.3034663
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "Pecus__",
+      "points": 4.224
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "Sllipp",
+      "points": 7.25
+    },
+    {
+      "attacker": "Nickitar",
+      "target": "Wheellerr",
+      "points": 10.3957607
+    },
+    {
+      "attacker": "Pecus__",
+      "target": "Enzo_",
+      "points": 3.6479998
+    },
+    {
+      "attacker": "Pecus__",
+      "target": "Happy_Guy555",
+      "points": 8.9343868
+    },
+    {
+      "attacker": "Pontoonman31",
+      "target": "Karova",
+      "points": 7.68239304
+    },
+    {
+      "attacker": "Pontoonman31",
+      "target": "OyGod",
+      "points": 6.546133
+    },
+    {
+      "attacker": "Sllipp",
+      "target": "Wheellerr",
+      "points": 1.2242393
+    },
+    {
+      "attacker": "Wegsway",
+      "target": "Enzo_",
+      "points": 4.1465597
+    },
+    {
+      "attacker": "Wegsway",
+      "target": "Karova",
+      "points": 7.241144459999999
+    }
+  ]
+}

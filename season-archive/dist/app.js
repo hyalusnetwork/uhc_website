@@ -67,8 +67,10 @@ document.addEventListener('click',e=>{
   const player=e.target.closest('[data-player]');if(!player)return;
   const name=player.dataset.player,profile=profileByName(name);
   if(profile){location.hash=profileHref(profile.name);return;}
+  const identity=profileIdentity(name);
+  const formerName=identity==='Wheellerr'?'Wheelin_n_Dealin':'';
   const appearances=seasons.filter(s=>s.players.some(p=>profileIdentity(p.name)===profileIdentity(name)));
-  $('player-content').innerHTML=`<p class="eyebrow">PLAYER RECORD</p><h2>${escape(name)}</h2><p>${appearances.length} recorded appearances · Debut in Season ${appearances[0].id}</p><table><thead><tr><th>Season</th><th>Team</th><th>Achievement</th></tr></thead><tbody>${appearances.map(s=>{const p=s.players.find(p=>p.name===name);return `<tr><td><a href="#season-${s.id}" class="history-link">S${s.id}</a></td><td>${escape(p.team||p.color||'N/A')}</td><td>${escape(p.achievement||'—')}</td></tr>`;}).join('')}</tbody></table>`;$('player-dialog').showModal();
+  $('player-content').innerHTML=`<p class="eyebrow">PLAYER RECORD</p><h2>${escape(identity)}</h2>${formerName?'<p>Former name: '+escape(formerName)+'</p>':''}<p>${appearances.length} recorded appearances · Debut in Season ${appearances[0].id}</p><table><thead><tr><th>Season</th><th>Team</th><th>Achievement</th></tr></thead><tbody>${appearances.map(s=>{const p=s.players.find(p=>profileIdentity(p.name)===identity);return `<tr><td><a href="#season-${s.id}" class="history-link">S${s.id}</a></td><td>${escape(p.team||p.color||'N/A')}</td><td>${escape(p.achievement||'—')}</td></tr>`;}).join('')}</tbody></table>`;$('player-dialog').showModal();
 });
 $('player-dialog').querySelector('.close').addEventListener('click',()=>$('player-dialog').close());
 $('player-dialog').addEventListener('click',e=>{if(e.target.closest('.history-link')){$('player-dialog').close();$('search').value='';$('year').value='';render();tab();}if(e.target===$('player-dialog')){const r=$('player-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('player-dialog').close();}});

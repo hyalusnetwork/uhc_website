@@ -94,7 +94,7 @@ function buildProfiles(seasons,bios,specials){
       const crownAtEnd=identity(s.crown?.name)===r.id;
       const crownAcquired=s.crown?.acquired&&crownAtEnd;
       const outlived=r.seconds==null&&!r.death&&!r.type?roster.length-1:deathEvents.filter(v=>v.id!==r.id&&v.seconds!=null&&r.seconds!=null&&v.seconds<r.seconds).length;
-      p.history.push({season:s.id,date:s.date,recordedName:r.name,team:r.team||r.color||'Not recorded',color:r.color,moleFor:r.moleFor||null,joinedAt:r.joinedAt??null,roamer:!!r.roamer,kills,ranged,teamKills,diedFirst,runnerUp,win,winMethod:win?winMethod:'',iron,death:r.death,type:r.type,seconds:r.seconds,outlivedPercent:roster.length>1?Math.round(100*outlived/(roster.length-1)):0,outlivedAvailable:r.seconds!=null||(!r.death&&!r.type),participants:roster.length,crownAcquired});
+      p.history.push({season:s.id,metrics:r.metrics,date:s.date,recordedName:r.name,team:r.team||r.color||'Not recorded',color:r.color,moleFor:r.moleFor||null,joinedAt:r.joinedAt??null,roamer:!!r.roamer,kills,ranged,teamKills,diedFirst,runnerUp,win,winMethod:win?winMethod:'',iron,death:r.death,type:r.type,seconds:r.seconds,outlivedPercent:roster.length>1?Math.round(100*outlived/(roster.length-1)):0,outlivedAvailable:r.seconds!=null||(!r.death&&!r.type),participants:roster.length,crownAcquired});
       if(r.type&&!['PVP','PVE','Team Kill'].includes(r.type)){p.otherExits++;activeStreaks.set(r.id,0)}
       if(win)add(p,'victor','UHC Victor',s.id,'Member of the winning team, including eliminated teammates.','apple');
       if(iron)add(p,'ironman','Ironman',s.id,'Last player to take damage, explicitly recorded in the match workbook.','armor');
@@ -120,6 +120,16 @@ function buildProfiles(seasons,bios,specials){
     const name=identity(event.name),p=players.get(name);if(!p||!p.history.some(h=>h.season===event.season))continue;
     const labels={'Perfect Ironman':['perfect-ironman','Perfect Ironman','Took no damage during the match.','diamond-chestplate'],'Overpowered':['overpowered','Overpowered','Ate an Enchanted Golden Apple.','enchanted-apple'],'Struck by Lightning':['lightning','Struck by Lightning','Explicitly recorded in the workbook.','lightning'],'Rocket Science':['rocket-science','Rocket Science','Used fireworks with a crossbow, explicitly recorded in the workbook.','rocket-science'],'Firework + Crossbow':['rocket-science','Rocket Science','Used fireworks with a crossbow, explicitly recorded in the workbook.','rocket-science'],'The End?':['the-end','The End?','Entered the End during the match, explicitly recorded in the workbook.','ender-eye']};
     const spec=labels[event.stat];if(spec)add(p,spec[0],spec[1],event.season,spec[2],spec[3]);
+  }
+  const appleGames=[...players.values()].flatMap(p=>p.history.map(h=>{
+    const events=p.trophies.find(t=>t.key==='overpowered')?.events.filter(e=>e.season===h.season).length||0;
+    return {p,season:h.season,count:Math.max(events,h.metrics?.[4]??0)};
+  }));
+  const mostApples=Math.max(0,...appleGames.map(g=>g.count));
+  const recordHolders=new Set(appleGames.filter(g=>g.count===mostApples).map(g=>g.p));
+  for(const {p,season,count} of appleGames){
+    if(count>1)p.trivia.push(`Season ${season}: Ate ${count} Enchanted Golden Apples (Overpowered).`);
+    if(count>0&&count===mostApples)p.trivia.push(`${recordHolders.size>1?'Tied the':'Set the'} single-game Overpowered record with ${count} Enchanted Golden Apple${count===1?'':'s'} in Season ${season}.`);
   }
   const topEntries=o=>{const entries=Object.entries(o).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));return entries.length?entries.filter(e=>e[1]===entries[0][1]).map(([name,count])=>({name,count})):[]};
   for(const p of players.values()){

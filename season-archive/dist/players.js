@@ -225,15 +225,84 @@ const profileSidebarObserver=new ResizeObserver(entries=>{
     }
   }
 });
+const careerTabs=['Kills','Damage','Percent Outlasted','Ores Mined','Misc'];
+const heartNumber=new Intl.NumberFormat('en',{maximumFractionDigits:2});
+function damageHearts(value){
+  const preview=value>0?trophyImage('hardcore-heart-full'):'';
+  return '<span class="damage-value">'+heartNumber.format(value)+(preview?' <span class="damage-heart-preview" aria-hidden="true">'+preview+'</span>':'')+'</span>';
+}
+const pveDamageTooltip='Only regular hearts lost count. Absorption hearts are excluded.';
+function careerTable(caption,headings,games,row){
+  return '<div class="table-wrap"><table class="career-table damage-table" aria-label="'+escape(caption)+'"><thead><tr><th scope="col">Season</th>'+headings.map(h=>h==='PvE taken'?'<th scope="col" title="'+pveDamageTooltip+'">PvE taken</th>':'<th scope="col">'+h+'</th>').join('')+'</tr></thead><tbody>'+games.map(g=>'<tr><th scope="row"><a href="#season-'+g.season+'">S'+g.season+'</a></th>'+row(g).map((value,i)=>'<td'+(headings[i]==='PvE taken'?' title="'+pveDamageTooltip+'"':'')+'>'+value+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+}
+function careerContent(p,index){
+  if(index===0)return '<h3 class="chart-subheading">PvP kills by season and career total</h3><div class="chart-legend"><span class="chart-bar">PvP kills · left axis</span><span class="chart-line">Career kills · right axis</span></div>'+killChart(p)+'<p class="chart-caption">Hover or focus a bar for details. Grey marks an unplayed season.</p>';
+  if(index===2)return '<h3 class="chart-subheading">Players outlasted per season</h3>'+survivalChart(p)+'<p class="chart-caption">Survivors outlast 100% of other participants. Equal death times do not count.</p>';
+  if(index===1){
+    const games=p.history.filter(g=>g.damage);
+    if(!games.length)return '<p class="chart-caption">No damage data available for this player. The supplied damage report covers Season 37.</p>';
+    return careerTable('Damage in hearts. PvP totals include absorption and friendly fire. PvE counts only regular health lost.', ['PvP dealt','PvP taken','PvE taken','Friendly fire dealt','Teammates hit'],games,g=>{
+      const d=g.damage;
+      return [d.dealt,d.taken,d.pve,d.friendly].map(damageHearts).concat(d.teammates.map(t=>escape(t.name)+' ('+damageHearts(t.hearts)+')').join(', ')||'—');
+    });
+  }
+  return careerMetricCharts(p,index===3?oreMetrics:miscMetrics);
+}
+const oreMetrics=[['Diamond Ore','diamond','#58dce5',0],['Gold Ore','raw-gold','#efc365',1]];
+const miscMetrics=[['Potions drunk','potion','#c296fa',2],['Golden apples','golden-apple','#efc365',3],['Enchanted golden apples','enchanted-apple','#e18bff',4],['Ender pearls','ender-pearl','#62d5b0',5]];
+function careerMetricCharts(p,metrics){
+  const games=p.history.filter(game=>metrics.some(([, , ,field])=>game.metrics?.[field]!=null));
+  if(!games.length)return '<p class="chart-caption">No recorded data for this player.</p>';
+  const max=Math.max(1,...games.flatMap(game=>metrics.map(([, , ,field])=>game.metrics?.[field]??0)));
+  return `<div class="career-metric-legend">${metrics.map(([label,icon])=>`<span>${trophyImage(icon)} ${label}</span>`).join('')}</div>
+    <div class="career-metric-plot">${games.map(game=>`<section class="career-metric-season" aria-label="Season ${game.season}">
+      <a href="#season-${game.season}">S${game.season}</a>
+      <div class="career-metric-bars">${metrics.map(([label,icon,color,field])=>{
+        const value=game.metrics?.[field];
+        if(value==null)return '';
+        return `<div class="career-metric-bar" aria-label="${label}: ${value}" role="img" style="--bar-color:${color};--bar-width:${100*value/max}%">
+          ${trophyImage(icon)}<span class="career-metric-track" aria-hidden="true"><span></span></span><b aria-hidden="true">${value}</b></div>`;
+      }).join('')}</div></section>`).join('')}</div>`;
+}
+function careerCurve(p){
+  return '<section class="profile-section"><div class="profile-section-title"><h2>The career curve<span>.</span></h2></div><div class="stats-tabs career-tabs" role="tablist" aria-label="Career Curve">'+careerTabs.map((label,i)=>'<button type="button" role="tab" id="career-tab-'+i+'" aria-controls="career-panel" aria-selected="'+(i===0)+'" tabindex="'+(i===0?0:-1)+'" class="'+(i===0?'active':'')+'">'+label+'</button>').join('')+'</div><div id="career-panel" role="tabpanel" aria-labelledby="career-tab-0" tabindex="0">'+careerContent(p,0)+'</div></section>';
+}
+function bindCareerCurve(root,p){
+  const buttons=[...root.querySelectorAll('.career-tabs button')], panel=root.querySelector('#career-panel');
+  const select=i=>{
+    buttons.forEach((button,j)=>{button.classList.toggle('active',i===j);button.setAttribute('aria-selected',String(i===j));button.tabIndex=i===j?0:-1;});
+    panel.setAttribute('aria-labelledby',buttons[i].id);
+    panel.innerHTML=careerContent(p,i);
+  };
+  buttons.forEach((button,i)=>{
+    button.addEventListener('click',()=>select(i));
+    button.addEventListener('keydown',e=>{
+      const next={ArrowRight:(i+1)%buttons.length,ArrowLeft:(i+buttons.length-1)%buttons.length,Home:0,End:buttons.length-1}[e.key];
+      if(next===undefined)return;
+      e.preventDefault();select(next);buttons[next].focus();
+    });
+  });
+}
+function profileOutcomes(p){
+  const disconnects=p.history.filter(game=>game.type==='Disconnect').length;
+  const disqualifications=p.history.filter(game=>game.type==='Disqualified').length;
+  return [
+    p.pvpDeaths+' PVP', p.pveDeaths+' PVE',
+    p.teamKillDeaths+(p.teamKillDeaths===1?' Team Kill':' Team Kills'),
+    disconnects?disconnects+(disconnects===1?' Disconnect':' Disconnects'):null,
+    disqualifications?disqualifications+(disqualifications===1?' Disqualification':' Disqualifications'):null
+  ].filter(Boolean).join(' · ');
+}
 function showPlayer(name){
   profileSidebarObserver.disconnect();
   const p=profileByName(name);
   $('player-directory').hidden=true;$('full-profile').hidden=false;
   if(!p){$('full-profile').innerHTML='<div class="empty"><h2>Profile unavailable</h2><p>A full player profile requires at least five recorded games.</p><a href="#players">Return to Players</a></div>';return;}
   const played=p.history.map(h=>h.season),trophy=p.trophies;
-  $('full-profile').innerHTML=`<a class="profile-back" href="#players">← All players</a><div class="profile-body"><aside class="profile-sidebar" aria-label="Career notes"><section class="profile-section"><header class="profile-hero"><h1>${escape(p.name)}</h1><div class="portrait">${playerFace(p.name)}</div><div class="profile-identity">${p.aliases.length?`<p class="aliases">Former names: ${p.aliases.map(escape).join(', ')}</p>`:''}</div></header><dl><dt>Seasons played</dt><dd>${profileSeasonGrid(p.history)}</dd><dt>Most common team color</dt><dd class="profile-common-colors">${p.commonColors.map(profileColorNote).join('')}</dd><dt>Most frequent teammate${p.topTeammates.length===1?'':'s'}</dt><dd>${topPeople(p.topTeammates)}</dd><dt>Most frequent PVP victim${p.topVictims.length===1?'':'s'}</dt><dd>${profilePvpPairs(p,p.topVictims,true)}</dd><dt>Most frequent PVP killer${p.topKillers.length===1?'':'s'}</dt><dd>${profilePvpPairs(p,p.topKillers,false)}</dd><dt>Recorded deaths</dt><dd>${p.pvpDeaths} PVP · ${p.pveDeaths} PVE · ${p.teamKillDeaths} Team Kills</dd>${p.otherExits?`<dt>Other exits</dt><dd>${p.otherExits} disconnects / disqualifications</dd>`:''}${p.teamKills?`<dt>Team Kills committed</dt><dd>${p.teamKills} (excluded from PVP kills)</dd>`:''}</dl></section></aside><div class="profile-primary"><section class="profile-section profile-trophies"><div class="profile-section-title trophy-case-title"><h2>Trophy case<span>.</span></h2></div><div class="trophy-grid">${trophy.map((t,i)=>`<button type="button" class="trophy trophy-tile" data-trophy="${i}" aria-haspopup="dialog">${trophyImage(t.icon)}<strong>${t.count} × ${escape(t.label)}</strong><small>${[...new Set(t.events.map(e=>'S'+e.season))].join(' · ')}</small><span class="trophy-plus" aria-hidden="true">+</span></button>`).join('')||'<p class="unknown">No trophies recorded yet.</p>'}</div></section><section class="profile-section profile-trivia"><h2>Trivia<span>.</span></h2><ul class="trivia-list" tabindex="0" aria-label="Player trivia">${p.trivia.map(t=>`<li>${escape(t)}</li>`).join('')||'<li>More milestones will appear as the record grows.</li>'}</ul></section><div class="profile-followup"><section class="profile-section"><div class="profile-section-title"><h2>The career curve<span>.</span></h2></div><h3 class="chart-subheading chart-first-title">PVP kills by season and career total</h3><div class="chart-legend"><span class="chart-bar">PVP kills · left axis</span><span class="chart-line">Career kills · right axis</span></div>${killChart(p)}<p class="chart-caption">Season number · Hover or focus a bar for details. Grey marks an unplayed season.</p><h3 class="chart-subheading">Players outlived per season</h3>${survivalChart(p)}<p class="chart-caption">A surviving player outlives 100% of other participants. Equal death times do not count as outliving each other.</p></section>${teamColorChart(p)}<section class="profile-section"><div class="profile-section-title"><h2>Season by season<span>.</span></h2></div><div class="table-wrap"><table class="career-table"><thead><tr><th>Season</th><th>Team</th><th>Kills</th><th>Highlights</th><th>Death / result</th></tr></thead><tbody>${p.history.map(r=>`<tr class="${r.color==='Mole'?'mole-row':''}" style="${r.color==='Mole'?molePaint(r.season):''}--team:${colors[r.color]||'#b3bda9'}"><td><a href="#season-${r.season}">S${r.season}</a></td><td>${historyTeamLink(r.team,r.color,r.season)}${r.moleFor?`<small class="mole-cover">Cover team: <b style="color:${colors[r.moleFor]||'#c7d2e5'}">${escape(r.moleFor)}</b></small>`:''}</td><td>${r.kills}</td><td>${[r.win?'Victory':null,r.iron?'◈ Ironman':null,r.crownAcquired?'<img class="crown-icon" src="'+window.UHC_ICONS.crown+'" alt="" width="20" height="12"> Crown':null].filter(Boolean).join(' · ')||'—'}</td><td>${escape(r.death||'No death recorded')}${r.seconds!=null?` <span class="elapsed">${duration(r.seconds)}</span>`:''}</td></tr>`).join('')}</tbody></table></div></section></div></div></div>`;
+  $('full-profile').innerHTML=`<a class="profile-back" href="#players">← All players</a><div class="profile-body"><aside class="profile-sidebar" aria-label="Career notes"><section class="profile-section"><header class="profile-hero"><h1>${escape(p.name)}</h1><div class="portrait">${playerFace(p.name)}</div><div class="profile-identity">${p.aliases.length?`<p class="aliases">Former names: ${p.aliases.map(escape).join(', ')}</p>`:''}</div></header><dl><dt>Seasons played</dt><dd>${profileSeasonGrid(p.history)}</dd><dt>Most common team color</dt><dd class="profile-common-colors">${p.commonColors.map(profileColorNote).join('')}</dd><dt>Most frequent teammate${p.topTeammates.length===1?'':'s'}</dt><dd>${topPeople(p.topTeammates)}</dd><dt>Most frequent PVP victim${p.topVictims.length===1?'':'s'}</dt><dd>${profilePvpPairs(p,p.topVictims,true)}</dd><dt>Most frequent PVP killer${p.topKillers.length===1?'':'s'}</dt><dd>${profilePvpPairs(p,p.topKillers,false)}</dd><dt>Recorded outcomes</dt><dd>${profileOutcomes(p)}</dd>${p.teamKills?`<dt>Team Kills committed</dt><dd>${p.teamKills} (excluded from PVP kills)</dd>`:''}</dl></section></aside><div class="profile-primary"><section class="profile-section profile-trophies"><div class="profile-section-title trophy-case-title"><h2>Trophy case<span>.</span></h2></div><div class="trophy-grid">${trophy.map((t,i)=>`<button type="button" class="trophy trophy-tile" data-trophy="${i}" aria-haspopup="dialog">${trophyImage(t.icon)}<strong>${t.count} × ${escape(t.label)}</strong><small>${[...new Set(t.events.map(e=>'S'+e.season))].join(' · ')}</small><span class="trophy-plus" aria-hidden="true">+</span></button>`).join('')||'<p class="unknown">No trophies recorded yet.</p>'}</div></section><section class="profile-section profile-trivia"><h2>Trivia<span>.</span></h2><ul class="trivia-list" tabindex="0" aria-label="Player trivia">${p.trivia.map(t=>`<li>${escape(t)}</li>`).join('')||'<li>More milestones will appear as the record grows.</li>'}</ul></section><div class="profile-followup">${careerCurve(p)}${teamColorChart(p)}<section class="profile-section"><div class="profile-section-title"><h2>Season by season<span>.</span></h2></div><div class="table-wrap"><table class="career-table"><thead><tr><th>Season</th><th>Team</th><th>Kills</th><th>Highlights</th><th>Death / result</th></tr></thead><tbody>${p.history.map(r=>`<tr class="${r.color==='Mole'?'mole-row':''}" style="${r.color==='Mole'?molePaint(r.season):''}--team:${colors[r.color]||'#b3bda9'}"><td><a href="#season-${r.season}">S${r.season}</a></td><td>${historyTeamLink(r.team,r.color,r.season)}${r.moleFor?`<small class="mole-cover">Cover team: <b style="color:${colors[r.moleFor]||'#c7d2e5'}">${escape(r.moleFor)}</b></small>`:''}</td><td>${r.kills}</td><td>${[r.win?'Victory':null,r.iron?'◈ Ironman':null,r.crownAcquired?'<img class="crown-icon" src="'+window.UHC_ICONS.crown+'" alt="" width="20" height="12"> Crown':null].filter(Boolean).join(' · ')||'—'}</td><td>${escape(r.death||'No death recorded')}${r.seconds!=null?` <span class="elapsed">${duration(r.seconds)}</span>`:''}</td></tr>`).join('')}</tbody></table></div></section></div></div></div>`;
   bindProfileSeasonPreview($('full-profile'),p);
   bindTrophyDialog($('full-profile'),trophy);
+  bindCareerCurve($('full-profile'),p);
   const sidebar=$('full-profile').querySelector('.profile-sidebar');
   sidebar.style.setProperty('--profile-sidebar-height',sidebar.offsetHeight+'px');
   fitProfileName(sidebar.querySelector('h1'));
