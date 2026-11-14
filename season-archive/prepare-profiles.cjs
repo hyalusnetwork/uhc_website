@@ -4,7 +4,13 @@ const read=p=>JSON.parse(fs.readFileSync(p,'utf8').replace(/^\uFEFF/,''));
 const window={};vm.runInNewContext(fs.readFileSync('dist/data.js','utf8'),{window});
 const raw=read('../workbook-extracted.json');
 const specials=raw[3].rows.slice(1).map(r=>Object.fromEntries(r.cells.map(c=>[c.cell.replace(/\d/g,''),c.value]))).filter(r=>r.A&&r.B&&r.C).map(r=>({season:Number(r.A),stat:r.B,name:r.C}));
-const output=buildProfiles(window.UHC_DATA,read('../bios-extracted.json'),specials);
+const bios=read('../bios-extracted.json');
+bios.push({
+ name:'ButterDucksy',
+ cells:[{value:'Formerly Known As: ButterWarriorYT'}],
+ recordedNames:['ButterDuckys']
+});
+const output=buildProfiles(window.UHC_DATA,bios,specials);
 const {buildStats}=require('./stats-engine.cjs');
 const stats=buildStats(window.UHC_DATA,output);
 fs.writeFileSync('dist/stats-data.js','window.UHC_STATS = '+JSON.stringify(stats)+';\n');

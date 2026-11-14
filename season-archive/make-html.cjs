@@ -4,6 +4,10 @@ const css=fs.readFileSync('dist/styles.css','utf8')+'\n'+fs.readFileSync('dist/p
 const face='data:image/webp;base64,'+fs.readFileSync('dist/steve.webp').toString('base64');
 const heart='data:image/webp;base64,'+fs.readFileSync('dist/hardcore-heart.webp').toString('base64');
 const data=fs.readFileSync('dist/data.js','utf8');
+const window={};
+require('node:vm').runInNewContext(data,{window});
+html=html.replace(/(<meta name="description" content="Explore )\d+( seasons of UHC\.)/,(_,prefix,suffix)=>prefix+window.UHC_DATA.length+suffix);
+fs.writeFileSync('dist/index.html',html);
 const profiles=fs.readFileSync('dist/profiles.js','utf8');
 const icons=Object.fromEntries(fs.readdirSync('dist/icons').filter(n=>n.endsWith('.webp')).map(n=>[n.slice(0,-5),'data:image/webp;base64,'+fs.readFileSync('dist/icons/'+n).toString('base64')]));
 const iconScript='window.UHC_ICONS = '+JSON.stringify(icons)+';';
