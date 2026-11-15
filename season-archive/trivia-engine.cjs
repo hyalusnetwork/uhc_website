@@ -1,3 +1,4 @@
+const {isRecordedDeath}=require('./death-types.cjs');
 function buildTrivia(seasons,data,stats,references){
  const players=data.allPlayers,identity=n=>data.identities[String(n||'').toLowerCase()]||n;
  const normalize=text=>String(text).replace(/\barecue\b/gi,'Happy_Guy555');
@@ -7,7 +8,7 @@ function buildTrivia(seasons,data,stats,references){
  const addFact=(id,title,category,text,instances=[],extra={})=>facts.push({id,title,category,text,instances,source,...extra});
  const top=(id,title,category,values,unit,detail,scope,icon)=>{const max=Math.max(0,...values.map(v=>v.value));if(max>0)addRecord(id,title,category,max,unit,values.filter(v=>v.value===max).map(({value,...v})=>v),detail,scope,icon)};
  const seasonOf=id=>seasons.find(s=>s.id===id);
- const deaths=s=>s.players.filter(p=>['PVP','PVE','Team Kill'].includes(p.type)&&p.seconds!=null);
+ const deaths=s=>s.players.filter(p=>isRecordedDeath(p.type)&&p.seconds!=null);
  const ordered=s=>deaths(s).sort((a,b)=>a.seconds-b.seconds);
  const seasonKillers=seasons.map(s=>({season:s.id,killers:players.flatMap(p=>{const h=p.history.find(h=>h.season===s.id);return h?.kills>0?[{name:p.name,kills:h.kills}]:[]})}));
  const mostDistinctKillers=Math.max(0,...seasonKillers.map(s=>s.killers.length));
@@ -63,7 +64,7 @@ function buildTrivia(seasons,data,stats,references){
  feat('tk-win','Team Kills and a team victory','victory','Recorded Team Kills committed by a member of the winning team.',pairs(h=>h.teamKills>0&&h.win).map(x=>({...x,details:players.find(p=>p.name===x.name).history.find(h=>h.season===x.season).teamKills+' Team Kills'})),'tnt');
  feat('debut-win','A surviving debut victory','participation','Players who won their first recorded match and finished without a death or exit.',players.filter(p=>p.history[0].win&&!p.history[0].death&&!p.history[0].type).map(p=>({name:p.name,season:p.history[0].season})),'apple');
  feat('debut-multi','Multiple kills on debut','participation','At least two PVP kills in a first recorded appearance.',players.filter(p=>p.history[0].kills>=2).map(p=>({name:p.name,season:p.history[0].season,details:p.history[0].kills+' kills'})),'diamond-sword');
- feat('all-dead-wins','Victories from beyond the grave','victory','Every recorded win came after this player had already died.',players.filter(p=>p.wins&&p.history.filter(h=>h.win).every(h=>['PVP','PVE','Team Kill'].includes(h.type))).map(p=>({name:p.name,details:p.wins+' wins'})),'apple');
+ feat('all-dead-wins','Victories from beyond the grave','victory','Every recorded win came after this player had already died.',players.filter(p=>p.wins&&p.history.filter(h=>h.win).every(h=>isRecordedDeath(h.type))).map(p=>({name:p.name,details:p.wins+' wins'})),'apple');
  const transitions={comeback:[],runnerWin:[],winFirst:[],runnerStreak:[]};
  for(const p of players){for(let i=1;i<p.history.length;i++){const prev=p.history[i-1],next=p.history[i];if(prev.diedFirst&&next.win)transitions.comeback.push({name:p.name,seasons:[prev.season,next.season]});if(prev.runnerUp&&next.win)transitions.runnerWin.push({name:p.name,seasons:[prev.season,next.season]});if(prev.win&&next.diedFirst)transitions.winFirst.push({name:p.name,seasons:[prev.season,next.season]});}if(p.runnerUpStreak.length>=2)transitions.runnerStreak.push({name:p.name,seasons:p.runnerUpStreak});}
  feat('last-first','From first death to a win','victory','Died first, then won the next game played.',transitions.comeback,'apple');

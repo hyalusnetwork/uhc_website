@@ -1,3 +1,4 @@
+const {isRecordedDeath,isAdministrativeDeath}=require('./death-types.cjs');
 // Calculations use the match ledger; bios supply explicit aliases and historical prose.
 const seasonNumbers = text => {
   const match = String(text).match(/\(([^)]*)\)/); if (!match) return [];
@@ -35,7 +36,7 @@ function buildProfiles(seasons,bios,specials){
   canonical.set('toasty_boii','Toasty_boii');canonical.set('toastfliper','Toasty_boii');
   const identity=n=>canonical.get(String(n||'').toLowerCase())||n;
   const players=new Map();
-  const ensure=name=>{if(!players.has(name))players.set(name,{name,aliases:names.get(name)?.aliases||[],description:names.get(name)?.description||'',historicalTrivia:names.get(name)?.historicalTrivia||'',history:[],kills:0,pveDeaths:0,pvpDeaths:0,teamKillDeaths:0,otherExits:0,teamKills:0,trophies:[],trivia:[],victims:{},killers:{},teammates:{},milestones:[],killStreak:0});return players.get(name)};
+  const ensure=name=>{if(!players.has(name))players.set(name,{name,aliases:names.get(name)?.aliases||[],description:names.get(name)?.description||'',historicalTrivia:names.get(name)?.historicalTrivia||'',history:[],kills:0,pveDeaths:0,pvpDeaths:0,teamKillDeaths:0,administrativeDeaths:0,otherExits:0,teamKills:0,trophies:[],trivia:[],victims:{},killers:{},teammates:{},milestones:[],killStreak:0});return players.get(name)};
   let deathNumber=0;const milestoneList=[],winnerSources=[];
   const inc=(o,k)=>o[k]=(o[k]||0)+1;
   const add=(p,key,label,season,detail,icon)=>{let t=p.trophies.find(t=>t.key===key);if(!t){t={key,label,icon,count:0,events:[]};p.trophies.push(t)}t.count++;t.events.push({season,detail})};
@@ -45,7 +46,7 @@ function buildProfiles(seasons,bios,specials){
     const roster=s.players.map(p=>({...p,id:identity(p.name),key:teamKey(s,p)}));
     if(new Set(roster.map(p=>p.id)).size!==roster.length)throw Error(`Duplicate player identity in S${s.id}`);
     const groups=new Map();for(const p of roster){if(!groups.has(p.key))groups.set(p.key,[]);groups.get(p.key).push(p)};
-    const deathEvents=roster.filter(p=>['PVP','PVE','Team Kill'].includes(p.type)&&p.death);
+    const deathEvents=roster.filter(p=>isRecordedDeath(p.type));
     const ordered=[...deathEvents].sort((a,b)=>(a.seconds??Infinity)-(b.seconds??Infinity));
     const pvp=ordered.filter(p=>p.type==='PVP');
     const firstTime=pvp.length?Math.min(...pvp.filter(p=>p.seconds!=null).map(p=>p.seconds)):null;
@@ -59,9 +60,10 @@ function buildProfiles(seasons,bios,specials){
     const killCounts={},killCauses=new Map();
     for(const victim of ordered){
       const p=ensure(victim.id);deathNumber++;
-      if(deathNumber%50===0){const milestone={number:deathNumber,season:s.id,name:victim.id,detail:`${victim.death} · ${victim.seconds==null?'time not recorded':victim.seconds+' seconds'}`};milestoneList.push(milestone);p.milestones.push(milestone);}
-      if(victim.type==='PVE')p.pveDeaths++;else if(victim.type==='PVP')p.pvpDeaths++;else p.teamKillDeaths++;
+      if(deathNumber%50===0){const milestone={number:deathNumber,season:s.id,name:victim.id,detail:`${victim.death||victim.type} · ${victim.seconds==null?'time not recorded':victim.seconds+' seconds'}`};milestoneList.push(milestone);p.milestones.push(milestone);}
+      if(victim.type==='PVE')p.pveDeaths++;else if(victim.type==='PVP')p.pvpDeaths++;else if(victim.type==='Team Kill'){p.teamKillDeaths++;}else if(isAdministrativeDeath(victim.type))p.administrativeDeaths++;
       const killer=identity(victim.result),killerRecord=roster.find(r=>r.id===killer);
+      const deathMessage=`${victim.id} ${(victim.death||"died").replace(/^was\s+/i,'')}`;
       if(victim.type==='PVP'&&killerRecord&&killer!==victim.id){
         const kp=ensure(killer);kp.kills++;inc(kp.victims,victim.id);inc(p.killers,killer);inc(killCounts,killer);
         const cause=pvpKillTypes.find(rule=>rule.message.test(victim.death))?.cause;
@@ -70,10 +72,10 @@ function buildProfiles(seasons,bios,specials){
           inc(killCauses.get(killer),cause);
         }
         activeStreaks.set(killer,(activeStreaks.get(killer)||0)+1);kp.killStreak=Math.max(kp.killStreak,activeStreaks.get(killer));
-        if(victim.seconds!=null&&victim.seconds===firstTime&&!kp.trophies.find(t=>t.key==='first-blood')?.events.some(e=>e.season===s.id))add(kp,'first-blood','First Blood',s.id,`First PVP kill: ${victim.id}${pvp.filter(v=>v.seconds===firstTime).length>1?' (tied recorded time)':''}`,'golden-sword');
-      }else if(victim.type==='Team Kill'&&killerRecord)ensure(killer).teamKills++;
+        if(victim.seconds!=null&&victim.seconds===firstTime&&!kp.trophies.find(t=>t.key==='first-blood')?.events.some(e=>e.season===s.id))add(kp,'first-blood','First Blood',s.id,deathMessage,'golden-sword');
+      }else if(victim.type==='Team Kill'&&killerRecord&&killer!==victim.id)ensure(killer).teamKills++;
       activeStreaks.set(victim.id,0);
-      if(victim.type==='PVP'&&victim.seconds!=null&&victim.seconds===lastTime)add(p,'final-boss','Final Boss',s.id,`Last PVP victim: killed by ${killer}${pvp.filter(v=>v.seconds===lastTime).length>1?' (tied recorded time)':''}`,'creeper');
+      if(victim.type==='PVP'&&victim.seconds!=null&&victim.seconds===lastTime)add(p,'final-boss','Final Boss',s.id,`Last PVP victim: ${deathMessage}`,'creeper');
     }
     const maxKills=Math.max(0,...Object.values(killCounts));
     for(const r of roster){
@@ -82,11 +84,11 @@ function buildProfiles(seasons,bios,specials){
       const peers=(groups.get(r.key)||[]).filter(x=>x.id!==r.id);
       peers.forEach(x=>inc(p.teammates,x.id));
       const ranged=pvp.filter(v=>identity(v.result)===r.id&&/shot by/i.test(v.death)).length;
-      const teamKills=ordered.filter(v=>v.type==='Team Kill'&&identity(v.result)===r.id).length;
+      const teamKills=ordered.filter(v=>v.type==='Team Kill'&&v.id!==r.id&&identity(v.result)===r.id).length;
       const lastDeathTime=ordered.filter(v=>v.seconds!=null).reduce((max,v)=>Math.max(max,v.seconds),-1);
       if(r.type==='PVE'&&r.seconds!=null&&r.seconds===lastDeathTime)p.trivia.push(`Season ${s.id}: Was the last player to die, but died from a PVE source (${r.death})${ordered.filter(v=>v.seconds===lastDeathTime).length>1?' (tied recorded time)':''}.`);
-      if(win&&teamKills){const victims=ordered.filter(v=>v.type==='Team Kill'&&identity(v.result)===r.id).map(v=>v.id);p.trivia.push(`Season ${s.id}: Killed their teammate${victims.length===1?'':'s'} (${victims.join(', ')}) but still won.`);}
-      if(win&&r.type==='Team Kill')p.trivia.push(`Season ${s.id}: Was killed by their teammate ${identity(r.result)} but still earned a win.`);
+      if(win&&teamKills){const victims=ordered.filter(v=>v.type==='Team Kill'&&v.id!==r.id&&identity(v.result)===r.id).map(v=>v.id);p.trivia.push(`Season ${s.id}: Killed their teammate${victims.length===1?'':'s'} (${victims.join(', ')}) but still won.`);}
+      if(win&&r.type==='Team Kill'&&identity(r.result)!==r.id)p.trivia.push(`Season ${s.id}: Was killed by their teammate ${identity(r.result)} but still earned a win.`);
       if(win&&kills>0&&peers.length>=2&&peers.every(peer=>!killCounts[peer.id]))p.trivia.push(`Season ${s.id}: Was the only player on their ${peers.length+1}-player team to get a PVP kill in a win (${kills} kill${kills===1?'':'s'}).`);
       const firstDeathTime=Math.min(...ordered.filter(v=>v.seconds!=null).map(v=>v.seconds));
       const diedFirst=deathEvents.some(v=>v.id===r.id)&&r.seconds!=null&&r.seconds===firstDeathTime;
@@ -95,24 +97,26 @@ function buildProfiles(seasons,bios,specials){
       const crownAcquired=s.crown?.acquired&&crownAtEnd;
       const outlived=r.seconds==null&&!r.death&&!r.type?roster.length-1:deathEvents.filter(v=>v.id!==r.id&&v.seconds!=null&&r.seconds!=null&&v.seconds<r.seconds).length;
       p.history.push({season:s.id,metrics:r.metrics,date:s.date,recordedName:r.name,team:r.team||r.color||'Not recorded',color:r.color,moleFor:r.moleFor||null,joinedAt:r.joinedAt??null,roamer:!!r.roamer,kills,ranged,teamKills,diedFirst,runnerUp,win,winMethod:win?winMethod:'',iron,death:r.death,type:r.type,seconds:r.seconds,outlivedPercent:roster.length>1?Math.round(100*outlived/(roster.length-1)):0,outlivedAvailable:r.seconds!=null||(!r.death&&!r.type),participants:roster.length,crownAcquired});
-      if(r.type&&!['PVP','PVE','Team Kill'].includes(r.type)){p.otherExits++;activeStreaks.set(r.id,0)}
+      if(r.type&&!isRecordedDeath(r.type)){p.otherExits++;activeStreaks.set(r.id,0)}
+      if(win&&s.crown?.previous&&identity(s.crown.previous)===r.id&&s.crown.name&&!crownAtEnd)p.trivia.push(`Season ${s.id}: Lost the Crown to ${identity(s.crown.name)} but still won with their team.`);
       if(win)add(p,'victor','UHC Victor',s.id,'Member of the winning team, including eliminated teammates.','apple');
-      if(iron)add(p,'ironman','Ironman',s.id,'Last player to take damage, explicitly recorded in the match workbook.','armor');
+      if(iron)add(p,'ironman','Ironman',s.id,`Last player to take damage out of ${roster.length} players.`,'armor');
       if(crownAcquired)add(p,'crown','Crown Holder',s.id,s.crown.method,'crown');
       if(maxKills>0&&kills===maxKills)add(p,'top-fragger','Most Kills',s.id,`${kills} PVP kills${Object.values(killCounts).filter(k=>k===maxKills).length>1?' (tied)':''}.`,'diamond-sword');
-      if(ranged>=2)add(p,'sharpshooter','Sharpshooter',s.id,`${ranged} Ranged Kills, recorded as “shot by”.`,'bow');
+      if(ranged>=2)add(p,'sharpshooter','Sharpshooter',s.id,`${ranged} Ranged Kills.`,'bow');
       if(debut&&kills)add(p,'first-impression','First Impression',s.id,`${kills} PVP kill${kills===1?'':'s'} in their first recorded game.`,'sword');
-      if(win&&iron&&kills)add(p,'triple-threat','Triple Threat',s.id,'Win + at least one PVP kill + Ironman.','trident');
-      if(win&&iron&&kills&&crownAtEnd)add(p,'grand-slam','Grand Slam',s.id,`Win + PVP kill + Ironman + ${crownAcquired?'earned':'retained'} the crown.`,'diamond-block');
+      if(win&&iron&&kills&&!crownAtEnd)add(p,'triple-threat','Triple Threat',s.id,'Win + at least one PVP kill + Ironman.','trident');
+      if(win&&iron&&kills&&crownAtEnd)add(p,'grand-slam','Grand Slam',s.id,`Win + PVP kill + Ironman + ${crownAcquired?'earned':'retained'} the Crown.`,'diamond-block');
       const causes=killCauses.get(r.id);
       for(const {cause,trophyCause=cause,icon} of pvpKillTypes){
         const count=causes?.[cause]||0;
-        if(icon&&count>=2)add(p,`multiple-${trophyCause.toLowerCase()}-kills`,`Multiple ${trophyCause} PVP Kills`,s.id,`${count} ${trophyCause} PVP kills in one match.`,icon);
+        if(icon&&count>=2)add(p,`multiple-${trophyCause.toLowerCase()}-kills`,trophyCause.toLowerCase()==='fire'?'Pyromaniac':`Multiple ${trophyCause} PVP Kills`,s.id,trophyCause.toLowerCase()==='fire'?`${count} PVP Kills using Burn Damage in one match.`:`${count} ${trophyCause} PVP kills in one match.`,icon);
       }
       if(causes?.Pet)p.trivia.push(`Season ${s.id}: Got ${causes.Pet===1?'a Pet PVP kill':causes.Pet+' Pet PVP kills'}.`);
       const killTypes=Object.keys(causes||{}).sort();
       if(killTypes.length>=3)p.trivia.push(`Season ${s.id}: Got PVP kills with ${killTypes.length} different kill types (${killTypes.join(', ')}).`);
-      if(win&&r.achievement==='First Damage')add(p,'phoenix','Phoenix',s.id,'Took first damage and still won with their team.','blaze-powder');
+      if(win&&r.achievement==='First Damage')add(p,'bounce-back','Bounce Back',s.id,'Took first damage and still won with their team.','slime-ball');
+      if(win&&peers.length&&peers.every(peer=>peer.type==='PVE'))add(p,'phoenix','Phoenix',s.id,'Won after every teammate died to PVE ('+peers.map(peer=>peer.id).join(', ')+').','blaze-powder');
       for(const [key,members] of groups){if(key===r.key||members.length<2||key.startsWith('unassigned:'))continue;if(members.every(v=>v.type==='PVP'&&identity(v.result)===r.id))add(p,'team-wipe','Team Wipe',s.id,`Killed all ${members.length} members of ${members[0].team||members[0].color} (${members.map(m=>m.id).join(', ')}).`,'tnt');}
     }
   }
@@ -126,10 +130,9 @@ function buildProfiles(seasons,bios,specials){
     return {p,season:h.season,count:Math.max(events,h.metrics?.[4]??0)};
   }));
   const mostApples=Math.max(0,...appleGames.map(g=>g.count));
-  const recordHolders=new Set(appleGames.filter(g=>g.count===mostApples).map(g=>g.p));
   for(const {p,season,count} of appleGames){
-    if(count>1)p.trivia.push(`Season ${season}: Ate ${count} Enchanted Golden Apples (Overpowered).`);
-    if(count>0&&count===mostApples)p.trivia.push(`${recordHolders.size>1?'Tied the':'Set the'} single-game Overpowered record with ${count} Enchanted Golden Apple${count===1?'':'s'} in Season ${season}.`);
+    const isRecord=count>0&&count===mostApples;
+    if(count>1||isRecord)p.trivia.push(`Season ${season}: Ate ${count} Enchanted Golden Apple${count===1?'':'s'} (Overpowered).${isRecord?' This is the single-game record.':''}`);
   }
   const topEntries=o=>{const entries=Object.entries(o).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));return entries.length?entries.filter(e=>e[1]===entries[0][1]).map(([name,count])=>({name,count})):[]};
   for(const p of players.values()){
@@ -147,7 +150,7 @@ function buildProfiles(seasons,bios,specials){
     p.bestTeamKills=Math.max(0,...p.history.map(h=>h.teamKills));p.bestRangedKills=Math.max(0,...p.history.map(h=>h.ranged));
     const wonGames=p.history.filter(h=>h.win);
     if(wonGames.length&&wonGames.every(h=>!h.death&&!h.type))p.trivia.push(p.wins===1?'Was alive for their only win.':`Was alive for all ${p.wins} of their wins.`);
-    if(p.wins>0&&wonGames.every(h=>['PVP','PVE','Team Kill'].includes(h.type)))p.trivia.push(p.wins===1?'Their only win came after they had already died.':`All ${p.wins} wins came after they had already died.`);
+    if(p.wins>0&&wonGames.every(h=>isRecordedDeath(h.type)))p.trivia.push(p.wins===1?'Their only win came after they had already died.':`All ${p.wins} wins came after they had already died.`);
     if(p.runnerUpStreak.length>=2)p.trivia.push(`Was runner-up (Final Boss) in ${p.runnerUpStreak.length} consecutive games played (S${p.runnerUpStreak.join(', S')}).`);
     for(let i=1;i<p.history.length;i++){const prev=p.history[i-1],next=p.history[i];if(prev.diedFirst&&!next.death&&!next.type)p.trivia.push(`Died first in Season ${prev.season}, then survived their next game, Season ${next.season}.`);}
     if(p.pveDeaths===1)p.trivia.push('Has only one recorded PVE death.');else if(p.pveDeaths===0)p.trivia.push('Has no recorded PVE deaths.');
@@ -155,7 +158,7 @@ function buildProfiles(seasons,bios,specials){
     if(doubleWins.length)p.trivia.push(`Won 2 consecutive matches${doubleWins.length>1?' on '+doubleWins.length+' separate occasions':''}: ${doubleWins.map(run=>'(S'+run.join(', S')+')').join('; ')}.`);
     for(const run of p.winRuns.filter(run=>run.length>=3))p.trivia.push(`Won ${run.length} consecutive matches played (S${run.join(', S')})${run.length===3?' — a three-peat':run.length===4?' — a four-peat':''}.`);
     const doubleIronmen=p.ironRuns.filter(run=>run.length===2);
-    if(doubleIronmen.length)p.trivia.push(`Earned Ironman in 2 consecutive matches${doubleIronmen.length>1?' on '+doubleIronmen.length+' separate occasions':''}: ${doubleIronmen.map(run=>'(S'+run.join(', S')+')').join('; ')}.`);
+    if(doubleIronmen.length)p.trivia.push(`Earned Ironman in 2 consecutive seasons${doubleIronmen.length>1?' on '+doubleIronmen.length+' separate occasions':''}: ${doubleIronmen.map(run=>'(S'+run.join(', S')+')').join('; ')}.`);
     for(const run of p.ironRuns.filter(run=>run.length>=3))p.trivia.push(`Earned Ironman in ${run.length} consecutive seasons (S${run.join(', S')}).`);
     if(p.killStreak>=3)p.trivia.push(`Longest PVP kill streak without a recorded death: ${p.killStreak}.`);
     for(const m of p.milestones)p.trivia.push(`Was the ${m.number}th recorded death, in Season ${m.season}.`);
@@ -179,6 +182,44 @@ function buildProfiles(seasons,bios,specials){
     p.trophies.sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
   }
   const allPlayers=[...players.values()];
+  const teamPalette=new Set(['Green','Purple','Blue','Yellow','Red','Pink','Orange','Maroon','Cyan','Navy','Black','White','Lime','Turquoise']);
+  const teamSeasons=new Set(seasons.filter(s=>s.teamSize!==1).map(s=>s.id));
+  for(const p of allPlayers){
+    const count=new Set(p.history.filter(h=>teamSeasons.has(h.season)&&teamPalette.has(h.color)).map(h=>h.color)).size;
+    if(count>=10)p.trivia.push(`Has played on ${count} of 14 team colors.`);
+  }
+  const weaponKills=pattern=>seasons.flatMap(s=>s.players.flatMap(v=>{
+    const killer=identity(v.result),victim=identity(v.name);
+    return v.type==='PVP'&&pattern.test(v.death||'')&&killer!==victim&&s.players.some(r=>identity(r.name)===killer)
+      ?[{season:s.id,seconds:v.seconds,killer,victim}]:[];
+  })).sort((a,b)=>a.season-b.season||(a.seconds??Infinity)-(b.seconds??Infinity));
+  const firstSpear=weaponKills(/\bspeared by\b/i)[0];
+  if(firstSpear)players.get(firstSpear.killer).trivia.push(`Got the first recorded spear kill: ${firstSpear.victim} in Season ${firstSpear.season}.`);
+  for(const [cause,label] of [['Fall Damage','fall damage'],['Fire','burn damage'],['Pet','pet (wolf)']]){
+    const first=weaponKills(pvpKillTypes.find(rule=>rule.cause===cause).message)[0];
+    if(first)players.get(first.killer).trivia.push(`Got the first recorded ${label} PVP kill: ${first.victim} in Season ${first.season}.`);
+  }
+  const firstBow=weaponKills(/\bshot by\b/i)[0];
+  if(firstBow)players.get(firstBow.killer).trivia.push(`Got the first recorded bow kill: ${firstBow.victim} in Season ${firstBow.season}.`);
+  const streaks=[],runs=new Map();
+  const save=(victim,run)=>{if(run?.seasons.length>=3)streaks.push({...run,victim});};
+  for(const season of [...seasons].sort((a,b)=>a.id-b.id)){
+    const roster=new Set(season.players.map(r=>identity(r.name)));
+    for(const r of season.players){
+      const victim=identity(r.name),killer=identity(r.result),run=runs.get(victim);
+      if(r.type==='PVP'&&killer!==victim&&roster.has(killer)){
+        if(run?.killer===killer)run.seasons.push(season.id);
+        else{save(victim,run);runs.set(victim,{killer,seasons:[season.id]});}
+      }else{save(victim,run);runs.delete(victim);}
+    }
+  }
+  for(const [victim,run] of runs)save(victim,run);
+  const longest=Math.max(0,...streaks.map(r=>r.seasons.length));
+  for(const {victim,killer,seasons:ids} of streaks){
+    const ending=` ${ids.length} times in a row (${ids.map(id=>'S'+id).join(', ')}).`;
+    players.get(killer).trivia.push(`Killed ${victim}${ending}${ids.length===longest?' This is the all-time record for consecutive kills.':''}`);
+    players.get(victim).trivia.push(`Was killed by ${killer}${ending}${ids.length===longest?' This is the all-time record for consecutive deaths to the same player.':''}`);
+  }
   const debutIronmen=allPlayers.filter(p=>p.history[0].iron);
   for(const p of debutIronmen){
     const rarity=debutIronmen.length===1?'the only recorded player to do so':`one of ${debutIronmen.length} recorded players to do so`;
@@ -362,19 +403,36 @@ function buildProfiles(seasons,bios,specials){
     const events=quickestHolders.filter(h=>h.name===name),time=`${Math.floor(quickestFirstDeath/3600)}:${String(Math.floor(quickestFirstDeath%3600/60)).padStart(2,'0')}:${String(quickestFirstDeath%60).padStart(2,'0')}`;
     players.get(name).trivia.push(`${new Set(quickestHolders.map(h=>h.name)).size>1?'Tied for the quickest':'Had the quickest'} first death in game history: ${time} into the match (${events.map(h=>'Season '+h.season).join(', ')}).`);
   }
-  const repeatRosters=new Map();
+  const repeatRosters=new Map(), teammateResults=new Map();
   for(const s of seasons){
     if(s.teamSize===1)continue;
     const teams=new Map();
     for(const r of s.players){const key=teamKey(s,r);if(!teams.has(key))teams.set(key,[]);teams.get(key).push(r);}
     for(const members of teams.values()){
       const roster=[...new Set(members.map(r=>identity(r.name)))].sort();
+      for(const name of roster){
+        if(!teammateResults.has(name))teammateResults.set(name,new Map());
+        const results=teammateResults.get(name);
+        const won=players.get(name).history.some(h=>h.season===s.id&&h.win);
+        for(const teammate of roster){
+          if(teammate===name)continue;
+          if(!results.has(teammate))results.set(teammate,{games:0,wins:0});
+          const record=results.get(teammate);
+          record.games++;
+          if(won)record.wins++;
+        }
+      }
       if(roster.length<2||!roster.every(name=>players.get(name)?.history.some(h=>h.season===s.id&&h.win)))continue;
       const key=JSON.stringify(roster);
       if(!repeatRosters.has(key))repeatRosters.set(key,{roster,wins:[]});
       const colors=[...new Set(members.map(r=>r.color).filter(Boolean))];
       repeatRosters.get(key).wins.push({season:s.id,color:colors.length===1?colors[0]:null});
     }
+  }
+  for(const [name,results] of teammateResults){
+    const undefeated=[...results].filter(([,r])=>r.games>=3&&r.games===r.wins)
+      .sort((a,b)=>b[1].games-a[1].games||a[0].localeCompare(b[0]));
+    if(undefeated.length)players.get(name).trivia.push(`Has won every season when on a team with: ${undefeated.map(([teammate,r])=>teammate+' ('+r.games+')').join(', ')}.`);
   }
   const listNames=names=>names.length<2?names[0]:names.slice(0,-1).join(', ')+' and '+names.at(-1);
   for(const {roster,wins} of repeatRosters.values()){
@@ -388,7 +446,7 @@ function buildProfiles(seasons,bios,specials){
   const records=[['teamKills','Has the most total Team Kills','career'],['bestTeamKills','Has the most Team Kills in a single game','teamKills'],['bestRangedKills','Has the most Ranged Kills in a single game','ranged']];
   for(const [field,label,seasonField] of records){const max=Math.max(0,...allPlayers.map(p=>p[field]));if(!max)continue;const holders=allPlayers.filter(p=>p[field]===max);for(const p of holders){const ids=seasonField==='career'?[]:p.history.filter(h=>h[seasonField]===max).map(h=>h.season);p.trivia.push(`${holders.length>1?'Tied for ':''}${holders.length>1?label.replace('Has the ','the '):label}: ${max}${ids.length?' (S'+ids.join(', S')+')':''}.`);}}
   const profiles=[...players.values()].filter(p=>p.games>=5).sort((a,b)=>b.games-a.games||a.name.localeCompare(b.name));
-  return {allPlayers,profiles,identities:Object.fromEntries(canonical),recordedPlayers:players.size,deathCount:deathNumber,milestones:milestoneList,winnerSources,definitions:{rangedKills:'PVP deaths recorded as shot by. The ledger contains no sniped by messages.',runnerUp:'Only the player awarded Final Boss counts as runner-up. Their teammates do not count. Streaks require Final Boss in consecutive games played, ignoring skipped seasons; tied Final Boss awards follow the recorded-time rule.',teamColors:'Each game contributes one recorded team color. Missing colors appear as Not recorded; percentages include every game played.',recordTrivia:'Kill records compare all recorded players, including those ineligible for a full profile. Shared maximums count as ties.',wins:'Every member of the winning team counts except disqualified players. Disqualification also revokes Ironman for that match. A winner is inferred when only one recorded team has players with no recorded death or exit. Historical documented wins are used if inference is ambiguous.',kills:'Only deaths classified PVP credit a kill, using Death Result as the killer. Team kills are counted separately.',finalBoss:'Last PVP victim by recorded death time. Ties share the achievement; PVE deaths do not count.',firstBlood:'Killer of the earliest timed PVP victim. Ties share the achievement.',teamWipe:'One player kills every recorded member of an opposing team of at least two players. Teams use recorded team color, or team name when color is missing. Solo opponents are excluded.',overpowered:'Eating an Enchanted Golden Apple; awarded only from explicit special-achievement records. Repeated rows count as multiple recorded apple events.',perfectIronman:'Taking no damage in a match; awarded only from an explicit record, not inferred from Ironman.',milestones:'PVP, PVE and team-kill deaths in season order, then recorded death time. Tied times preserve workbook row order. Disconnects and disqualifications are excluded.',outlived:'Percentage of the other participants with an earlier timed death; equal death times do not count. Players without a recorded death or exit outlive all opponents. Missing exit times remain unavailable.',aliases:'Only aliases explicitly named in the bios are combined. Match tables retain the names recorded at the time.',killStreak:'PVP kills without a recorded death, across games played. All recorded deaths and other exits reset the streak.'}};
+  return {allPlayers,profiles,identities:Object.fromEntries(canonical),recordedPlayers:players.size,deathCount:deathNumber,milestones:milestoneList,winnerSources,definitions:{rangedKills:'PVP deaths recorded as shot by. The ledger contains no sniped by messages.',runnerUp:'Only the player awarded Final Boss counts as runner-up. Their teammates do not count. Streaks require Final Boss in consecutive games played, ignoring skipped seasons; tied Final Boss awards follow the recorded-time rule.',teamColors:'Each game contributes one recorded team color. Missing colors appear as Not recorded; percentages include every game played.',recordTrivia:'Kill records compare all recorded players, including those ineligible for a full profile. Shared maximums count as ties.',wins:'Every member of the winning team counts except disqualified players. Disqualification also revokes Ironman for that match. A winner is inferred when only one recorded team has players with no recorded death or exit. Historical documented wins are used if inference is ambiguous.',kills:'Only deaths classified PVP credit a kill, using Death Result as the killer. Team kills are counted separately.',finalBoss:'Last PVP victim by recorded death time. Ties share the achievement; PVE deaths do not count.',firstBlood:'Killer of the earliest timed PVP victim. Ties share the achievement.',teamWipe:'One player kills every recorded member of an opposing team of at least two players. Teams use recorded team color, or team name when color is missing. Solo opponents are excluded.',overpowered:'Eating an Enchanted Golden Apple; awarded only from explicit special-achievement records. Repeated rows count as multiple recorded apple events.',perfectIronman:'Taking no damage in a match; awarded only from an explicit record, not inferred from Ironman.',milestones:'PVP, PVE, team kills, disconnects and disqualifications in season order, then recorded death time. Tied times preserve workbook row order.',outlived:'Percentage of the other participants with an earlier timed death; equal death times do not count. Players without a recorded death or exit outlive all opponents. Missing exit times remain unavailable.',aliases:'Only aliases explicitly named in the bios are combined. Match tables retain the names recorded at the time.',killStreak:'PVP kills without a recorded death, across games played. All recorded deaths and other exits reset the streak.'}};
 }
 module.exports={buildProfiles,seasonNumbers};
 

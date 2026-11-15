@@ -1,9 +1,10 @@
+const {isRecordedDeath}=require('./death-types.cjs');
 function buildStats(seasons,data){
  const names=n=>data.identities[String(n).toLowerCase()]||n;
  const time=seconds=>seconds==null?'N/A':`${Math.floor(seconds/3600)}:${String(Math.floor(seconds%3600/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
  const tables=[];const add=(id,title,columns,rows,note='')=>tables.push({id,title,columns,rows,note});
  const seasonRows=fn=>seasons.flatMap(s=>fn(s));
- const deaths=s=>s.players.filter(p=>['PVP','PVE','Team Kill'].includes(p.type)&&p.death&&p.seconds!=null);
+ const deaths=s=>s.players.filter(p=>isRecordedDeath(p.type)&&p.seconds!=null);
  const edge=(s,pvp,last=false)=>{const ds=deaths(s).filter(p=>!pvp||p.type==='PVP');if(!ds.length)return [];const n=(last?Math.max:Math.min)(...ds.map(p=>p.seconds));return ds.filter(p=>p.seconds===n)};
  const players=data.allPlayers;
  add('winners','Season Winners',[['Season','season'],['Team Color'],['Team Name'],['Players','players']],seasonRows(s=>{const winners=players.filter(p=>p.history.some(h=>h.season===s.id&&h.win));const groups=new Map();for(const p of winners){const h=p.history.find(h=>h.season===s.id),key=s.teamSize===1?p.name:h.color||h.team;if(!groups.has(key))groups.set(key,{color:h.color||'Not recorded',team:h.team,players:[]});groups.get(key).players.push(p.name)}return [...groups.values()].map(g=>[s.id,g.color,g.team,g.players])}),'Victories count every teammate, including eliminated players, except disqualified players.');

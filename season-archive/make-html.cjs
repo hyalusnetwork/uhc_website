@@ -12,6 +12,7 @@ const profileVersion=require('node:crypto').createHash('sha256').update(profiles
 html=html.replace(/src="profiles\.js(?:\?v=[a-f0-9]+)?"/,`src="profiles.js?v=${profileVersion}"`);
 fs.writeFileSync('dist/index.html',html);
 const icons=Object.fromEntries(fs.readdirSync('dist/icons').filter(n=>n.endsWith('.webp')).map(n=>[n.slice(0,-5),'data:image/webp;base64,'+fs.readFileSync('dist/icons/'+n).toString('base64')]));
+icons.warden='data:image/png;base64,'+fs.readFileSync('dist/icons/warden.png').toString('base64');
 const iconScript='window.UHC_ICONS = '+JSON.stringify(icons)+';';
 fs.writeFileSync('dist/icons.js',iconScript);
 html=html.replaceAll('src="icons/crown.webp"',`src="${icons.crown}"`);

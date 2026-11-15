@@ -21,3 +21,15 @@
 .calendar-landscape>.chart-caption{max-width:100%;font-size:10px;margin-top:18px}
 @media(max-width:600px){.calendar-landscape{--tile-size:6px;padding:12px}.calendar-columns{gap:4px}.calendar-column{padding:0 1px 5px}.calendar-column-label{font-size:9px}.calendar-column-plot b{font-size:11px}.calendar-strip-heading>span{display:none}.calendar-landscape-meta{font-size:9px}}
 @media(max-width:380px){.calendar-columns{gap:2px}.calendar-column-label{font-size:8px}}
+.pve-season-scroll{overflow-x:auto;padding:16px 14px 10px}
+.pve-season-columns{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(32px,1fr);gap:3px}
+.pve-season-column{display:grid;grid-template-rows:1fr auto;text-align:center;min-width:0}
+.pve-season-stack{display:flex;flex-direction:column-reverse;align-items:center;gap:2px;min-height:48px;padding:3px 0 5px;border-bottom:1px solid var(--line);background:linear-gradient(to top,#a8c7ff0c,transparent)}
+.pve-season-stack b{font-size:10px;color:var(--cream);font-variant-numeric:tabular-nums}
+.pve-season-death{display:grid;place-items:center;width:27px;height:25px;background:#a8c7ff0c;border:1px solid #a8c7ff22}
+.pve-season-death:hover,.pve-season-death:focus-visible{outline:1px solid var(--green);z-index:1}
+.pve-season-death .face{width:22px;height:22px;object-fit:contain}
+.pve-cause .face,.pve-single .face{object-fit:contain}
+.pve-season-column>a{padding:6px 0;color:var(--muted);font-size:10px;text-decoration:none}
+.pve-season-column>a:hover{color:var(--cream);text-decoration:underline}
+@media(max-width:540px){.stats-section-heading:has([data-pve-toggle]){flex-wrap:wrap}}

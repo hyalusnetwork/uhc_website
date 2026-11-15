@@ -52,7 +52,7 @@ function playerCards(){
 function killChart(p){
   const w=760,h=230,left=42,right=42,top=22,bottom=35,cw=w-left-right,ch=h-top-bottom,n=seasons.length;
   const best=Math.max(1,p.bestKills),total=Math.max(1,p.kills);let cumulative=0;const points=[];
-  const bars=seasons.map((s,i)=>{const record=p.history.find(r=>r.season===s.id),k=record?.kills||0;cumulative+=k;const x=left+(i+.5)*cw/n;points.push(`${x},${top+ch-cumulative/total*ch}`);return `<g tabindex="0" data-chart-tip="${escape(`Season ${s.id}\n${record ? `${k} PVP kills` : `Did not play`}\n${cumulative} career PVP kills`)}" aria-label="Season ${s.id}: ${record?k+' kills, '+cumulative+' career kills':'did not play'}"><rect x="${x-cw/n*.32}" y="${top+ch-k/best*ch}" width="${cw/n*.64}" height="${Math.max(1,k/best*ch)}" fill="${record?'#85b8ff':'#393e48'}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/></g>`;}).join('');
+  const bars=seasons.map((s,i)=>{const record=p.history.find(r=>r.season===s.id),k=record?.kills||0;cumulative+=k;const x=left+(i+.5)*cw/n;const lineY=top+ch-cumulative/total*ch;points.push(`${x},${lineY}`);return `<g tabindex="0" data-chart-tip="${escape(`Season ${s.id}\n${record ? `${k} PVP kills` : `Did not play`}\n${cumulative} career PVP kills`)}" aria-label="Season ${s.id}: ${record?k+' kills, '+cumulative+' career kills':'did not play'}"><rect x="${x-cw/n*.32}" y="${top+ch-k/best*ch}" width="${cw/n*.64}" height="${Math.max(1,k/best*ch)}" fill="${record?'#85b8ff':'#393e48'}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/><circle class="career-kill-point" cx="${x}" cy="${lineY}" r="6" fill="#f2bc79" aria-hidden="true"/></g>`;}).join('');
   const grid=[0,.5,1].map(f=>`<line x1="${left}" x2="${w-right}" y1="${top+ch-f*ch}" y2="${top+ch-f*ch}"/><text x="${left-10}" y="${top+ch-f*ch+4}" text-anchor="end">${best*f}</text><text x="${w-right+10}" y="${top+ch-f*ch+4}">${total*f}</text>`).join('');
   return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="PVP kills per season and cumulative career kills for ${escape(p.name)}" class="profile-chart">${grid}${bars}<polyline points="${points.join(' ')}" fill="none" stroke="#f2bc79" stroke-width="2.5"/></svg>`;
 }
@@ -129,14 +129,18 @@ function profileSeasonGrid(history){
   return `<div class="profile-season-grid">${[...seasons].sort((a,b)=>a.id-b.id).map(({id,teamSize})=>{
     const label=String(id).padStart(2,'0'),h=attended.get(id);
     if(!h)return `<span aria-label="Season ${id}, not played" role="img">${label}</span>`;
-    const ink=teamSize!==1&&h.color!=='Solo'?colors[h.color]:null;
-    const mole=h.color==='Mole'&&molePalette(id).length>0;
-    const team=ink?' · '+h.color+' team':'';
-    return `<a href="#season-${id}" data-profile-season="${id}" aria-label="Season ${id}, played${escape(team)}"${ink?` class="profile-season-team${mole?' profile-season-mole':''}" style="--season-team:${ink};${mole?molePaint(id):''}"`:''}>${label}</a>`;
+    return profileSeasonTile(id,teamSize===1?null:h.color);
   }).join('')}</div>`;
 }
+function profileSeasonTile(id,color){
+    const label=String(id).padStart(2,'0');
+    const ink=color!=='Solo'?colors[color]:null;
+    const mole=color==='Mole'&&molePalette(id).length>0;
+    const team=ink?' · '+color+' team':'';
+    return `<a href="#season-${id}" data-profile-season="${id}" aria-label="Season ${id}, played${escape(team)}"${ink?` class="profile-season-team${mole?' profile-season-mole':''}" style="--season-team:${ink};--season-ink:${['Black','Navy','Maroon','Mole'].includes(color)?'#fff':'#101216'};${mole?molePaint(id):''}"`:''}>${label}</a>`;
+}
 function bindProfileSeasonPreview(root,player){
-  const grid=root.querySelector('.profile-season-grid');
+  const cleanup=new AbortController(), options={signal:cleanup.signal};
   const tip=document.createElement('div');
   tip.id='profile-season-preview';tip.className='profile-season-preview';tip.setAttribute('popover','manual');tip.setAttribute('role','tooltip');root.append(tip);
   let active,tapped,touch=false;
@@ -163,23 +167,22 @@ function bindProfileSeasonPreview(root,player){
     const r=link.getBoundingClientRect(),left=Math.max(8,Math.min(innerWidth-tip.offsetWidth-8,r.left+(r.width-tip.offsetWidth)/2));
     tip.style.left=left+'px';tip.style.top=(r.top>=tip.offsetHeight+10?r.top-tip.offsetHeight-5:r.bottom+5)+'px';
   }
-  grid.addEventListener('pointerdown',e=>{touch=e.pointerType==='touch';});
-  grid.addEventListener('pointerover',e=>{const link=tile(e);if(e.pointerType!=='touch'){if(link)show(link);else hide();}});
-  grid.addEventListener('pointerleave',e=>{if(e.pointerType!=='touch')hide();});
-  grid.addEventListener('focusin',e=>{const link=tile(e);if(link&&!touch)show(link);});
-  grid.addEventListener('focusout',e=>{if(!touch)hide();});
-  grid.addEventListener('click',e=>{
+  root.addEventListener('pointerdown',e=>{touch=e.pointerType==='touch';},options);
+  root.addEventListener('pointerover',e=>{const link=tile(e);if(link&&e.pointerType!=='touch')show(link);},options);
+  root.addEventListener('pointerout',e=>{const link=tile(e);if(link&&e.pointerType!=='touch'&&!link.contains(e.relatedTarget))hide();},options);
+  root.addEventListener('focusin',e=>{const link=tile(e);if(link&&!touch)show(link);},options);
+  root.addEventListener('focusout',e=>{if(tile(e)&&!touch)hide();},options);
+  root.addEventListener('click',e=>{
     const link=tile(e);
     if(!link||!(e.pointerType==='touch'||touch&&e.detail>0))return;
     if(tapped===link){hide();return;}
     e.preventDefault();show(link);tapped=link;
-  });
-  const cleanup=new AbortController();
-  const observer=new MutationObserver(()=>{if(!tip.isConnected){cleanup.abort();observer.disconnect();}});
+  },options);
+  const observer=new MutationObserver(()=>{if(!tip.isConnected){cleanup.abort();observer.disconnect();}else if(active&&!active.isConnected)hide();});
   observer.observe(root,{childList:true});
-  document.addEventListener('pointerdown',e=>{if(!grid.contains(e.target))hide();},{signal:cleanup.signal});
+  document.addEventListener('pointerdown',e=>{if(!tile(e))hide();},{signal:cleanup.signal});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')hide();},{signal:cleanup.signal});
-  window.addEventListener('scroll',hide,{passive:true,signal:cleanup.signal});
+  window.addEventListener('scroll',hide,{passive:true,capture:true,signal:cleanup.signal});
   window.addEventListener('resize',hide,{signal:cleanup.signal});
 }
 function profileColorNote(c){
@@ -191,15 +194,43 @@ function trophyImage(icon){
   const img=`<img src="${src}" alt="">`;
   return icon==='enchanted-apple'?`<span class="enchanted-trophy" style="--item-mask:url(${src})">${img}</span>`:img;
 }
+const trophyColors={"apple":"#96691c","golden-apple":"#96691c","enchanted-apple":"#794aab","crown":"#956a20","golden-sword":"#8d671b","diamond-block":"#267d83","diamond-chestplate":"#237b83","diamond-sword":"#23787b","diamond":"#267d83","diamond-ore":"#306b74","trident":"#386d68","creeper":"#507b36","ender-eye":"#477d5b","ender-pearl":"#327269","blaze-powder":"#a44d16","slime-ball":"#507b36","lava-bucket":"#9b461f","lightning":"#9a553e","tnt":"#953e3d","rocket-science":"#883c54","bow":"#795331","crossbow":"#745840","raw-gold":"#916823","gold-ore":"#796034","potion":"#7c498d","wind-charge":"#466e87","hardcore-heart-full":"#8c4149","hardcore-heart-half":"#8c4149"};
+const trophyColor=icon=>trophyColors[icon]||'#53647e';
+const trophyDescriptions={"victor":"Win a season with your team.","ironman":"Be the last player to take damage.","perfect-ironman":"Finish a season without taking damage.","crown":"Claim the Crown.","top-fragger":"Tie or lead the season in PVP kills.","first-blood":"Get the first PVP kill of the season.","final-boss":"Be the final player killed in PVP.","team-wipe":"Personally eliminate an entire opposing team.","first-impression":"Get a PVP kill in your debut season.","sharpshooter":"Get at least two ranged kills in one match.","multiple-fire-kills":"Get at least two PVP kills using burn damage in one match.","triple-threat":"Win with a PVP kill and Ironman.","grand-slam":"Win with a PVP kill, Ironman, and the Crown at the end.","bounce-back":"Take first damage and still win.","phoenix":"Win after every teammate dies to PVE.","overpowered":"Eat an Enchanted Golden Apple.","lightning":"Get struck by lightning.","rocket-science":"Fire a firework from a crossbow.","the-end":"Enter the End."};
+function trophyDescription(t){return trophyDescriptions[t.key]||(t.key.startsWith('multiple-')?'Get at least two PVP kills of this type in one match.':t.events[0].detail);}
 function bindTrophyDialog(root,trophies){
   const dialog=document.createElement('dialog');
   dialog.className='trophy-dialog';
   dialog.setAttribute('aria-labelledby','trophy-dialog-title');
   root.append(dialog);
-  root.querySelector('.trophy-grid').addEventListener('click',event=>{
+  const grid=root.querySelector('.trophy-grid');
+  const preview=document.createElement('div');
+  preview.className='trophy-hover-preview';
+  preview.setAttribute('popover','manual');
+  preview.setAttribute('aria-hidden','true');
+  root.append(preview);
+  const closePreview=()=>{if(preview.matches(':popover-open'))preview.hidePopover();};
+  const entries=(t,links)=>(links?t.events:t.events.slice(0,4)).map(e=>`<li>${links?`<a href="#season-${e.season}">S${e.season}</a>`:`<b>S${e.season}</b>`}<span>${escape(e.detail)}</span></li>`).join('');
+  for(const tile of grid.querySelectorAll('[data-trophy]')){
+    tile.addEventListener('pointerenter',event=>{
+      if(event.pointerType!=='mouse'||dialog.open)return;
+      const t=trophies[Number(tile.dataset.trophy)];
+      preview.style.setProperty('--trophy-color',trophyColor(t.icon));
+      preview.innerHTML=`<strong>${escape(t.label)}</strong><ul>${entries(t,false)}</ul>${t.events.length>4?'<p class="trophy-preview-more">Click to see all '+t.events.length+' entries.</p>':'<p class="trophy-preview-more">Click for more info.</p>'}`;
+      preview.showPopover();
+      const r=tile.getBoundingClientRect(),w=preview.offsetWidth,h=preview.offsetHeight;
+      preview.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left+(r.width-w)/2))+'px';
+      preview.style.top=Math.max(8,r.top>=h+8?r.top-h-6:Math.min(r.bottom+6,innerHeight-h-8))+'px';
+    });
+    tile.addEventListener('pointerleave',closePreview);
+  }
+  grid.addEventListener('keydown',event=>{if(event.key==='Escape')closePreview();});
+  grid.addEventListener('click',event=>{
     const tile=event.target.closest('[data-trophy]');if(!tile)return;
     const t=trophies[Number(tile.dataset.trophy)];
-    dialog.innerHTML=`<div class="trophy-dialog-header">${trophyImage(t.icon)}<h2 id="trophy-dialog-title">${t.count} × ${escape(t.label)}</h2><form method="dialog"><button autofocus aria-label="Close trophy details">×</button></form></div><ul>${t.events.map(e=>`<li><a href="#season-${e.season}">S${e.season}</a><span>${escape(e.detail)}</span></li>`).join('')}</ul>`;
+    closePreview();
+    dialog.style.setProperty('--trophy-color',trophyColor(t.icon));
+    dialog.innerHTML=`<div class="trophy-dialog-header">${trophyImage(t.icon)}<h2 id="trophy-dialog-title">${escape(t.label)}<small class="trophy-earned">${escape(trophyDescription(t))}</small></h2><form method="dialog"><button autofocus aria-label="Close trophy details">×</button></form></div><p class="trophy-event-count">Earned ${t.count===1?'once':t.count+' times'}</p><ul>${t.events.map(e=>`<li><a href="#season-${e.season}">S${e.season}</a><span>${escape(e.detail)}</span></li>`).join('')}</ul>`;
     dialog.showModal();
   });
   dialog.addEventListener('click',event=>{
@@ -225,7 +256,7 @@ const profileSidebarObserver=new ResizeObserver(entries=>{
     }
   }
 });
-const careerTabs=['Kills','Damage','Percent Outlasted','Ores Mined','Misc'];
+const careerTabs=['Kills','Damage','Percent Outlasted','Ores Mined','Items Used','Teammates'];
 const heartNumber=new Intl.NumberFormat('en',{maximumFractionDigits:2});
 function damageHearts(value){
   const preview=value>0?trophyImage('hardcore-heart-full'):'';
@@ -246,10 +277,11 @@ function careerContent(p,index){
       return [d.dealt,d.taken,d.pve,d.friendly].map(damageHearts).concat(d.teammates.map(t=>escape(t.name)+' ('+damageHearts(t.hearts)+')').join(', ')||'—');
     });
   }
+  if(index===5)return careerTeammates(p);
   return careerMetricCharts(p,index===3?oreMetrics:miscMetrics);
 }
 const oreMetrics=[['Diamond Ore','diamond','#58dce5',0],['Gold Ore','raw-gold','#efc365',1]];
-const miscMetrics=[['Potions drunk','potion','#c296fa',2],['Golden apples','golden-apple','#efc365',3],['Enchanted golden apples','enchanted-apple','#e18bff',4],['Ender pearls','ender-pearl','#62d5b0',5]];
+const miscMetrics=[['Potions','potion','#c296fa',2],['Golden Apples','golden-apple','#efc365',3],['Enchanted Golden Apples','enchanted-apple','#e18bff',4],['Ender Pearls','ender-pearl','#62d5b0',5]];
 function careerMetricCharts(p,metrics){
   const games=p.history.filter(game=>metrics.some(([, , ,field])=>game.metrics?.[field]!=null));
   if(!games.length)return '<p class="chart-caption">No recorded data for this player.</p>';
@@ -264,8 +296,31 @@ function careerMetricCharts(p,metrics){
           ${trophyImage(icon)}<span class="career-metric-track" aria-hidden="true"><span></span></span><b aria-hidden="true">${value}</b></div>`;
       }).join('')}</div></section>`).join('')}</div>`;
 }
+function careerTeammates(p){
+  const byPlayer=new Map();
+  const teamKey=r=>r.color&&r.color!=='Solo'?'color:'+r.color:r.team?'name:'+r.team:null;
+  for(const season of seasons){
+    if(season.teamSize===1)continue;
+    const member=season.players.find(r=>profileIdentity(r.name)===p.name);
+    const key=member&&teamKey(member);
+    if(!key)continue;
+    const roster=season.players.filter(r=>teamKey(r)===key);
+    const names=[...new Set(roster.map(r=>profileIdentity(r.name)))];
+    for(const name of names){
+      if(name===p.name)continue;
+      if(!byPlayer.has(name))byPlayer.set(name,[]);
+      byPlayer.get(name).push({id:season.id,color:member.color,team:member.team||member.color,roster:names});
+    }
+  }
+  const rows=[...byPlayer].filter(([,games])=>games.length>1).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0]));
+  const once=byPlayer.size-rows.length;
+  return `<p class="teammate-once">Not Depicted: Teamed up with ${once} other ${once===1?'player':'players'} in just one season.</p><div class="career-teammate-rows" tabindex="0" aria-label="Repeat teammates by season">${rows.map(([name,games])=>{
+    const head=playerFace(name),title=escape(name);
+    return `<div class="career-teammate-row"><div class="profile-season-grid career-teammate-nodes">${games.sort((a,b)=>b.id-a.id).map(g=>profileSeasonTile(g.id,g.color)).join('')}</div>${profileByName(name)?`<a class="career-teammate-head" href="${profileHref(name)}" title="${title}" aria-label="Open ${title}'s profile">${head}</a>`:`<span class="career-teammate-head" title="${title}" role="img" aria-label="${title}">${head}</span>`}</div>`;
+  }).join('')||'<p>No repeat teammates recorded.</p>'}</div>`;
+}
 function careerCurve(p){
-  return '<section class="profile-section"><div class="profile-section-title"><h2>The career curve<span>.</span></h2></div><div class="stats-tabs career-tabs" role="tablist" aria-label="Career Curve">'+careerTabs.map((label,i)=>'<button type="button" role="tab" id="career-tab-'+i+'" aria-controls="career-panel" aria-selected="'+(i===0)+'" tabindex="'+(i===0?0:-1)+'" class="'+(i===0?'active':'')+'">'+label+'</button>').join('')+'</div><div id="career-panel" role="tabpanel" aria-labelledby="career-tab-0" tabindex="0">'+careerContent(p,0)+'</div></section>';
+  return '<section class="profile-section"><div class="career-tabs" role="tablist" aria-label="Career Curve">'+careerTabs.map((label,i)=>'<button type="button" role="tab" id="career-tab-'+i+'" aria-controls="career-panel" aria-selected="'+(i===0)+'" tabindex="'+(i===0?0:-1)+'" class="'+(i===0?'active':'')+'">'+label+'</button>').join('')+'</div><div id="career-panel" role="tabpanel" aria-labelledby="career-tab-0" tabindex="0">'+careerContent(p,0)+'</div></section>';
 }
 function bindCareerCurve(root,p){
   const buttons=[...root.querySelectorAll('.career-tabs button')], panel=root.querySelector('#career-panel');
@@ -273,6 +328,7 @@ function bindCareerCurve(root,p){
     buttons.forEach((button,j)=>{button.classList.toggle('active',i===j);button.setAttribute('aria-selected',String(i===j));button.tabIndex=i===j?0:-1;});
     panel.setAttribute('aria-labelledby',buttons[i].id);
     panel.innerHTML=careerContent(p,i);
+    if(i===5){const tile=root.querySelector('.profile-sidebar .profile-season-grid > a');if(tile){panel.style.setProperty('--teammate-tile-width',tile.offsetWidth+'px');panel.style.setProperty('--teammate-tile-height',tile.offsetHeight+'px');}}
   };
   buttons.forEach((button,i)=>{
     button.addEventListener('click',()=>select(i));
@@ -299,7 +355,7 @@ function showPlayer(name){
   $('player-directory').hidden=true;$('full-profile').hidden=false;
   if(!p){$('full-profile').innerHTML='<div class="empty"><h2>Profile unavailable</h2><p>A full player profile requires at least five recorded games.</p><a href="#players">Return to Players</a></div>';return;}
   const played=p.history.map(h=>h.season),trophy=p.trophies;
-  $('full-profile').innerHTML=`<a class="profile-back" href="#players">← All players</a><div class="profile-body"><aside class="profile-sidebar" aria-label="Career notes"><section class="profile-section"><header class="profile-hero"><h1>${escape(p.name)}</h1><div class="portrait">${playerFace(p.name)}</div><div class="profile-identity">${p.aliases.length?`<p class="aliases">Former names: ${p.aliases.map(escape).join(', ')}</p>`:''}</div></header><dl><dt>Seasons played</dt><dd>${profileSeasonGrid(p.history)}</dd><dt>Most common team color</dt><dd class="profile-common-colors">${p.commonColors.map(profileColorNote).join('')}</dd><dt>Most frequent teammate${p.topTeammates.length===1?'':'s'}</dt><dd>${topPeople(p.topTeammates)}</dd><dt>Most frequent PVP victim${p.topVictims.length===1?'':'s'}</dt><dd>${profilePvpPairs(p,p.topVictims,true)}</dd><dt>Most frequent PVP killer${p.topKillers.length===1?'':'s'}</dt><dd>${profilePvpPairs(p,p.topKillers,false)}</dd><dt>Recorded outcomes</dt><dd>${profileOutcomes(p)}</dd>${p.teamKills?`<dt>Team Kills committed</dt><dd>${p.teamKills} (excluded from PVP kills)</dd>`:''}</dl></section></aside><div class="profile-primary"><section class="profile-section profile-trophies"><div class="profile-section-title trophy-case-title"><h2>Trophy case<span>.</span></h2></div><div class="trophy-grid">${trophy.map((t,i)=>`<button type="button" class="trophy trophy-tile" data-trophy="${i}" aria-haspopup="dialog">${trophyImage(t.icon)}<strong>${t.count} × ${escape(t.label)}</strong><small>${[...new Set(t.events.map(e=>'S'+e.season))].join(' · ')}</small><span class="trophy-plus" aria-hidden="true">+</span></button>`).join('')||'<p class="unknown">No trophies recorded yet.</p>'}</div></section><section class="profile-section profile-trivia"><h2>Trivia<span>.</span></h2><ul class="trivia-list" tabindex="0" aria-label="Player trivia">${p.trivia.map(t=>`<li>${escape(t)}</li>`).join('')||'<li>More milestones will appear as the record grows.</li>'}</ul></section><div class="profile-followup">${careerCurve(p)}${teamColorChart(p)}<section class="profile-section"><div class="profile-section-title"><h2>Season by season<span>.</span></h2></div><div class="table-wrap"><table class="career-table"><thead><tr><th>Season</th><th>Team</th><th>Kills</th><th>Highlights</th><th>Death / result</th></tr></thead><tbody>${p.history.map(r=>`<tr class="${r.color==='Mole'?'mole-row':''}" style="${r.color==='Mole'?molePaint(r.season):''}--team:${colors[r.color]||'#b3bda9'}"><td><a href="#season-${r.season}">S${r.season}</a></td><td>${historyTeamLink(r.team,r.color,r.season)}${r.moleFor?`<small class="mole-cover">Cover team: <b style="color:${colors[r.moleFor]||'#c7d2e5'}">${escape(r.moleFor)}</b></small>`:''}</td><td>${r.kills}</td><td>${[r.win?'Victory':null,r.iron?'◈ Ironman':null,r.crownAcquired?'<img class="crown-icon" src="'+window.UHC_ICONS.crown+'" alt="" width="20" height="12"> Crown':null].filter(Boolean).join(' · ')||'—'}</td><td>${escape(r.death||'No death recorded')}${r.seconds!=null?` <span class="elapsed">${duration(r.seconds)}</span>`:''}</td></tr>`).join('')}</tbody></table></div></section></div></div></div>`;
+  $('full-profile').innerHTML=`<a class="profile-back" href="#players">← All players</a><div class="profile-body"><aside class="profile-sidebar" aria-label="Career notes"><section class="profile-section"><header class="profile-hero"><h1>${escape(p.name)}</h1><div class="portrait">${playerFace(p.name)}</div><div class="profile-identity">${p.aliases.length?`<p class="aliases">Former names: ${p.aliases.map(escape).join(', ')}</p>`:''}</div></header><dl><dt>Seasons played (${p.history.length})</dt><dd>${profileSeasonGrid(p.history)}</dd><dt>Most common team color</dt><dd class="profile-common-colors">${p.commonColors.map(profileColorNote).join('')}</dd><dt>Most frequent teammate${p.topTeammates.length===1?'':'s'}</dt><dd>${topPeople(p.topTeammates)}</dd><dt>Most frequent PVP victim${p.topVictims.length===1?'':'s'}</dt><dd>${profilePvpPairs(p,p.topVictims,true)}</dd><dt>Most frequent PVP killer${p.topKillers.length===1?'':'s'}</dt><dd>${profilePvpPairs(p,p.topKillers,false)}</dd><dt>Death outcomes</dt><dd>${profileOutcomes(p)}</dd>${p.teamKills?`<dt>Team Kills committed</dt><dd>${p.teamKills} (excluded from PVP kills)</dd>`:''}</dl></section></aside><div class="profile-primary"><section class="profile-section profile-trophies"><div class="profile-section-title trophy-case-title"><h2>Trophy case<span>.</span></h2><p class="trophy-hint"><span class="trophy-hover-hint">Hover over or click on a trophy for details.</span><span class="trophy-tap-hint">Tap a trophy for details.</span></p></div><div class="trophy-grid">${trophy.map((t,i)=>`<button type="button" class="trophy trophy-tile" data-trophy="${i}" style="--trophy-color:${trophyColor(t.icon)}" aria-haspopup="dialog">${trophyImage(t.icon)}<strong>${escape(t.label)}</strong>${t.count>1?`<span class="trophy-count" aria-label="Earned ${t.count} times">${t.count}x</span>`:''}<small>${[...new Set(t.events.map(e=>'S'+e.season))].join(' · ')}</small></button>`).join('')||'<p class="unknown">No trophies recorded yet.</p>'}</div></section><section class="profile-section profile-trivia"><h2>Trivia<span>.</span></h2><ul class="trivia-list" tabindex="0" aria-label="Player trivia">${p.trivia.map(t=>`<li>${escape(t)}</li>`).join('')||'<li>More milestones will appear as the record grows.</li>'}</ul></section><div class="profile-followup">${careerCurve(p)}${teamColorChart(p)}<section class="profile-section"><div class="profile-section-title"><h2>Season by season<span>.</span></h2></div><div class="table-wrap"><table class="career-table"><thead><tr><th>Season</th><th>Team</th><th>Kills</th><th>Highlights</th><th>Death / result</th></tr></thead><tbody>${p.history.map(r=>`<tr class="${r.color==='Mole'?'mole-row':''}" style="${r.color==='Mole'?molePaint(r.season):''}--team:${colors[r.color]||'#b3bda9'}"><td><a href="#season-${r.season}">S${r.season}</a></td><td>${historyTeamLink(r.team,r.color,r.season)}${r.moleFor?`<small class="mole-cover">Cover team: <b style="color:${colors[r.moleFor]||'#c7d2e5'}">${escape(r.moleFor)}</b></small>`:''}</td><td>${r.kills}</td><td>${[r.win?'Victory':null,r.iron?'◈ Ironman':null,r.crownAcquired?'<img class="crown-icon" src="'+window.UHC_ICONS.crown+'" alt="" width="20" height="12"> Crown':null].filter(Boolean).join(' · ')||'—'}</td><td>${escape(r.death||'No death recorded')}${r.seconds!=null?` <span class="elapsed">${duration(r.seconds)}</span>`:''}</td></tr>`).join('')}</tbody></table></div></section></div></div></div>`;
   bindProfileSeasonPreview($('full-profile'),p);
   bindTrophyDialog($('full-profile'),trophy);
   bindCareerCurve($('full-profile'),p);

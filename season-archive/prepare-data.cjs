@@ -16,6 +16,10 @@ const players = namedRows(1).filter(r=>r['Player Name']).map(row => {
   const metrics=metricLabels.map(key=>row[key]==null||String(row[key]).trim()===''?null:Number(row[key]));
   if(metrics.some(v=>v!==null&&(!Number.isInteger(v)||v<0)))throw Error('Invalid activity counts: '+A+' '+B);
   const season = Number(r.A);
+  // Season 30: the Jokers' self-inflicted TNT death is PVE, not a Team Kill.
+  if(season===30&&r.B==='Lukeyvonswaggle'&&r.C==='Team Kill'&&r.E===r.B){
+    r.C='PVE';r.D='blew up';r.E='TNT';
+  }
   if (!first.has(r.B)) first.set(r.B, season);
   return {season, metrics, name:r.B, type:r.C, death:r.D, result:r.E, seconds:r.F == null ? null : Math.round(Number(r.F)*86400), color:r.G, team:r.H, achievement:r.I, moleFor:r.J||null, debut:first.get(r.B)===season};
 });

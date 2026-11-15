@@ -17,10 +17,16 @@ const trophy=(p,key)=>p.trophies.find(t=>t.key===key);
 assert.equal(trophy(ace,'team-wipe').count,5);assert.equal(trophy(ace,'first-blood').count,5);
 assert.equal(trophy(enemy,'final-boss').count,5);assert.equal(trophy(ace,'crown').count,1);
 assert.equal(trophy(ace,'perfect-ironman').count,1);assert.equal(trophy(ace,'overpowered').count,1);
-assert.equal(trophy(ace,'sharpshooter').count,5);assert.equal(trophy(ace,'triple-threat').count,5);assert.equal(trophy(ace,'grand-slam').count,5);
-assert.match(trophy(ace,'grand-slam').events[1].detail,/retained the crown/);
+assert.equal(trophy(ace,'sharpshooter').count,5);assert.equal(trophy(ace,'triple-threat'),undefined);assert.equal(trophy(ace,'grand-slam').count,5);
+assert.match(trophy(ace,'grand-slam').events[1].detail,/retained the Crown/);
 assert(ace.trivia.includes('Earned Ironman on his debut (Season 1) (the only recorded player to do so).'));
-assert.equal(data.deathCount,15);assert.equal(ace.killStreak,10);assert.equal(ace.history[0].outlivedPercent,100);
+assert.equal(data.deathCount,16);
+const administrative=buildProfiles([{id:1,teamSize:3,players:[{name:"Survivor",color:"Green"},{name:"Disconnected",color:"Green",type:"Disconnect",seconds:2},{name:"Disqualified",color:"Green",type:"Disqualification",seconds:3},{name:"Opponent",color:"Red",type:"PVE",death:"fell",seconds:4}]}],[],[]);
+const dc=administrative.allPlayers.find(p=>p.name==="Disconnected"),dq=administrative.allPlayers.find(p=>p.name==="Disqualified");
+assert.equal(administrative.deathCount,3);
+assert(dc.history[0].win);assert(!dq.history[0].win);
+for(const p of [dc,dq]){assert.equal(p.administrativeDeaths,1);assert.equal(p.teamKillDeaths,0);assert.equal(p.kills,0);}
+assert.equal(ace.killStreak,10);assert.equal(ace.history[0].outlivedPercent,100);
 assert.equal(ace.topTeammates[0].name,'Partner');assert.equal(ace.topTeammates[0].count,5);
 assert.equal(ace.teamColors.reduce((total,c)=>total+c.count,0),ace.games);
 assert.equal(ace.commonColors[0].color,'Green');assert.equal(ace.commonColors[0].percent,100);
@@ -37,7 +43,7 @@ const tk=buildProfiles(teamKillRounds,bios,[]).profiles.find(p=>p.name==='Ace');
 assert.equal(tk.kills,5);assert.equal(tk.teamKills,5);assert(!trophy(tk,'team-wipe'));
 assert(tk.trivia.some(t=>t.includes('most total Team Kills')));
 assert(tk.trivia.some(t=>t.includes('most Team Kills in a single game')));
-const comeback=structuredClone(rounds);comeback[1].players[1]={name:'Partner',color:'Green',team:'Winners'};
+const comeback=structuredClone(rounds);comeback[0].players.find(p=>p.type==='Disconnect').seconds=6;comeback[1].players[1]={name:'Partner',color:'Green',team:'Winners'};
 const comebackPartner=buildProfiles(comeback,bios,[]).profiles.find(p=>p.name==='Partner');
 assert(comebackPartner.trivia.some(t=>t.includes('Died first in Season 1, then survived his next game, Season 2')));
 // Exact-time ties share First Blood and Final Boss rather than privileging a row.
@@ -81,4 +87,5 @@ assert.deepEqual(causeAce.trivia.filter(t=>t.includes('different kill types')),[
   'Season 2: Got PVP kills with 3 different kill types (Fall Damage, Pet, TNT).'
 ]);
 assert.equal(trophy(causeAce,'grand-slam').count,4);
+assert.deepEqual(trophy(causeAce,'triple-threat').events.map(e=>e.season),[5]);
 console.log('Passed: five-game boundary, aliases, team wins for dead teammates, kill credit, team wipes, first/last kills, ties, special records, crown transfers, streaks and teammates.');

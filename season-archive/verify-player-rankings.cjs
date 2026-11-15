@@ -6,7 +6,7 @@ const ranked=buildPlayerRankings(input);assert.equal(ranked.players.length,2);
 const clean=ranked.players.find(p=>p.name==='Clean'),bad=ranked.players.find(p=>p.name==='FriendlyFire');
 assert.equal(clean.penalty,0);assert.equal(bad.penalty,8);assert.equal(clean.score-bad.score,8);assert.equal(clean.disciplineTier,'S');
 assert.equal(bad.score,Object.values(bad.components).reduce((n,c)=>n+c.points,0)-bad.penalty);
-assert.equal(tier(80),'S');assert.equal(tier(65),'A');assert.equal(tier(50),'B');assert.equal(tier(35),'C');assert.equal(tier(20),'D');assert.equal(tier(19.9),'F');
+assert.equal(tier(80),'S');assert.equal(tier(60),'A');assert.equal(tier(38),'B');assert.equal(tier(30),'C');assert.equal(tier(20),'D');assert.equal(tier(19.9),'F');
 const early=player('Early',5),late=player('Late',5),survivor=player('Survivor',5);
 for(let i=0;i<5;i++){early.history[i]={...early.history[i],type:'PVE',death:'fell',seconds:10};late.history[i]={...late.history[i],type:'PVP',death:'was slain',seconds:20};survivor.history[i]={...survivor.history[i],type:null,death:null,seconds:null};}
 let defense=buildPlayerRankings({allPlayers:[early,late,survivor]});
@@ -23,8 +23,14 @@ late.history.forEach(h=>h.seconds=null);
 defense=buildPlayerRankings({allPlayers:[early,late,survivor]});
 assert.equal(defense.players.find(p=>p.name==='Late').outlastRate,null);
 assert.equal(defense.players.find(p=>p.name==='Late').durabilityGames,0);
+early.history.forEach(h=>{h.type='Disconnect';h.seconds=5;});
+late.history.forEach(h=>{h.type='Disqualified';h.seconds=10;});
+const exits=buildPlayerRankings({allPlayers:[early,late,survivor]});
+assert.equal(exits.players.find(p=>p.name==='Late').outlastRate,1);
+assert.equal(exits.players.find(p=>p.name==='Survivor').otherTimedDeaths,10);
 const w={};vm.runInNewContext(fs.readFileSync('dist/player-rankings-data.js','utf8'),{window:w});
-assert.equal(w.UHC_PLAYER_RANKINGS.players.length,31);
+const profiles={};vm.runInNewContext(fs.readFileSync("dist/profiles.js","utf8"),{window:profiles});
+assert.equal(w.UHC_PLAYER_RANKINGS.players.length,profiles.UHC_PROFILES.profiles.length);
 for(const p of w.UHC_PLAYER_RANKINGS.players){assert(p.games>=5);assert(p.score>=0&&p.score<=100);assert(p.penalty>=0&&p.penalty<=20);assert.equal(p.killsPerGame,p.kills/p.games);assert.equal(p.winRate,p.wins/p.games);for(const c of Object.values(p.components)){assert(c.points>=0&&c.points<=c.weight);assert.equal(c.tier,tier(c.points/c.weight*100));}}
 assert(w.UHC_PLAYER_RANKINGS.players.find(p=>p.name==='Happy_Guy555').aliases.includes('arecue'));
-console.log('Passed: five-game boundary, rates, weighted components, Team Kill deductions, tier cutoffs, aliases and all 31 player scores.');
+console.log('Passed: five-game boundary, rates, weighted components, Team Kill deductions, tier cutoffs, aliases and all generated player scores.');

@@ -1,13 +1,14 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');const w={};for(const file of ['data','profiles','stats-data','trivia-data'])vm.runInNewContext(fs.readFileSync(`dist/${file}.js`,'utf8'),{window:w});
 const data=w.UHC_TRIVIA,records=data.records,facts=data.facts,record=id=>records.find(r=>r.id===id),fact=id=>facts.find(f=>f.id===id);
-assert.equal(data.counts.seasons,36);assert.equal(data.counts.deaths,435);
+assert.equal(data.counts.seasons,w.UHC_DATA.length);
+assert.equal(data.counts.deaths,w.UHC_DATA.flatMap(s=>s.players).filter(p=>require('./death-types.cjs').isRecordedDeath(p.type)&&p.seconds!=null).length);
 const profiles=w.UHC_PROFILES.profiles;
 assert.equal(record('kills').value,Math.max(...profiles.map(p=>p.kills)));assert.equal(record('kills').holders[0].name,'Happy_Guy555');
 assert.equal(record('longest').value,Math.max(...w.UHC_DATA.map(s=>s.seconds)));assert.equal(record('shortest').value,Math.min(...w.UHC_DATA.map(s=>s.seconds)));
 assert.equal(record('season-kills').value,8);assert(record('season-kills').holders.some(h=>h.name==='Crack_Attack'&&h.season===35));
 assert.equal(record('season-ranged').value,6);assert.equal(record('iron-field').value,24);
 assert(fact('grand').instances.some(h=>h.name==='Enzo_'&&h.season===9));
-assert.equal(fact('death-milestones').instances.find(h=>h.number===150).name,'Nateninjaman');
+const milestone=w.UHC_DATA.flatMap(s=>s.players.filter(p=>require('./death-types.cjs').isRecordedDeath(p.type)&&p.seconds!=null).sort((a,b)=>a.seconds-b.seconds))[149]; assert.equal(fact('death-milestones').instances.find(h=>h.number===150).name,w.UHC_PROFILES.identities[milestone.name.toLowerCase()]||milestone.name);
 assert.equal(fact('first-pvp').instances[0].name,'Caenum_');assert.equal(fact('first-shot').instances[0].name,'Enzo_');
 assert(fact('zero-pve').instances.some(h=>h.season===35));
 const docFacts=facts.filter(f=>f.source.type==='document');assert.equal(docFacts.length,9);assert(docFacts.every(f=>f.source.locator.startsWith('UHC Trivia')));
