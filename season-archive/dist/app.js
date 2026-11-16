@@ -47,10 +47,13 @@ let observer;
 function render(){const visible=filtered();$('result-count').textContent=`${visible.length} of ${seasons.length} seasons`;$('season-list').innerHTML=visible.map(card).join('')||'<div class="empty">No seasons found. Try another search or filter.</div>';document.querySelectorAll('.season-index a').forEach(a=>a.classList.toggle('filtered',!visible.some(s=>s.id===Number(a.dataset.season))));observer?.disconnect();observer=new IntersectionObserver(entries=>{const current=entries.find(e=>e.isIntersecting);if(current)document.querySelectorAll('.season-index a').forEach(a=>a.classList.toggle('selected',a.hash===`#${current.target.id}`));},{rootMargin:'-90px 0px -65% 0px'});document.querySelectorAll('.season-card').forEach(c=>observer.observe(c));}
 function tab(){
  const hash=location.hash.slice(1);
- const selected=hash==='about'||hash.startsWith('about-')?'about':hash==='rankings'||hash==='rankings-players'||hash.startsWith('rank-player-')||hash.startsWith('team-color-')?'rankings':hash==='players'||hash.startsWith('player-')?'players':['stats','trivia'].includes(hash)?hash:'seasons';
+ const switchingModernCategory=visibleRankingEra==='modern'&&getRankingsMode(location.hash)==='grades';
+ updateRankingEraBanner(location.hash);
+ const selected=hash==='about'||hash.startsWith('about-')?'about':hash==='rankings'||hash.startsWith('rankings-')||hash.startsWith('rank-player-')||hash.startsWith('team-color-')?'rankings':hash==='players'||hash.startsWith('player-')?'players':['stats','trivia'].includes(hash)?hash:'seasons';
  for(const page of ['seasons','players','stats','rankings','trivia','about'])$(page+'-view').hidden=selected!==page;
  $('placeholder-view').hidden=true;
  if(selected==='trivia')renderTrivia();if(selected==='rankings')rankingsRoute();if(selected==='stats')renderStats();if(selected==='players')playersRoute();
+ if(!switchingModernCategory&&(Object.values(rankingModeHashes).includes(location.hash)||['rankings','rankings-players','rankings-grades'].includes(hash)))window.scrollTo({top:0,behavior:'instant'});
  document.querySelectorAll('[data-tab]').forEach(a=>{a.classList.toggle('active',a.dataset.tab===selected);if(a.dataset.tab===selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
  if(selected==='about')requestAnimationFrame(()=>{if(hash==='about')window.scrollTo?.({top:0,behavior:'instant'});else document.getElementById(hash)?.scrollIntoView?.({block:'start'});});
 }

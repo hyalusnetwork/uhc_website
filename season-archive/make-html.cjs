@@ -1,6 +1,10 @@
 const fs=require('node:fs');
 let html=fs.readFileSync('dist/index.html','utf8');
-const css=fs.readFileSync('dist/styles.css','utf8')+'\n'+fs.readFileSync('dist/players.css','utf8')+'\n'+fs.readFileSync('dist/stats.css','utf8')+'\n'+fs.readFileSync('dist/rankings.css','utf8')+'\n'+fs.readFileSync('dist/player-rankings.css','utf8')+'\n'+fs.readFileSync('dist/trivia.css','utf8')+'\n'+fs.readFileSync('dist/ore-theme.css','utf8')+'\n'+fs.readFileSync('dist/about.css','utf8');
+const oreTheme=fs.readFileSync('dist/ore-theme.css','utf8').replace(
+ /images\/(?:player-grades|classic-era)-[a-z-]+\.(webp|jpg)/g,
+ (path,extension)=>`data:image/${extension==='jpg'?'jpeg':extension};base64,${fs.readFileSync('dist/'+path).toString('base64')}`
+);
+const css=fs.readFileSync('dist/styles.css','utf8')+'\n'+fs.readFileSync('dist/players.css','utf8')+'\n'+fs.readFileSync('dist/stats.css','utf8')+'\n'+fs.readFileSync('dist/rankings.css','utf8')+'\n'+fs.readFileSync('dist/player-rankings.css','utf8')+'\n'+fs.readFileSync('dist/trivia.css','utf8')+'\n'+oreTheme+'\n'+fs.readFileSync('dist/about.css','utf8');
 const face='data:image/webp;base64,'+fs.readFileSync('dist/steve.webp').toString('base64');
 const heart='data:image/webp;base64,'+fs.readFileSync('dist/hardcore-heart.webp').toString('base64');
 const data=fs.readFileSync('dist/data.js','utf8');

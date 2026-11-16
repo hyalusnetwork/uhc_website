@@ -25,6 +25,94 @@ input::placeholder{color:#a9afb8}
 .ranking-mode-switch a{background:#303338;border:2px solid #62666e;border-bottom:5px solid #0b0c0e;box-shadow:inset 0 2px 0 #ffffff09}
 .ranking-mode-switch a:hover{background:#3d4249}
 .ranking-mode-switch a.active{background:#303d51;border-color:#a8c7ff;border-bottom-color:#526e97}
+.rankings-mode{position:relative;z-index:1;flex-wrap:wrap;margin:0 0 24px}
+.ranking-era-hero{
+ display:grid;align-content:center;grid-template-rows:max-content max-content calc(1lh + 8px);
+ min-height:250px;padding:clamp(20px,5vw,64px);margin-bottom:20px;
+ border:2px solid #62666e;border-bottom:5px solid #0b0c0e;background-color:#20262d;
+ background-image:var(--era-shade,linear-gradient(90deg,#101318f5,#14192388 55%,#14192315)),var(--era-image);
+ background-size:cover;
+ background-position:center,center 55%
+}
+.modern-era-hero{--era-image:url("images/player-grades-axolotl-pool.jpg")}
+#season-grades-panel[data-banner="1"] .modern-era-hero{--era-image:url("images/player-grades-lush-cave.webp")}
+#season-grades-panel[data-banner="2"] .modern-era-hero{
+ --era-image:url("images/player-grades-overworld.webp");
+ --era-shade:linear-gradient(90deg,#101318fa,#101318bc 35%,#10131824 70%,#1013180d)
+}
+#season-grades-panel[data-banner="3"] .modern-era-hero{
+ --era-image:url("images/player-grades-cherry-grove.jpg");
+ --era-shade:linear-gradient(90deg,#101318fa,#101318bc 35%,#10131824 70%,#1013180d)
+}
+#season-grades-panel[data-banner="4"] .modern-era-hero{--era-image:url("images/player-grades-cave.webp")}
+.classic-era-hero{
+ --era-image:url("images/classic-era-cave.webp");
+ --era-shade:linear-gradient(90deg,#101318f5,#101318bd 22%,#10131822 57%,#1013180d)
+}
+#player-rankings-panel[data-banner="1"] .classic-era-hero{--era-image:url("images/classic-era-cavern.webp")}
+.ranking-era-hero h1{margin:0;color:#f4f4f5}
+.ranking-era-hero .eyebrow{color:#a8c7ff}
+.ranking-era-hero .ranking-era-meta{margin:8px 0 0;color:#d1d9e6}
+.season-grade-toolbar{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 22px}
+.season-grade-toolbar .stats-subtabs{margin:0}
+.season-grade-toolbar .search{flex:1 1 190px;min-width:0}
+.season-grade-toolbar .search input{height:100%}
+#rankings-view .season-grade-toolbar :is(.stats-subtabs button,.search,#season-grade-help){height:42px}
+#season-grade-help{--control-face:#414d69;flex:none;font-size:11px}
+#season-grade-help [aria-hidden="true"]{margin-right:5px;color:#c3d8ff}
+#season-grade-dialog{
+ width:min(720px,calc(100% - 24px));max-height:calc(100dvh - 32px);padding:0;
+ color:var(--cream);background:#202328;border:2px solid #626c80;border-bottom:6px solid #101216;
+ box-shadow:0 16px 60px #000b
+}
+#season-grade-dialog::backdrop{background:#090b10bb}
+.grade-dialog-header{
+ display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+ padding:20px clamp(14px,4vw,28px);border-top:3px solid #a8c7ff;border-bottom:1px solid #555e70;
+ background:linear-gradient(115deg,#344563,#242831 74%)
+}
+.grade-dialog-header .eyebrow{margin:0 0 5px;color:#c3d8ff}
+.grade-dialog-header h2{margin:0;font-size:clamp(24px,5vw,36px)}
+.grade-dialog-header form{margin:0}
+.grade-dialog-body{padding:clamp(14px,4vw,28px);display:grid;gap:18px;font-size:14px;line-height:1.55}
+.grade-dialog-body h3{font-size:16px;margin:0 0 10px}
+.grade-dialog-body p{color:#c8cdd6;margin:12px 0 0}
+.grade-weight-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:8px;list-style:none;padding:0;margin:0}
+.grade-weight-list li{
+ display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:10px;
+ background:#2b3444;border:1px solid #59687f;border-bottom:3px solid #121720
+}
+.grade-weight-list strong{color:#c3d8ff;font-variant-numeric:tabular-nums}
+.grade-weight-track{grid-column:1/-1;height:5px;background:#151b24}
+.grade-weight-track i{display:block;height:100%;background:#a8c7ff}
+.grade-dialog-scoring{background:#181c23;border:1px solid #434c5c;padding:14px}
+.grade-dialog-scoring h3+p{margin:0}
+.grade-cutoffs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin:12px 0}
+.grade-cutoffs div{text-align:center;padding:5px 2px;background:#252a34;border:1px solid #485261}
+.grade-cutoffs dt{font-weight:750}
+.grade-cutoffs dd{margin:0;color:#c8cdd6;font-size:12px}
+.grade-dialog-body .grade-dialog-note{font-size:12px}
+.season-grade-table-wrap{overflow:auto;border:2px solid #62666e;border-bottom:5px solid #0b0c0e;background:#242629}
+#season-grade-table{width:100%;min-width:520px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+#season-grade-table :is(th,td){padding:11px 14px;text-align:left;white-space:nowrap;border-bottom:1px solid #474a4f}
+#season-grade-table thead th{padding:0}
+#season-grade-table thead button{display:block;width:100%;padding:11px 14px;border:0;background:transparent;color:inherit;font:inherit;text-align:inherit;cursor:pointer}
+#season-grade-table thead button:focus-visible{outline-offset:-3px}
+#season-grade-table thead button span{color:var(--muted);font-size:.8em}
+#season-grade-table th[aria-sort] button span{color:var(--cream)}
+#season-grade-table tbody tr{height:56px;line-height:16px}
+#season-grade-table tbody tr:nth-child(even){background:#1f2124}
+#season-grade-table tbody th{color:var(--cream)}
+#season-grade-table td small{display:block;color:var(--muted);margin-top:3px;line-height:14px}
+.season-grade-player{display:flex;align-items:center;gap:9px}
+.season-grade-player .face{width:22px;height:22px}
+.pr-tier-key>div{flex-wrap:wrap}
+.pr-influence-toggle{display:inline-flex;align-items:center;gap:6px;margin-left:7px;color:var(--cream);font-size:12px;cursor:pointer}
+.pr-influence-toggle input{width:16px;height:16px;flex:none;margin:0;accent-color:#a9c9ff;cursor:pointer}
+#pr-result-count{margin-inline-start:9px;white-space:nowrap;font-size:11px}
+@media(max-width:560px){
+ .ranking-era-hero{min-height:185px;grid-template-rows:max-content max-content calc(2lh + 8px)}
+}
 :is(.pr-podium-card,.trivia-featured){box-shadow:0 4px 0 #08090b,inset 0 2px 0 #ffffff0c}
 .trophy{background:#202225;border-top-color:#5d626b}
 :is(.tooltip,.chart-tooltip){border:2px solid #7c879a;background:#202329;box-shadow:4px 4px 0 #000b;border-radius:0}
@@ -508,7 +596,7 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .trophy-hover-hint{display:none}
 @media(hover:hover) and (pointer:fine){.trophy-hover-hint{display:inline}.trophy-tap-hint{display:none}}
 .profile-primary .trophy-grid{gap:8px}
-.profile-primary .trophy-tile,.ranking-index-tile,.career-tabs button,#stats-view :is(.stats-mode,.stats-subtabs) button,#team-rankings-panel .ranking-bevel,.ore-select-bevel{
+.profile-primary .trophy-tile,.ranking-index-tile,.career-tabs button,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button,#rankings-view .ranking-bevel,.ore-select-bevel{
  position:relative;isolation:isolate;
  background:color-mix(in srgb,var(--trophy-color) 66%,#101218);
  border:2px solid color-mix(in srgb,var(--trophy-color) 45%,#090a0c);
@@ -517,14 +605,14 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .profile-primary .trophy-tile{
  padding:12px 8px 18px;min-height:120px;align-content:center;gap:6px
 }
-.profile-primary .trophy-tile::before,.ranking-index-tile::before,.career-tabs button::before,#stats-view :is(.stats-mode,.stats-subtabs) button::before,#team-rankings-panel .ranking-bevel::before,.ore-select-bevel::before{
+.profile-primary .trophy-tile::before,.ranking-index-tile::before,.career-tabs button::before,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button::before,#rankings-view .ranking-bevel::before,.ore-select-bevel::before{
  content:'';position:absolute;inset:0 0 6px;z-index:-1;pointer-events:none;
  background:linear-gradient(180deg,color-mix(in srgb,var(--trophy-color) 91%,white),var(--trophy-color));
  box-shadow:inset 0 0 0 2px #ffffff38;
  transition:filter .1s ease
 }
-@media(hover:hover){.profile-primary .trophy-tile:hover::before,.ranking-index-tile:hover::before,.career-tabs button:hover::before,#stats-view :is(.stats-mode,.stats-subtabs) button:hover::before,#team-rankings-panel .ranking-bevel:hover::before,.ore-select-bevel:hover::before{filter:brightness(1.16)}}
-.profile-primary .trophy-tile:focus-visible,.ranking-index-tile:focus-visible,.career-tabs button:focus-visible,#stats-view :is(.stats-mode,.stats-subtabs) button:focus-visible,#team-rankings-panel .ranking-bevel:focus-visible{outline:2px solid #dbe8ff;outline-offset:2px}
+@media(hover:hover){.profile-primary .trophy-tile:hover::before,.ranking-index-tile:hover::before,.career-tabs button:hover::before,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button:hover::before,#rankings-view .ranking-bevel:hover::before,.ore-select-bevel:hover::before{filter:brightness(1.16)}}
+.profile-primary .trophy-tile:focus-visible,.ranking-index-tile:focus-visible,.career-tabs button:focus-visible,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button:focus-visible,#rankings-view .ranking-bevel:focus-visible{outline:2px solid #dbe8ff;outline-offset:2px}
 .trophy-tile img,.trophy-dialog-header img{filter:drop-shadow(1px 0 #14151a99) drop-shadow(-1px 0 #14151a99) drop-shadow(0 2px #14151ab0)}
 .trophy-tile strong{text-shadow:0 1px 2px #000}
 .profile-primary .trophy-tile small{display:none}
@@ -541,17 +629,17 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .trophy-count{position:absolute;right:8px;bottom:12px;color:inherit;font:700 12px Consolas,monospace;text-shadow:1px 1px #111318;pointer-events:none}
 .trophy-earned{display:block;margin-top:4px;color:var(--cream);font-size:12px;font-weight:400}
 
-.career-tabs button,#stats-view :is(.stats-mode,.stats-subtabs) button,#team-rankings-panel .ranking-bevel{--trophy-color:var(--control-face,#394454);color:#f5f7fa;font-weight:600;padding:7px 12px 13px}
-.career-tabs button[aria-selected="true"],#stats-view :is(.stats-mode,.stats-subtabs) button[aria-pressed="true"]{--trophy-color:#a8c7ff;color:#101c2c}
-.profile-primary .trophy-tile,.ranking-index-tile,.career-tabs button,#stats-view :is(.stats-mode,.stats-subtabs) button,#team-rankings-panel .ranking-bevel{transition:transform .08s ease-out}
-.profile-primary .trophy-tile:active,.ranking-index-tile:active,.career-tabs button:active,#stats-view :is(.stats-mode,.stats-subtabs) button:active,#team-rankings-panel .ranking-bevel:active{transform:translateY(2px)}
-.profile-primary .trophy-tile:active::before,.ranking-index-tile:active::before,.career-tabs button:active::before,#stats-view :is(.stats-mode,.stats-subtabs) button:active::before,#team-rankings-panel .ranking-bevel:active::before{bottom:4px}
-@media(prefers-reduced-motion:reduce){.profile-primary .trophy-tile,.profile-primary .trophy-tile::before,.ranking-index-tile,.ranking-index-tile::before,.career-tabs button,#stats-view :is(.stats-mode,.stats-subtabs) button,#team-rankings-panel .ranking-bevel,.career-tabs button::before,#stats-view :is(.stats-mode,.stats-subtabs) button::before,#team-rankings-panel .ranking-bevel::before{transition:none}}
+.career-tabs button,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button,#rankings-view .ranking-bevel{--trophy-color:var(--control-face,#394454);color:#f5f7fa;font-weight:600;padding:7px 12px 13px}
+.career-tabs button[aria-selected="true"],:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button[aria-pressed="true"]{--trophy-color:#a8c7ff;color:#101c2c}
+.profile-primary .trophy-tile,.ranking-index-tile,.career-tabs button,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button,#rankings-view .ranking-bevel{transition:transform .08s ease-out}
+.profile-primary .trophy-tile:active,.ranking-index-tile:active,.career-tabs button:active,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button:active,#rankings-view .ranking-bevel:active{transform:translateY(2px)}
+.profile-primary .trophy-tile:active::before,.ranking-index-tile:active::before,.career-tabs button:active::before,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button:active::before,#rankings-view .ranking-bevel:active::before{bottom:4px}
+@media(prefers-reduced-motion:reduce){.profile-primary .trophy-tile,.profile-primary .trophy-tile::before,.ranking-index-tile,.ranking-index-tile::before,.career-tabs button,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button,#rankings-view .ranking-bevel,.career-tabs button::before,:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button::before,#rankings-view .ranking-bevel::before{transition:none}}
 
-#stats-view :is(.stats-mode,.stats-subtabs) button{white-space:normal}
+:is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button{white-space:normal}
 .ore-select-bevel{--trophy-color:var(--control-face,#394454);display:inline-flex;transition:transform .08s ease-out}
-:is(#player-sort,#ranking-filter,#ranking-order),:is(#player-sort,#ranking-filter,#ranking-order):hover{display:block;height:40px;padding-bottom:6px;background:transparent;border:0;box-shadow:none;color:#f5f7fa;cursor:pointer}
-:is(#player-sort,#ranking-filter,#ranking-order) option{background:#394454;color:#f5f7fa}
+:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order),:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order):hover{display:block;height:40px;padding-bottom:6px;background:transparent;border:0;box-shadow:none;color:#f5f7fa;cursor:pointer}
+:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order) option{background:#394454;color:#f5f7fa}
 .ore-select-bevel:has(select:active){transform:translateY(2px)}
 .ore-select-bevel:has(select:active)::before{bottom:4px}
 @media(prefers-reduced-motion:reduce){.ore-select-bevel,.ore-select-bevel::before{transition:none}}

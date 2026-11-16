@@ -80,7 +80,7 @@ for(const [name,[dealt,taken,pveHealthLost]] of Object.entries(damage.players)){
  }
  damageByPlayer.set(identity(player.name),{...totals,breakdown,regained:regained/2,regainedLowerBound:!player.type});
 }
-for(const p of output.profiles){
+for(const p of output.allPlayers){
  const game=p.history.find(h=>h.season===damage.season);
  if(game&&damageByPlayer.has(p.name))game.damage=damageByPlayer.get(p.name);
 }
@@ -128,7 +128,11 @@ fs.writeFileSync('dist/stats-data.js','window.UHC_STATS = '+JSON.stringify(stats
 const {buildRankings}=require('./rankings-engine.cjs');
 fs.writeFileSync('dist/rankings-data.js','window.UHC_RANKINGS = '+JSON.stringify(buildRankings(window.UHC_DATA,output))+';\n');
 const {buildPlayerRankings}=require('./player-rankings-engine.cjs');
-const playerRankings=buildPlayerRankings(output,window.UHC_DATA);
+const historicalSeasons=window.UHC_DATA.filter(season=>season.id<=36);
+const historicalProfiles=buildProfiles(historicalSeasons,bios,specials);
+const playerRankings=buildPlayerRankings(historicalProfiles,historicalSeasons);
+const {buildSeasonGrades}=require('./season-grades.cjs');
+playerRankings.seasonGrades=buildSeasonGrades(output,window.UHC_DATA,[damage.season]);
 fs.writeFileSync('dist/player-rankings-data.js','window.UHC_PLAYER_RANKINGS = '+JSON.stringify(playerRankings)+';\n');
 if(fs.existsSync('trivia-document-reference.json')&&fs.existsSync('trivia-records-reference.json')){
  const {buildTrivia}=require('./trivia-engine.cjs');

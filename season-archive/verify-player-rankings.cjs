@@ -30,7 +30,9 @@ assert.equal(exits.players.find(p=>p.name==='Late').outlastRate,1);
 assert.equal(exits.players.find(p=>p.name==='Survivor').otherTimedDeaths,10);
 const w={};vm.runInNewContext(fs.readFileSync('dist/player-rankings-data.js','utf8'),{window:w});
 const profiles={};vm.runInNewContext(fs.readFileSync("dist/profiles.js","utf8"),{window:profiles});
-assert.equal(w.UHC_PLAYER_RANKINGS.players.length,profiles.UHC_PROFILES.profiles.length);
+const historicalProfiles=profiles.UHC_PROFILES.profiles.filter(p=>p.history.filter(h=>h.season<=36).length>=5);
+assert.equal(w.UHC_PLAYER_RANKINGS.players.length,historicalProfiles.length);
+assert(w.UHC_PLAYER_RANKINGS.players.every(p=>p.history.every(h=>h.season<=36)));
 for(const p of w.UHC_PLAYER_RANKINGS.players){assert(p.games>=5);assert(p.score>=0&&p.score<=100);assert(p.penalty>=0&&p.penalty<=20);assert.equal(p.killsPerGame,p.kills/p.games);assert.equal(p.winRate,p.wins/p.games);for(const c of Object.values(p.components)){assert(c.points>=0&&c.points<=c.weight);assert.equal(c.tier,tier(c.points/c.weight*100));}}
 assert(w.UHC_PLAYER_RANKINGS.players.find(p=>p.name==='Happy_Guy555').aliases.includes('arecue'));
 console.log('Passed: five-game boundary, rates, weighted components, Team Kill deductions, tier cutoffs, aliases and all generated player scores.');
