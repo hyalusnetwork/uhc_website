@@ -10,6 +10,12 @@ bios.push({
  cells:[{value:'Formerly Known As: ButterWarriorYT'}]
 });
 bios.push({name:'Wheellerr',cells:[{value:'Formerly Known As: Wheelin_n_Dealin'}]});
+const misrok=bios.find(b=>b.name==='Misrok');
+if(misrok){
+ const cell=misrok.cells.find(c=>String(c.value).startsWith('Formerly Known As:'));
+ if(!cell)misrok.cells.push({value:'Formerly Known As: FaithInChrist'});
+ else if(!/\bFaithInChrist\b/i.test(cell.value))cell.value+=', FaithInChrist';
+}else bios.push({name:'Misrok',cells:[{value:'Formerly Known As: FaithInChrist'}]});
 const output=buildProfiles(window.UHC_DATA,bios,specials);
 const damage=read('season-37-damage.json');
 const roster=window.UHC_DATA.find(s=>s.id===damage.season).players;
@@ -38,25 +44,58 @@ for(let i=2;i<oreRows.length&&oreRows[i][0]!=='Total';i+=2){
  }
 }
 const participant=name=>roster.find(p=>identity(p.name)===identity(reportNames[name]||name));
+const heartHits=read('season-37-heart-damage.json');
 const damageByPlayer=new Map();
 for(const [name,[dealt,taken,pveHealthLost]] of Object.entries(damage.players)){
- const player=participant(name);
- if(!player)throw Error('Unknown damage report player: '+name);
- const teammateHits=damage.hits.filter(hit=>{
-   if(hit.attacker!==name)return false;
-   const target=participant(hit.target);
-   if(!target)throw Error('Unknown damage report target: '+hit.target);
-   return target!==player&&player.color&&target.color===player.color;
- });
- damageByPlayer.set(identity(player.name),{
-   dealt:dealt/2,taken:taken/2,pve:pveHealthLost/2,
-   friendly:teammateHits.reduce((sum,h)=>sum+h.points/2,0),
-   teammates:teammateHits.map(h=>({name:participant(h.target).name,hearts:h.points/2}))
- });
+ const player=participant(name),regained=damage.healthRegained[name];
+ if(!player||!Number.isFinite(regained)||regained<0)throw Error('Invalid damage report for '+name);
+ const totals={red:{},yellow:{}},breakdown={};
+ const pvp=h=>h.attacker&&h.attacker!==h.target;
+ const friendly=(h,other)=>pvp(h)&&!!player.color&&participant(other)?.color===player.color;
+ const cols={
+   dealt:[h=>pvp(h)&&h.attacker===name,h=>h.target],
+   taken:[h=>pvp(h)&&h.target===name,h=>h.attacker],
+   pve:[h=>!pvp(h)&&h.target===name,h=>h.source&&h.source!==name?h.source:h.type],
+   friendlyDealt:[h=>h.attacker===name&&friendly(h,h.target),h=>h.target],
+   friendlyTaken:[h=>h.target===name&&friendly(h,h.attacker),h=>h.attacker]
+ };
+ for(const [field,[matches,group]] of Object.entries(cols)){
+   const entries=new Map();
+   totals.red[field]=totals.yellow[field]=0;
+   for(const h of heartHits.filter(matches)){
+     const red=h.red/2,yellow=h.yellow/2;
+     if(red+yellow<=0)continue;
+     const label=field==='pve'?group(h):identity(participant(group(h))?.name||group(h));
+     if(!entries.has(label))entries.set(label,{name:label,red:0,yellow:0,sources:new Set()});
+     const entry=entries.get(label);
+     entry.red+=red;entry.yellow+=yellow;entry.sources.add(h.type);
+     totals.red[field]+=red;totals.yellow[field]+=yellow;
+   }
+   breakdown[field]=[...entries.values()].sort((a,b)=>(b.red+b.yellow)-(a.red+a.yellow)||a.name.localeCompare(b.name))
+     .map(entry=>({...entry,sources:[...entry.sources].sort()}));
+ }
+ for(const [field,expected] of [['dealt',dealt],['taken',taken],['pve',pveHealthLost]]){
+   const actual=totals.red[field]+(field==='pve'?0:totals.yellow[field]);
+   if(Math.abs(actual-expected/2)>1e-5)throw Error('Damage split mismatch: '+name+' '+field);
+ }
+ damageByPlayer.set(identity(player.name),{...totals,breakdown,regained:regained/2,regainedLowerBound:!player.type});
 }
 for(const p of output.profiles){
  const game=p.history.find(h=>h.season===damage.season);
  if(game&&damageByPlayer.has(p.name))game.damage=damageByPlayer.get(p.name);
+}
+// Optional per-season, per-player totals by potion type (drunk or splashed upon).
+const potionReports=fs.existsSync('potion-breakdowns.json')?read('potion-breakdowns.json'):{};
+for(const p of output.allPlayers)for(const game of p.history){
+ const total=game.metrics?.[2];
+ const report=potionReports[game.season]?.[p.name]??(game.season===37&&total>0?{Regeneration:total}:null);
+ if(!report)continue;
+ const entries=Object.entries(report);
+ if(entries.some(([name,count])=>!name.trim()||!Number.isInteger(count)||count<0))throw Error('Invalid potion breakdown: '+p.name+' S'+game.season);
+ const reported=entries.reduce((n,[,count])=>n+count,0);
+ if(total!=null&&reported>total)throw Error('Potion breakdown exceeds total: '+p.name+' S'+game.season);
+ if(total==null){game.metrics??=Array(6).fill(null);game.metrics[2]=reported;}
+ game.potionBreakdown=Object.fromEntries(entries.filter(([,count])=>count>0));
 }
 const {buildStats}=require('./stats-engine.cjs');
 const stats=buildStats(window.UHC_DATA,output);

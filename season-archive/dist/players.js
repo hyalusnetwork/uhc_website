@@ -52,18 +52,22 @@ function playerCards(){
 function killChart(p){
   const w=760,h=230,left=42,right=42,top=22,bottom=35,cw=w-left-right,ch=h-top-bottom,n=seasons.length;
   const best=Math.max(1,p.bestKills),total=Math.max(1,p.kills);let cumulative=0;const points=[];
-  const bars=seasons.map((s,i)=>{const record=p.history.find(r=>r.season===s.id),k=record?.kills||0;cumulative+=k;const x=left+(i+.5)*cw/n;const lineY=top+ch-cumulative/total*ch;points.push(`${x},${lineY}`);return `<g tabindex="0" data-chart-tip="${escape(`Season ${s.id}\n${record ? `${k} PVP kills` : `Did not play`}\n${cumulative} career PVP kills`)}" aria-label="Season ${s.id}: ${record?k+' kills, '+cumulative+' career kills':'did not play'}"><rect x="${x-cw/n*.32}" y="${top+ch-k/best*ch}" width="${cw/n*.64}" height="${Math.max(1,k/best*ch)}" fill="${record?'#85b8ff':'#393e48'}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/><circle class="career-kill-point" cx="${x}" cy="${lineY}" r="6" fill="#f2bc79" aria-hidden="true"/></g>`;}).join('');
+  const bars=seasons.map((s,i)=>{const record=p.history.find(r=>r.season===s.id),k=record?.kills||0;cumulative+=k;const victims=k?s.players.filter(v=>v.type==='PVP'&&profileIdentity(v.result)===p.name&&profileIdentity(v.name)!==p.name).map(v=>profileIdentity(v.name)):[];
+  const teamColor=record?(s.teamSize!==1&&record.color!=='Solo'&&colors[record.color])||'#737e8d':'#393e48';
+  const killTip={season:s.id,k,cumulative,played:!!record,victims};const x=left+(i+.5)*cw/n;const lineY=top+ch-cumulative/total*ch;points.push(`${x},${lineY}`);return `<g class="kill-bar" tabindex="0" style="--team-color:${teamColor}" data-kill-tip="${escape(JSON.stringify(killTip))}" data-chart-tip="${escape(`Season ${s.id}\n${record ? `${k} PVP kills` : `Did not play`}\n${cumulative} career PVP kills`)}" aria-label="Season ${s.id}: ${record?k+' kills, '+cumulative+' career kills':'did not play'}"><rect x="${x-cw/n*.32}" y="${top+ch-k/best*ch}" width="${cw/n*.64}" height="${Math.max(1,k/best*ch)}" fill="${teamColor}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/><circle class="career-kill-point" cx="${x}" cy="${lineY}" r="6" fill="#f2bc79" aria-hidden="true"/></g>`;}).join('');
   const grid=[0,.5,1].map(f=>`<line x1="${left}" x2="${w-right}" y1="${top+ch-f*ch}" y2="${top+ch-f*ch}"/><text x="${left-10}" y="${top+ch-f*ch+4}" text-anchor="end">${best*f}</text><text x="${w-right+10}" y="${top+ch-f*ch+4}">${total*f}</text>`).join('');
   return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="PVP kills per season and cumulative career kills for ${escape(p.name)}" class="profile-chart">${grid}${bars}<polyline points="${points.join(' ')}" fill="none" stroke="#f2bc79" stroke-width="2.5"/></svg>`;
 }
 function survivalChart(p){
   const w=760,h=200,left=42,right=20,top=15,bottom=35,cw=w-left-right,ch=h-top-bottom;
-  const bars=seasons.map((s,i)=>{const r=p.history.find(r=>r.season===s.id),x=left+(i+.5)*cw/seasons.length;const available=r?.outlivedAvailable,val=available?r.outlivedPercent:0;return `<g tabindex="0" data-chart-tip="${escape(`Season ${s.id}\n${!r ? `Did not play` : available ? `${val}% of other participants outlived` : `Exit time unavailable`}${r ? `\nTeam: ${r.team}` : ``}`)}" aria-label="Season ${s.id}: ${!r?'did not play':available?val+' percent of other participants outlived':'exit time unavailable'}"><rect x="${x-5}" width="10" y="${top+ch-val/100*ch}" height="${Math.max(2,val/100*ch)}" fill="${available?'#9fc5e8':'#3b4338'}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/></g>`;}).join('');
+  const bars=seasons.map((s,i)=>{const r=p.history.find(r=>r.season===s.id),x=left+(i+.5)*cw/seasons.length;const available=r?.outlivedAvailable,val=available?r.outlivedPercent:0;
+  const team=available&&s.teamSize!==1&&r.color!=='Solo'?colors[r.color]:null;
+  return `<g class="outlast-bar" tabindex="0" style="--team-color:${team||'#737e8d'}" data-chart-tip="${escape(`Season ${s.id}\n${!r ? `Did not play` : available ? `${val}% of other participants outlived` : `Exit time unavailable`}${r ? `\nTeam: ${r.team}` : ``}`)}" aria-label="Season ${s.id}: ${!r?'did not play':available?val+' percent of other participants outlived':'exit time unavailable'}"><rect x="${x-5}" width="10" y="${top+ch-val/100*ch}" height="${Math.max(2,val/100*ch)}" fill="${available?team||'#737e8d':'#393e48'}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/></g>`;}).join('');
   return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Percentage of other players outlived each season" class="profile-chart">${[0,50,100].map(v=>`<line x1="${left}" x2="${w-right}" y1="${top+ch-v/100*ch}" y2="${top+ch-v/100*ch}"/><text x="${left-8}" y="${top+ch-v/100*ch+4}" text-anchor="end">${v}%</text>`).join('')}${bars}</svg>`;
 }
 function teamColorChart(p){
   const percent=c=>c.percent.toFixed(1)+'%';
-  return `<section class="profile-section team-color-section"><div class="profile-section-title"><div><p class="eyebrow">THE COLORS OF A CAREER</p><h2>Team colors<span>.</span></h2></div><span>${p.games} recorded games</span></div><div class="team-color-bar" aria-label="Team color distribution">${p.teamColors.map(c=>`<button class="team-color-segment ${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}flex:${c.count};--team-color:${colors[c.color]||'#798372'};background:var(--team-color)" data-chart-tip="${escape(`${teamDisplayName(c.color)}\n${c.count} of ${p.games} games · ${percent(c)}\nSeasons: ${c.seasons.map(s=>'S'+s).join(', ')}`)}" aria-label="${escape(teamDisplayName(c.color))}: ${c.count} games, ${percent(c)}">${c.percent>=12?`<span>${percent(c)}</span>`:''}</button>`).join('')}</div><div class="team-color-key">${p.teamColors.map(c=>`<span><i class="${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}background:${colors[c.color]||'#798372'}"></i><b>${escape(teamDisplayName(c.color))}</b> ${percent(c)} <small>(${c.count})</small></span>`).join('')}</div><p class="chart-caption">Share of games played on each recorded color. Hover, focus, or tap a segment for its seasons.</p></section>`;
+  return `<section class="profile-section team-color-section"><div class="profile-section-title"><div><p class="eyebrow">THE COLORS OF A CAREER</p><h2>Team colors<span>.</span></h2></div><span>${p.games} recorded games</span></div><div class="team-color-bar" aria-label="Team color distribution">${p.teamColors.map(c=>`<button data-team-color="${escape(c.color)}" class="team-color-segment ${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}flex:${c.count};--team-color:${colors[c.color]||'#798372'};background:var(--team-color)" data-chart-tip="${escape(`${teamDisplayName(c.color)}\n${c.count} of ${p.games} games · ${percent(c)}\nSeasons: ${c.seasons.map(s=>'S'+s).join(', ')}`)}" aria-label="${escape(teamDisplayName(c.color))}: ${c.count} games, ${percent(c)}">${c.percent>=12?`<span>${percent(c)}</span>`:''}</button>`).join('')}</div><div class="team-color-key">${p.teamColors.map(c=>`<span><i class="${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}background:${colors[c.color]||'#798372'}"></i><b>${escape(teamDisplayName(c.color))}</b> ${percent(c)} <small>(${c.count})</small></span>`).join('')}</div><p class="chart-caption">Share of games played on each recorded color. Hover, focus, or tap a segment for its seasons.</p></section>`;
 }
 let activeChartTarget,chartTooltipHideTimer;
 function deferChartTooltipHide(){clearTimeout(chartTooltipHideTimer);chartTooltipHideTimer=setTimeout(hideChartTooltip,100);}
@@ -85,6 +89,21 @@ function displayChartTooltip(target,event){
     const info=JSON.parse(target.dataset.deathTip),accent=colors[info.color]||'#a3ad9e';
     tip.style.setProperty('--tip-team',accent);
     tip.innerHTML=`<div class="death-tip-heading"><strong>Season ${info.season}</strong><span>${escape(teamDisplayName(info.color))}</span></div><div class="death-tip-interval">${duration(info.start)}–${duration(info.end)}</div><div class="death-tip-count">${info.players.length} recorded death${info.players.length===1?'':'s'}</div><ul class="death-tip-players">${info.players.map(name=>'<li>'+escape(name)+'</li>').join('')}</ul>`;
+  }else if(target.dataset.killTip){
+    tip.style.removeProperty('--tip-team');
+    const {season,k,cumulative,played,victims}=JSON.parse(target.dataset.killTip);
+    tip.innerHTML=`<strong>Season ${season}</strong><div class="kill-tip-season"><span>${played?k+' PVP kills':'Did not play'}</span>${victims.map(name=>`<span role="img" aria-label="${escape(name)}">${playerFace(name)}</span>`).join('')}</div><div>${cumulative} career PVP kills</div>`;
+  }else if(target.matches('.outlast-bar')){
+    tip.style.removeProperty('--tip-team');
+    const [heading,...details]=target.dataset.chartTip.replace(/\\n/g,'\n').split('\n');
+    tip.innerHTML='<strong>'+escape(heading)+'</strong>'+details.map(line=>'<div>'+escape(line)+'</div>').join('');
+  }else if(target.dataset.damageTip){
+    tip.style.removeProperty('--tip-team');
+    tip.innerHTML=damageTooltip(JSON.parse(target.dataset.damageTip));
+  }else if(target.dataset.potionTip){
+    tip.style.removeProperty('--tip-team');
+    const {season,parts}=JSON.parse(target.dataset.potionTip);
+    tip.innerHTML=`<strong>Season ${season} · Potions</strong><ul class="potion-tip-list">${parts.map(p=>`<li>${potionTypeIcon(p)}<span>${escape(p.name)}</span><b>${p.count}</b></li>`).join('')}</ul>`;
   }else{tip.style.removeProperty('--tip-team');tip.textContent=target.dataset.chartTip.replace(/\\n/g,'\n');}
   tip.hidden=false;target.setAttribute('aria-describedby','chart-tooltip');
   const viewport=window.visualViewport,margin=10;
@@ -196,7 +215,7 @@ function trophyImage(icon){
 }
 const trophyColors={"apple":"#96691c","golden-apple":"#96691c","enchanted-apple":"#794aab","crown":"#956a20","golden-sword":"#8d671b","diamond-block":"#267d83","diamond-chestplate":"#237b83","diamond-sword":"#23787b","diamond":"#267d83","diamond-ore":"#306b74","trident":"#386d68","creeper":"#507b36","ender-eye":"#477d5b","ender-pearl":"#327269","blaze-powder":"#a44d16","slime-ball":"#507b36","lava-bucket":"#9b461f","lightning":"#9a553e","tnt":"#953e3d","rocket-science":"#883c54","bow":"#795331","crossbow":"#745840","raw-gold":"#916823","gold-ore":"#796034","potion":"#7c498d","wind-charge":"#466e87","hardcore-heart-full":"#8c4149","hardcore-heart-half":"#8c4149"};
 const trophyColor=icon=>trophyColors[icon]||'#53647e';
-const trophyDescriptions={"victor":"Win a season with your team.","ironman":"Be the last player to take damage.","perfect-ironman":"Finish a season without taking damage.","crown":"Claim the Crown.","top-fragger":"Tie or lead the season in PVP kills.","first-blood":"Get the first PVP kill of the season.","final-boss":"Be the final player killed in PVP.","team-wipe":"Personally eliminate an entire opposing team.","first-impression":"Get a PVP kill in your debut season.","sharpshooter":"Get at least two ranged kills in one match.","multiple-fire-kills":"Get at least two PVP kills using burn damage in one match.","triple-threat":"Win with a PVP kill and Ironman.","grand-slam":"Win with a PVP kill, Ironman, and the Crown at the end.","bounce-back":"Take first damage and still win.","phoenix":"Win after every teammate dies to PVE.","overpowered":"Eat an Enchanted Golden Apple.","lightning":"Get struck by lightning.","rocket-science":"Fire a firework from a crossbow.","the-end":"Enter the End."};
+const trophyDescriptions={"victor":"Win a season with your team.","ironman":"Be the last player to take damage.","perfect-ironman":"Finish a season without taking damage.","crown":"Claim the Crown.","top-fragger":"Tie or lead the season in PVP kills.","first-blood":"Get the first PVP kill of the season.","final-boss":"Be the final player killed in PVP.","team-wipe":"Personally eliminate an entire opposing team.","first-impression":"Get a PVP kill, win, earn Ironman, or acquire the Crown in your debut season.","sharpshooter":"Get at least two ranged kills in one match.","multiple-fire-kills":"Get at least two PVP kills using burn damage in one match.","triple-threat":"Win with a PVP kill and Ironman.","grand-slam":"Win with a PVP kill, Ironman, and the Crown at the end.","bounce-back":"Take first damage and still win.","phoenix":"Win after every teammate dies to PVE.","overpowered":"Eat an Enchanted Golden Apple.","lightning":"Get struck by lightning.","rocket-science":"Fire a firework from a crossbow.","the-end":"Enter the End."};
 function trophyDescription(t){return trophyDescriptions[t.key]||(t.key.startsWith('multiple-')?'Get at least two PVP kills of this type in one match.':t.events[0].detail);}
 function bindTrophyDialog(root,trophies){
   const dialog=document.createElement('dialog');
@@ -259,12 +278,45 @@ const profileSidebarObserver=new ResizeObserver(entries=>{
 const careerTabs=['Kills','Damage','Percent Outlasted','Ores Mined','Items Used','Teammates'];
 const heartNumber=new Intl.NumberFormat('en',{maximumFractionDigits:2});
 function damageHearts(value){
-  const preview=value>0?trophyImage('hardcore-heart-full'):'';
-  return '<span class="damage-value">'+heartNumber.format(value)+(preview?' <span class="damage-heart-preview" aria-hidden="true">'+preview+'</span>':'')+'</span>';
+  return '<span class="damage-value">'+heartNumber.format(value)+'</span>';
 }
-const pveDamageTooltip='Only regular hearts lost count. Absorption hearts are excluded.';
-function careerTable(caption,headings,games,row){
-  return '<div class="table-wrap"><table class="career-table damage-table" aria-label="'+escape(caption)+'"><thead><tr><th scope="col">Season</th>'+headings.map(h=>h==='PvE taken'?'<th scope="col" title="'+pveDamageTooltip+'">PvE taken</th>':'<th scope="col">'+h+'</th>').join('')+'</tr></thead><tbody>'+games.map(g=>'<tr><th scope="row"><a href="#season-'+g.season+'">S'+g.season+'</a></th>'+row(g).map((value,i)=>'<td'+(headings[i]==='PvE taken'?' title="'+pveDamageTooltip+'"':'')+'>'+value+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+const damageSources={
+  arrow:['Arrow','arrow'],player_attack:['Melee','sword'],player_explosion:['Explosion','tnt'],spear:['Spear','iron-spear'],
+  thorns:['Thorns','armor'],ender_pearl:['Ender Pearl','ender-pearl'],fall:['Fall Damage','feather'],
+  freeze:['Freezing','ice-ball'],in_wall:['Suffocation','cobblestone'],lava:['Lava','lava-bucket'],
+  on_fire:['Fire','magma-cream'],stalagmite:['Stalagmite','pointed-dripstone'],mob_attack:['Mob attack','sword']
+};
+const damageColumns={dealt:'PvP Dealt',taken:'PvP Taken',pve:'PvE Taken',friendlyDealt:'Friendly Fire Dealt',friendlyTaken:'Friendly Fire Taken'};
+const damageSource=type=>damageSources[type]||[type.replaceAll('_',' '),'sword'];
+function damageTooltip({season,field,entries}){
+  const pve=field==='pve';
+  return `<strong>S${season} · ${damageColumns[field]}</strong>${entries.length?`<ul class="damage-tip-list${pve?' damage-tip-pve':''}">${entries.map(e=>{
+    const name=pve?(damageSources[e.name]?.[0]||e.name):e.name;
+    const statsName=e.name==='fall'?'Falling':name;
+    const icon=pve?(statsName==='Freezing'?trophyImage('ice-ball'):pveIcon(statsName)):playerFace(name);
+    const sources=e.sources.map(type=>{const [label,icon]=damageSource(type);return `<span class="damage-tip-source">${trophyImage(icon)} ${escape(label)}</span>`;}).join(', ');
+    const match=pve?null:seasons.find(s=>s.id===season);
+    const member=match?.players.find(r=>profileIdentity(r.name)===name);
+    const team=match?.teamSize!==1&&member?.color!=='Solo'?colors[member?.color]:null;
+    return `<li${team?` class="damage-tip-team" style="--damage-team:${team}"`:''}><span class="damage-tip-icon">${icon}</span><span>${escape(name)}</span><span class="damage-tip-values">${heartNumber.format(e.red)} ${trophyImage('damage-red-heart')} · ${heartNumber.format(e.yellow)} ${trophyImage('damage-yellow-heart')}</span>${pve?'':`<span class="damage-tip-sources">(${sources})</span>`}</li>`;
+  }).join('')}</ul>`:'<div>No damage recorded.</div>'}`;
+}
+function damageTable(games){
+  const headings=['Season','Hearts','PvP dealt','PvP taken','PvE taken','Health regained','Friendly Fire Dealt','Friendly Fire Taken'];
+  return `<div class="table-wrap"><table class="career-table damage-table" aria-label="Damage by season: red health and yellow absorption hearts"><thead><tr>${headings.map(h=>'<th scope="col">'+h+'</th>').join('')}</tr></thead>${games.map(g=>{
+    const d=g.damage;
+    const line=kind=>{
+      const isRed=kind==='red',stats=d[kind];
+      const healing=isRed?(d.regained==null?'—':damageHearts(d.regained)):'<span title="Absorption is not health regained">—</span>';
+      const label=isRed?'Red hearts':'Yellow absorption hearts';
+      const cell=field=>{
+        const value=stats[field],summary=damageColumns[field]+' · '+label+': '+heartNumber.format(value);
+        return `<td ${chartTip(summary)} data-damage-tip="${escape(JSON.stringify({season:g.season,field,entries:d.breakdown?.[field]||[]}))}">${damageHearts(value)}</td>`;
+      };
+      return `<tr class="damage-row-${kind}">${isRed?'<th scope="rowgroup" rowspan="2"><a href="#season-'+g.season+'">S'+g.season+'</a></th>':''}<th scope="row" title="${label}"><span class="damage-heart-preview">${trophyImage(isRed?'damage-red-heart':'damage-yellow-heart')}</span><span class="sr-only">${label}</span></th>${cell('dealt')}${cell('taken')}${cell('pve')}<td>${healing}</td>${cell('friendlyDealt')}${cell('friendlyTaken')}</tr>`;
+    };
+    return '<tbody>'+line('red')+line('yellow')+'</tbody>';
+  }).join('')}</table></div>`;
 }
 function careerContent(p,index){
   if(index===0)return '<h3 class="chart-subheading">PvP kills by season and career total</h3><div class="chart-legend"><span class="chart-bar">PvP kills · left axis</span><span class="chart-line">Career kills · right axis</span></div>'+killChart(p)+'<p class="chart-caption">Hover or focus a bar for details. Grey marks an unplayed season.</p>';
@@ -272,16 +324,26 @@ function careerContent(p,index){
   if(index===1){
     const games=p.history.filter(g=>g.damage);
     if(!games.length)return '<p class="chart-caption">No damage data available for this player. The supplied damage report covers Season 37.</p>';
-    return careerTable('Damage in hearts. PvP totals include absorption and friendly fire. PvE counts only regular health lost.', ['PvP dealt','PvP taken','PvE taken','Friendly fire dealt','Teammates hit'],games,g=>{
-      const d=g.damage;
-      return [d.dealt,d.taken,d.pve,d.friendly].map(damageHearts).concat(d.teammates.map(t=>escape(t.name)+' ('+damageHearts(t.hearts)+')').join(', ')||'—');
-    });
+    return damageTable(games);
   }
   if(index===5)return careerTeammates(p);
   return careerMetricCharts(p,index===3?oreMetrics:miscMetrics);
 }
 const oreMetrics=[['Diamond Ore','diamond','#58dce5',0],['Gold Ore','raw-gold','#efc365',1]];
 const miscMetrics=[['Potions','potion','#c296fa',2],['Golden Apples','golden-apple','#efc365',3],['Enchanted Golden Apples','enchanted-apple','#e18bff',4],['Ender Pearls','ender-pearl','#62d5b0',5]];
+const potionStyles={Regeneration:['#ef72ac',0],Healing:['#dc605d',45],Strength:['#b570dd',305],Swiftness:['#6bbde5',220],Poison:['#88af48',120],'Fire Resistance':['#eda759',85],Unknown:['#8992a0',0]};
+function potionParts(game,total){
+  const entries=Object.entries(game.potionBreakdown||{}).filter(([,n])=>n>0);
+  const untyped=total-entries.reduce((n,[,count])=>n+count,0);
+  if(untyped>0)entries.push(['Unknown',untyped]);
+  return entries.map(([name,count],i)=>{
+    const [color,hue]=potionStyles[name]||[`hsl(${(i*137+38)%360} 62% 63%)`,(i*137+38)%360];
+    return {name,count,color,hue};
+  });
+}
+function potionTypeIcon(part){
+  return `<span class="potion-type-icon" style="--potion-hue:${part.hue}deg;--potion-color:${part.color}">${trophyImage('potion')}</span>`;
+}
 function careerMetricCharts(p,metrics){
   const games=p.history.filter(game=>metrics.some(([, , ,field])=>game.metrics?.[field]!=null));
   if(!games.length)return '<p class="chart-caption">No recorded data for this player.</p>';
@@ -292,6 +354,11 @@ function careerMetricCharts(p,metrics){
       <div class="career-metric-bars">${metrics.map(([label,icon,color,field])=>{
         const value=game.metrics?.[field];
         if(value==null)return '';
+        if(field===2){
+          const parts=potionParts(game,value);
+          const summary='Season '+game.season+' · '+(parts.map(p=>p.name+': '+p.count).join(', ')||'No potions used');
+          return `<div class="career-metric-bar" style="--bar-width:${100*value/max}%" ${chartTip(summary)} ${parts.length?`data-potion-tip="${escape(JSON.stringify({season:game.season,parts}))}"`:''}>${trophyImage(icon)}<span class="career-metric-track" aria-hidden="true"><span class="potion-segments">${parts.map(p=>`<i style="flex:${p.count};background:${p.color}"></i>`).join('')}</span></span><b aria-hidden="true">${value}</b></div>`;
+        }
         return `<div class="career-metric-bar" aria-label="${label}: ${value}" role="img" style="--bar-color:${color};--bar-width:${100*value/max}%">
           ${trophyImage(icon)}<span class="career-metric-track" aria-hidden="true"><span></span></span><b aria-hidden="true">${value}</b></div>`;
       }).join('')}</div></section>`).join('')}</div>`;

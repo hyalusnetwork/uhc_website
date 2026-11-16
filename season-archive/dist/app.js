@@ -93,11 +93,13 @@ function initializeBackToTopPearl(){
    speck.animate([{transform:'translate(0,0)',opacity:1},{transform:'translate('+Math.cos(angle)*range+'px,'+Math.sin(angle)*range+'px) scale(.35)',opacity:0}],{duration:380+i%4*75,easing:'ease-out'}).finished.then(()=>speck.remove());
   }
  }
- button.addEventListener('click',async()=>{
-  if(throwing)return;
+ async function throwPearl(event){
+  if(throwing||scrollY<=0)return;
+  const trigger=event.currentTarget;
+  sync();
   const r=button.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
   const finishX=Math.max(26,x-56),finishY=Math.min(96,innerHeight/3);
-  const keyboard=button.matches(':focus-visible');
+  const keyboard=trigger.matches(':focus-visible');
   throwing=true;sync();
   try{
    if(!motion.matches){
@@ -111,7 +113,9 @@ function initializeBackToTopPearl(){
    window.scrollTo({top:0,behavior:'instant'});
    if(!motion.matches)burst(finishX,finishY);
   }finally{throwing=false;sync();}
- });
+ }
+ button.addEventListener('click',throwPearl);
+ $('ranking-index-top').addEventListener('click',throwPearl);
  window.addEventListener('scroll',sync,{passive:true});
  window.addEventListener('pageshow',sync);
  sync();

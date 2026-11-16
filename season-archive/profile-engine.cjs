@@ -104,7 +104,10 @@ function buildProfiles(seasons,bios,specials){
       if(crownAcquired)add(p,'crown','Crown Holder',s.id,s.crown.method,'crown');
       if(maxKills>0&&kills===maxKills)add(p,'top-fragger','Most Kills',s.id,`${kills} PVP kills${Object.values(killCounts).filter(k=>k===maxKills).length>1?' (tied)':''}.`,'diamond-sword');
       if(ranged>=2)add(p,'sharpshooter','Sharpshooter',s.id,`${ranged} Ranged Kills.`,'bow');
-      if(debut&&kills)add(p,'first-impression','First Impression',s.id,`${kills} PVP kill${kills===1?'':'s'} in their first recorded game.`,'sword');
+      if(debut&&(kills||win||iron||crownAcquired)){
+        const feats=[kills?`${kills} PVP kill${kills===1?'':'s'}`:null,win?'Victory':null,iron?'Ironman':null,crownAcquired?'acquired the Crown':null].filter(Boolean);
+        add(p,'first-impression','First Impression',s.id,'Debut achievements: '+feats.join(' · ')+'.','sword');
+      }
       if(win&&iron&&kills&&!crownAtEnd)add(p,'triple-threat','Triple Threat',s.id,'Win + at least one PVP kill + Ironman.','trident');
       if(win&&iron&&kills&&crownAtEnd)add(p,'grand-slam','Grand Slam',s.id,`Win + PVP kill + Ironman + ${crownAcquired?'earned':'retained'} the Crown.`,'diamond-block');
       const causes=killCauses.get(r.id);

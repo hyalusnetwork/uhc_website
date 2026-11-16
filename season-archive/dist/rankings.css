@@ -1,1 +1,176 @@
-.rankings-page{max-width:1400px;margin:auto;padding:50px 5% 70px}.rankings-page h1{font-size:52px}.rankings-page>.intro{max-width:780px;margin-bottom:10px}#ranking-summary{font-size:11px;color:var(--green)}.ranking-method{margin:25px 0 30px;border:1px solid var(--line);background:var(--panel);padding:17px 22px;color:var(--muted);font-size:12px}.ranking-method summary{cursor:pointer;color:var(--green)}.ranking-layout{display:grid;grid-template-columns:185px minmax(0,1fr);gap:30px}.ranking-sidebar{position:sticky;top:100px;align-self:start}.ranking-sidebar .eyebrow{margin-bottom:15px}#ranking-index{display:flex;flex-direction:column;gap:5px}#ranking-index a{display:flex;align-items:center;gap:10px;text-decoration:none;border:1px solid var(--line);padding:8px 11px;font-size:12px;color:var(--muted)}#ranking-index a:hover{color:var(--cream);border-color:var(--green)}#ranking-index i{width:10px;height:10px}#ranking-index span{margin-left:auto;font:11px Consolas,monospace;color:var(--green)}#ranking-index .filtered{opacity:.3}.ranking-toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0 25px}.ranking-toolbar .search{flex-basis:100%}.ranking-heading{display:flex;align-items:center;justify-content:space-between;gap:20px}.ranking-heading h2{font-size:27px}#ranking-result-count{font-size:10px;color:var(--muted)}.team-ranking-card{border:1px solid var(--line);border-top:3px solid var(--team);background:var(--panel);margin-bottom:28px}.team-ranking-header{display:flex;gap:17px;align-items:center;padding:23px}.team-swatch{width:44px;height:44px;background:var(--team);border:1px solid #ffffff30}.team-ranking-header .eyebrow{margin:0 0 3px;font-size:9px}.team-ranking-header h2{font-size:27px}.team-ranking-header p:last-child{font-size:10px;color:var(--muted);margin:6px 0 0}.team-score{margin-left:auto;text-align:right}.team-score strong{font:28px Consolas,monospace;color:var(--green);display:block}.team-score span{font-size:8px;letter-spacing:1px;color:var(--muted)}.team-metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.team-metrics>div{padding:17px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:5px}.team-metrics>div:last-child{border:0}.team-metrics b{font-size:23px;font-weight:550}.team-metrics span{font-size:8px;letter-spacing:1px;color:var(--muted)}.team-metrics small{font-size:9px;color:var(--muted)}.team-detail-notes{padding:14px 20px;color:var(--muted);font-size:11px}.team-detail-notes summary{cursor:pointer;color:var(--green)}.team-history{font-size:11px;min-width:730px}.team-history th,.team-history td{padding:11px 14px}.team-history td:first-child{width:auto;border-left:0}.team-history td small{display:block;color:var(--muted);font-size:9px;margin-top:5px}.team-history td:nth-child(3){min-width:190px}.team-history a{color:var(--green);text-decoration:none}.team-history .face{width:20px;height:20px}.navbar-heart{width:29px;height:29px;object-fit:contain;image-rendering:pixelated}.nav nav{gap:22px}@media(max-width:1000px){.ranking-layout{grid-template-columns:145px minmax(0,1fr);gap:20px}.team-metrics{grid-template-columns:repeat(2,1fr)}.team-metrics>div{border-bottom:1px solid var(--line)}.nav nav{gap:16px}}@media(max-width:720px){.ranking-layout{display:block}.ranking-sidebar{position:static;margin-bottom:25px}#ranking-index{display:grid;grid-template-columns:repeat(3,1fr)}#ranking-index a{font-size:10px;padding:7px}.rankings-page h1{font-size:38px}.team-ranking-header{padding:17px;gap:12px}.team-score strong{font-size:21px}.team-score span{font-size:7px}.nav nav{gap:10px}.nav nav a{font-size:10px}.nav .brand{font-size:15px;gap:5px}.navbar-heart{width:24px;height:24px}}@media(max-width:420px){.nav{padding:0 3%}.nav nav{gap:8px}.nav .brand{font-size:13px}.navbar-heart{width:20px;height:20px}.team-score span{letter-spacing:0}.team-swatch{width:30px;height:30px}.team-ranking-header h2{font-size:23px}}
+.rankings-page{max-width:1400px;margin:auto;padding:50px 5% 70px}.rankings-page h1{font-size:52px}.rankings-page>.intro{max-width:780px;margin-bottom:10px}#ranking-summary{font-size:11px;color:var(--green)}.ranking-method{margin:25px 0 30px;border:1px solid var(--line);background:var(--panel);padding:17px 22px;color:var(--muted);font-size:12px}.ranking-method summary{cursor:pointer;color:var(--green)}.ranking-layout{display:grid;grid-template-columns:185px minmax(0,1fr);gap:30px}.ranking-sidebar{position:sticky;top:100px;align-self:start}#ranking-index{display:flex;flex-direction:column;gap:5px}#ranking-index a{display:flex;align-items:center;gap:10px;text-decoration:none;padding:5px 10px 9px;font-size:12px;color:var(--cream)}#ranking-index i{width:10px;height:10px}#ranking-index span{margin-left:auto;font:600 11px Consolas,monospace;color:inherit}#ranking-index .filtered{opacity:.3}.ranking-toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 25px}.ranking-toolbar .search{flex-basis:100%}#ranking-result-count{margin-inline-start:auto;align-self:center;font-size:11px;color:var(--muted)}.team-ranking-card{border:1px solid var(--line);border-top:3px solid var(--team);background:var(--panel);margin-bottom:28px}.team-ranking-header{display:flex;gap:17px;align-items:center;padding:23px}.team-swatch{width:44px;height:44px;background:var(--team);border:1px solid #ffffff30}.team-ranking-header .eyebrow{margin:0 0 3px;font-size:9px}.team-ranking-header h2{font-size:27px}.team-ranking-header p:last-child{font-size:10px;color:var(--muted);margin:6px 0 0}.team-score{margin-left:auto;text-align:right}.team-score strong{font:28px Consolas,monospace;color:var(--green);display:block}.team-score span{font-size:8px;letter-spacing:1px;color:var(--muted)}.team-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.team-metrics>div{padding:17px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:5px}.team-metrics>div:last-child{border:0}.team-metrics b{font-size:23px;font-weight:550}.team-metrics span{font-size:8px;letter-spacing:1px;color:var(--muted)}.team-metrics small{font-size:9px;color:var(--muted)}.team-detail-notes{padding:14px 20px;color:var(--muted);font-size:11px}.team-history{font-size:11px;min-width:730px}.team-history th,.team-history td{padding:11px 14px}.team-history td:first-child{width:auto;border-left:0}.team-history td small{display:block;color:var(--muted);font-size:9px;margin-top:5px}.team-history td:nth-child(3){min-width:190px}.team-history a{color:var(--green);text-decoration:none}.team-history .face{width:20px;height:20px}.navbar-heart{width:29px;height:29px;object-fit:contain;image-rendering:pixelated}.nav nav{gap:22px}@media(max-width:1000px){.ranking-layout{grid-template-columns:145px minmax(0,1fr);gap:20px}.nav nav{gap:16px}}@media(max-width:720px){.ranking-layout{display:block}.ranking-sidebar{position:static;margin-bottom:25px}#ranking-index{display:grid;grid-template-columns:repeat(3,1fr)}#ranking-index a{font-size:10px;padding:4px 6px 8px}.rankings-page h1{font-size:38px}.team-ranking-header{padding:17px;gap:12px}.team-score strong{font-size:21px}.team-score span{font-size:7px}.nav nav{gap:10px}.nav nav a{font-size:10px}.nav .brand{font-size:15px;gap:5px}.navbar-heart{width:24px;height:24px}}@media(max-width:420px){.nav{padding:0 3%}.nav nav{gap:8px}.nav .brand{font-size:13px}.navbar-heart{width:20px;height:20px}.team-score span{letter-spacing:0}.team-swatch{width:30px;height:30px}.team-ranking-header h2{font-size:23px}}
+
+/* Team colors carry through the index and standings. */
+.color-ranking-hero {
+  position: relative;
+  padding: clamp(16px, 3vw, 32px);
+  border: 1px solid #4c5065;
+  background: #21242e;
+}
+.color-ranking-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, #f27f85, #ff983f, #ffe052, #68c185, #78b6ff, #b294ef);
+}
+.color-ranking-intro .eyebrow { color: #efb9e3; }
+#ranking-summary { color: #a8e5d7; }
+.color-ranking-help { --control-face: #4b4776; }
+.ranking-toolbar .ore-select-bevel { --control-face: #345060; max-width: 100%; }
+#team-rankings-panel .ranking-bevel {
+  min-height: 44px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ranking-bevel > span { line-height: 1; }
+#ranking-index-top {
+  --control-face: #345556;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.ranking-toolbar select:focus-visible {
+  outline: 2px solid #dbe8ff;
+  outline-offset: 2px;
+}
+#ranking-index .ranking-index-tile {
+  --trophy-color: color-mix(in srgb, var(--team) 36%, #222632);
+  text-shadow: 0 1px 2px #11131a;
+}
+#ranking-index i {
+  flex: 0 0 10px;
+  box-shadow: 0 0 0 1px #ffffff40;
+}
+.team-ranking-header {
+  background: linear-gradient(105deg, color-mix(in srgb, var(--team) 24%, #262834), #232630 85%);
+}
+.team-ranking-header :is(.eyebrow, .team-score strong) {
+  color: color-mix(in srgb, var(--team) 38%, #f1efff);
+}
+.team-metrics,
+.team-counts > div {
+  background: color-mix(in srgb, var(--team) 8%, #232630);
+}
+
+.team-score-breakdown {
+  cursor: help;
+}
+.team-score-breakdown:hover strong {
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+.team-score-breakdown:focus-visible {
+  outline: 2px solid #dbe8ff;
+  outline-offset: 4px;
+}
+.team-counts {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--line);
+}
+.team-counts > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  padding: 7px 12px;
+}
+.team-counts dt {
+  color: var(--muted);
+  font-size: 10px;
+}
+.team-counts dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 600px) {
+  #ranking-result-count { flex-basis: 100%; text-align: right; }
+  .team-metrics > div { padding: 10px 8px; }
+  .team-counts { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .team-counts > div { grid-column: span 4; }
+  .team-counts > div:nth-last-child(-n + 4) { grid-column: span 3; padding-inline: 7px; }
+}
+
+/* Isometric blocks use the original 16px Minecraft face textures. */
+.color-ranking-accent {
+  display: grid;
+  justify-items: end;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.ranking-blocks {
+  --block-size: clamp(22px, 3vw, 46px);
+  display: grid;
+  grid-template-columns: repeat(8, calc(var(--block-size) * .98));
+  grid-auto-rows: calc(var(--block-size) * 1.2);
+  column-gap: 2px;
+  padding: 8px calc(var(--block-size) * .6) calc(var(--block-size) * .65) calc(var(--block-size) * .88);
+  pointer-events: none;
+}
+.ranking-block {
+  position: relative;
+}
+.ranking-blocks > .ranking-block:nth-child(n + 9) { left: calc(var(--block-size) * .42); }
+.ranking-blocks > .ranking-block:nth-child(4n + 2) { top: calc(var(--block-size) * .18); }
+.ranking-blocks > .ranking-block:nth-child(4n + 4) { top: calc(var(--block-size) * -.16); }
+.ranking-block::before,
+.ranking-block::after,
+.ranking-block > i {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: var(--block-size);
+  height: var(--block-size);
+  content: '';
+  background: var(--block-texture) center / 100% 100%;
+  image-rendering: pixelated;
+  transform-origin: top left;
+}
+.ranking-block::before {
+  transform: matrix(.866, .5, -.866, .5, 0, 0);
+  filter: brightness(1.15);
+}
+.ranking-block::after {
+  top: calc(var(--block-size) * .5);
+  left: calc(var(--block-size) * -.866);
+  transform: matrix(.866, .5, 0, 1, 0, 0);
+  filter: brightness(.82);
+}
+.ranking-block > i {
+  top: var(--block-size);
+  transform: matrix(.866, -.5, 0, 1, 0, 0);
+  filter: brightness(.65);
+}
+@media (max-width: 760px) {
+  .color-ranking-accent {
+    width: 100%;
+    justify-items: start;
+  }
+}
+
+#team-rankings-panel {
+  isolation: isolate;
+}
+.ranking-background {
+  --wall-width: clamp(768px, 90vw, 1280px);
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #17191e;
+  background-image:
+    linear-gradient(90deg, transparent, #17191ee6 27%, #17191ef5 50%, #17191ee6 73%, transparent),
+    linear-gradient(#13151b80, #13151bb3),
+    var(--ranking-wall, none);
+  background-position: center top;
+  background-size: 100% 100%, 100% 100%, var(--wall-width) auto;
+  image-rendering: pixelated;
+}
