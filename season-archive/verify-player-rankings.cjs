@@ -5,7 +5,7 @@ const input={allPlayers:[player('Clean',5),player('FriendlyFire',5,1),player('No
 const ranked=buildPlayerRankings(input);assert.equal(ranked.players.length,2);
 const clean=ranked.players.find(p=>p.name==='Clean'),bad=ranked.players.find(p=>p.name==='FriendlyFire');
 assert.equal(clean.penalty,0);assert.equal(bad.penalty,8);assert.equal(clean.score-bad.score,8);assert.equal(clean.disciplineTier,'S');
-assert.equal(bad.score,Object.values(bad.components).reduce((n,c)=>n+c.points,0)-bad.penalty);
+assert.equal(bad.score,Object.values(bad.components).reduce((n,c)=>n+c.points,0));
 assert.equal(tier(80),'S');assert.equal(tier(60),'A');assert.equal(tier(38),'B');assert.equal(tier(30),'C');assert.equal(tier(20),'D');assert.equal(tier(19.9),'F');
 const early=player('Early',5),late=player('Late',5),survivor=player('Survivor',5);
 for(let i=0;i<5;i++){early.history[i]={...early.history[i],type:'PVE',death:'fell',seconds:10};late.history[i]={...late.history[i],type:'PVP',death:'was slain',seconds:20};survivor.history[i]={...survivor.history[i],type:null,death:null,seconds:null};}
@@ -33,6 +33,6 @@ const profiles={};vm.runInNewContext(fs.readFileSync("dist/profiles.js","utf8"),
 const historicalProfiles=profiles.UHC_PROFILES.profiles.filter(p=>p.history.filter(h=>h.season<=36).length>=5);
 assert.equal(w.UHC_PLAYER_RANKINGS.players.length,historicalProfiles.length);
 assert(w.UHC_PLAYER_RANKINGS.players.every(p=>p.history.every(h=>h.season<=36)));
-for(const p of w.UHC_PLAYER_RANKINGS.players){assert(p.games>=5);assert(p.score>=0&&p.score<=100);assert(p.penalty>=0&&p.penalty<=20);assert.equal(p.killsPerGame,p.kills/p.games);assert.equal(p.winRate,p.wins/p.games);for(const c of Object.values(p.components)){assert(c.points>=0&&c.points<=c.weight);assert.equal(c.tier,tier(c.points/c.weight*100));}}
+for(const p of w.UHC_PLAYER_RANKINGS.players){assert(p.games>=5);assert(p.score>=0&&p.score<=100);assert(p.penalty>=0&&p.penalty<=10);assert.equal(p.killsPerGame,p.kills/p.games);assert.equal(p.winRate,p.wins/p.games);for(const c of Object.values(p.components)){assert(c.points>=0&&c.points<=c.weight);assert.equal(c.tier,tier(c.points/c.weight*100));}}
 assert(w.UHC_PLAYER_RANKINGS.players.find(p=>p.name==='Happy_Guy555').aliases.includes('arecue'));
 console.log('Passed: five-game boundary, rates, weighted components, Team Kill deductions, tier cutoffs, aliases and all generated player scores.');

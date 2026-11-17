@@ -31,9 +31,9 @@ function buildProfiles(seasons,bios,specials){
   names.set('Unsquared_',unsquaredBio);
   canonical.set('unsquared_','Unsquared_');canonical.set('minecraftian8888','Unsquared_');
   const toastyBio=names.get('Toasty_boii')||{name:'Toasty_boii',aliases:[],description:'',historicalTrivia:'',documentedWins:[]};
-  toastyBio.aliases=[...new Set([...toastyBio.aliases,'Toastfliper'])];
+  toastyBio.aliases=[...new Set([...toastyBio.aliases,'Toastfliper','_Matthew_'])];
   names.set('Toasty_boii',toastyBio);
-  canonical.set('toasty_boii','Toasty_boii');canonical.set('toastfliper','Toasty_boii');
+  canonical.set('toasty_boii','Toasty_boii');canonical.set('toastfliper','Toasty_boii');canonical.set('_matthew_','Toasty_boii');
   const identity=n=>canonical.get(String(n||'').toLowerCase())||n;
   const players=new Map();
   const ensure=name=>{if(!players.has(name))players.set(name,{name,aliases:names.get(name)?.aliases||[],description:names.get(name)?.description||'',historicalTrivia:names.get(name)?.historicalTrivia||'',history:[],kills:0,pveDeaths:0,pvpDeaths:0,teamKillDeaths:0,administrativeDeaths:0,otherExits:0,teamKills:0,trophies:[],trivia:[],victims:{},killers:{},teammates:{},milestones:[],killStreak:0});return players.get(name)};
@@ -161,8 +161,8 @@ function buildProfiles(seasons,bios,specials){
     if(doubleWins.length)p.trivia.push(`Won 2 consecutive matches${doubleWins.length>1?' on '+doubleWins.length+' separate occasions':''}: ${doubleWins.map(run=>'(S'+run.join(', S')+')').join('; ')}.`);
     for(const run of p.winRuns.filter(run=>run.length>=3))p.trivia.push(`Won ${run.length} consecutive matches played (S${run.join(', S')})${run.length===3?' — a three-peat':run.length===4?' — a four-peat':''}.`);
     const doubleIronmen=p.ironRuns.filter(run=>run.length===2);
-    if(doubleIronmen.length)p.trivia.push(`Earned Ironman in 2 consecutive seasons${doubleIronmen.length>1?' on '+doubleIronmen.length+' separate occasions':''}: ${doubleIronmen.map(run=>'(S'+run.join(', S')+')').join('; ')}.`);
-    for(const run of p.ironRuns.filter(run=>run.length>=3))p.trivia.push(`Earned Ironman in ${run.length} consecutive seasons (S${run.join(', S')}).`);
+    if(doubleIronmen.length)p.trivia.push(`Earned Ironman in 2 consecutive seasons${doubleIronmen.length>1?' on '+doubleIronmen.length+' separate occasions':''}; ${doubleIronmen.map(run=>'(S'+run.join(', S')+')').join('; ')}.`);
+    for(const run of p.ironRuns.filter(run=>run.length>=3))p.trivia.push(`Earned Ironman in ${run.length} consecutive seasons; (S${run.join(', S')}).`);
     if(p.killStreak>=3)p.trivia.push(`Longest PVP kill streak without a recorded death: ${p.killStreak}.`);
     for(const m of p.milestones)p.trivia.push(`Was the ${m.number}th recorded death, in Season ${m.season}.`);
     for(const h of p.history.filter(h=>h.moleFor)){

@@ -1,0 +1,840 @@
+{
+  "1": [
+    {
+      "id": "m9bZpNcmP0E",
+      "title": "UHC Season 1, Episode 1 - Game On"
+    },
+    {
+      "id": "h3M0-7htbFA",
+      "title": "UHC Season 1, Episode 2 - Jukebox Swag"
+    },
+    {
+      "id": "TylUIjkbG6U",
+      "title": "UHC Season 1, Episode 3 - The Calm Before the Storm"
+    }
+  ],
+  "2": [
+    {
+      "id": "BVSAPlD_PCQ",
+      "title": "UHC Season 2, Episode 1 - Getting Wood"
+    },
+    {
+      "id": "NKzA6VRpRxc",
+      "title": "UHC Season 2, Episode 2 - Progression"
+    },
+    {
+      "id": "7QH-bhj-2_0",
+      "title": "UHC Season 2, Episode 3 - What Happened Next"
+    }
+  ],
+  "3": [
+    {
+      "id": "73uSpVK8kbg",
+      "title": "UHC Season 3, Episode 1 - Lava Gods"
+    },
+    {
+      "id": "6J5Te2pidbU",
+      "title": "UHC S3 Ep1: It's not easy being green."
+    },
+    {
+      "id": "2uN8hyzGeh0",
+      "title": "UHC Season 3, Episode 2 - Invisible Torches"
+    },
+    {
+      "id": "srmFVd5Epwc",
+      "title": "UHC S3 Ep2: The Mind's Eye"
+    },
+    {
+      "id": "yW5qVyEHzgs",
+      "title": "UHC Season 3, Episode 3 - Filet o' Flint"
+    },
+    {
+      "id": "QmejRdt_DLU",
+      "title": "UHC S3 Ep3: Super Paranoid Man"
+    },
+    {
+      "id": "p0kXq5lCv10",
+      "title": "UHC Season 3, Episode 4 - I Seek The Holy Grail"
+    },
+    {
+      "id": "7yipE84ka-o",
+      "title": "UHC S3 Ep4: Praise the RNG gods!"
+    },
+    {
+      "id": "Dh7bJd-wRoQ",
+      "title": "UHC Season 3, Episode 5 - Setting Up Camp"
+    },
+    {
+      "id": "s6EdmoF-AWM",
+      "title": "UHC S3 Ep5: Decked to wreck. (Also the prettiest cave I've ever seen)"
+    },
+    {
+      "id": "6XhHRjiGP0g",
+      "title": "UHC Season 3, Episode 6 - Will this Bunny Kill Me?"
+    },
+    {
+      "id": "xm0eqZWm1ok",
+      "title": "UHC S3 Ep6: Inconvenient nightfall."
+    },
+    {
+      "id": "1GS9kIDNQGE",
+      "title": "UHC Season 3, Episode 7 - Follow the Leader"
+    },
+    {
+      "id": "q9q26ObFiH8",
+      "title": "UHC S3 Ep7: The origin hut."
+    },
+    {
+      "id": "2wqQfEMDvjE",
+      "title": "UHC Season 3, Episode 8 - Coal Hunting"
+    },
+    {
+      "id": "9Fz1p5uv7dc",
+      "title": "UHC S3 Ep8: Boring Simulator 2014"
+    },
+    {
+      "id": "9U_wydlMzbg",
+      "title": "UHC Season 3, Episode 9 - Things Happen"
+    },
+    {
+      "id": "45q8-O_guuU",
+      "title": "UHC S3 Ep9: The rabbit is not a player."
+    }
+  ],
+  "4": [
+    {
+      "id": "4IgK0DdwrqE",
+      "title": "UHC Season 4, Episode 1 - UHC Crazy"
+    },
+    {
+      "id": "D6hKT1NCRVM",
+      "title": "UHC S4 Ep1: Wet coal"
+    },
+    {
+      "id": "znbSY8vskGk",
+      "title": "UHC Season 4, Episode 2 - Found a Cave"
+    },
+    {
+      "id": "4XQW_1DKncg",
+      "title": "UHC Season 4, Episode 3 - Iron Pick Broke"
+    },
+    {
+      "id": "aImokZD7nLY",
+      "title": "UHC S4 Ep3: It's not easy being yellow"
+    },
+    {
+      "id": "px3N3gyb-3o",
+      "title": "UHC Season 4, Episode 4 - Skybase?"
+    },
+    {
+      "id": "uAUmgUc2RqM",
+      "title": "UHC S4 Ep4: Ironman relinquished"
+    },
+    {
+      "id": "ug3njruMwwc",
+      "title": "UHC Season 4, Episode 5 - Boating Around"
+    },
+    {
+      "id": "cy_UliUQ2dI",
+      "title": "UHC S4 Ep5: Local brewery"
+    },
+    {
+      "id": "TFRVfY6OICA",
+      "title": "UHC Season 4, Episode 6 - Holy Witch!"
+    },
+    {
+      "id": "UFPs5D6lS6k",
+      "title": "UHC S4 Ep6: Logan tries his best at lying"
+    },
+    {
+      "id": "O-8BSCpwIN4",
+      "title": "UHC Season 4, Episode 7 - Horse!"
+    },
+    {
+      "id": "7d3WLqd4OnI",
+      "title": "UHC S4 Ep7: Cliff-side encounter"
+    }
+  ],
+  "5": [
+    {
+      "id": "zwCsPo7jQHM",
+      "title": "UHC Season 5, Episode 1 - Apples"
+    },
+    {
+      "id": "CvFxMGG1WgM",
+      "title": "UHC Season 5, Episode 2 - Slow Beginning"
+    },
+    {
+      "id": "5a5--WhvK-o",
+      "title": "UHC Season 5, Episode 3 - Censorship"
+    },
+    {
+      "id": "nu5MHFenFnE",
+      "title": "UHC Season 5, Episode 4 - On The Surface"
+    },
+    {
+      "id": "SNaJqFNhxf8",
+      "title": "UHC Season 5, Episode 5 - A Waste of Time"
+    },
+    {
+      "id": "Nl5AQcfJtSI",
+      "title": "UHC Season 5, Episode 6 - Vision Impairment"
+    },
+    {
+      "id": "NNN0_9d0c7g",
+      "title": "UHC Season 5, Episode 7 - Right There!"
+    },
+    {
+      "id": "n-OvKL9g3iw",
+      "title": "UHC Season 5, Episode 8 - Invisibility?"
+    }
+  ],
+  "6": [
+    {
+      "id": "BhGhRE7i2-A",
+      "title": "UHC Season 6 Ep1: Our Luck Begins"
+    },
+    {
+      "id": "Ysq7WCsWssA",
+      "title": "UHC Season 6 Ep2: Diamonds for Dayz"
+    },
+    {
+      "id": "rU1O-ZaYyf4",
+      "title": "UHC Season6 Ep3: Up on the Surface"
+    },
+    {
+      "id": "MQG1fUlCRAQ",
+      "title": "UHC Season6: Ep4: Preparation for Big Fights"
+    },
+    {
+      "id": "N2jvcBFJW5w",
+      "title": "UHC Season 6: Ep5: Potion Brewing"
+    },
+    {
+      "id": "RXCyaKKWROE",
+      "title": "UHC Season6: Ep6: The First Battle"
+    },
+    {
+      "id": "4Z-xQiMnyu4",
+      "title": "UHC Season6: Ep7: A Boring End to an Unbalanced UHC"
+    }
+  ],
+  "7": [
+    {
+      "id": "IANSdMjqogM",
+      "title": "UHC Season7: Ep1: The Start of an Amazing UHC"
+    },
+    {
+      "id": "nKZuyN9x_14",
+      "title": "UHC S7: Ep2: Gearing Up"
+    },
+    {
+      "id": "dTrqQiqTxbg",
+      "title": "UHC S7: Ep3: Nether"
+    },
+    {
+      "id": "CmYUUptlWDw",
+      "title": "UHC S7: Ep5: Almost the Biggest Mistake in UHC History"
+    },
+    {
+      "id": "ey57pBw3u4o",
+      "title": "UHC S7: Ep6: First Fight"
+    },
+    {
+      "id": "Ly3vurtFAsA",
+      "title": "UHC S7: Ep7: Final Battle"
+    }
+  ],
+  "8": [
+    {
+      "id": "sbLmYCedDBk",
+      "title": "UHC S8: Ep1: The Adventure Begins"
+    },
+    {
+      "id": "7usywUPFLRE",
+      "title": "UHC S8: Ep2: New Teammate"
+    },
+    {
+      "id": "XUAmUmsbMCA",
+      "title": "UHC S8: Ep3: Nether Fight"
+    },
+    {
+      "id": "5cOIKocUBuo",
+      "title": "UHC S8: Ep4: Prep for Big Fights"
+    },
+    {
+      "id": "7H1HEEXo4nA",
+      "title": "UHC S8: Ep5: Last Minute Prep"
+    },
+    {
+      "id": "LY5bLKjQaaI",
+      "title": "UHC S8: Ep6: Last Fights"
+    }
+  ],
+  "9": [
+    {
+      "id": "STWOE1THy9s",
+      "title": "Muted - Hyalus UHC S9 E1"
+    },
+    {
+      "id": "54l-cLNcpBc",
+      "title": "UHC S9: Ep1: The Beginning of a Solo UHC"
+    },
+    {
+      "id": "lD3qqrXgrRY",
+      "title": "Dangerous Caves - Hyalus UHC S9 E2"
+    },
+    {
+      "id": "oPP8avLwfaQ",
+      "title": "UHC S9: Ep2: First Death"
+    },
+    {
+      "id": "pnj_G9QxGUA",
+      "title": "Gone Fishing - Hyalus UHC S9 E3"
+    },
+    {
+      "id": "rJ5lPcJjWpQ",
+      "title": "UHC S9: Ep3: The Dumbest Way to Take Damage"
+    },
+    {
+      "id": "-15tvVNa2RQ",
+      "title": "The Cold Front - Hyalus UHC S9 E4"
+    },
+    {
+      "id": "VV2BTucyIDk",
+      "title": "UHC S9: Ep4: Going Down Without a Fight"
+    },
+    {
+      "id": "RFZ8-xyjyfY",
+      "title": "Silent But Deadly - Hyalus UHC S9 E5"
+    },
+    {
+      "id": "x5yuV-3wX7Q",
+      "title": "Veni Vidi Vici - Hyalus UHC S9 E6"
+    },
+    {
+      "id": "cN_vxLdEhEo",
+      "title": "UHC Season 9 Raw Footage - Flying Solo"
+    }
+  ],
+  "10": [
+    {
+      "id": "HTzVPYu5OE8",
+      "title": "UHC S10: Ep1: The beginning of a no fall damage season..."
+    },
+    {
+      "id": "cOKKgbzb6Tw",
+      "title": "UHC S10: Ep2: Coleam's Rescue"
+    },
+    {
+      "id": "XlTnWczhSlM",
+      "title": "UHC S10: Ep3: Final Battles"
+    }
+  ],
+  "11": [
+    {
+      "id": "QqG_xfztGO4",
+      "title": "Four's A Crowd - Hyalus UHC S11 E1"
+    },
+    {
+      "id": "7St9HtgyXh8",
+      "title": "Gearing Up - Hyalus UHC S11 E2"
+    },
+    {
+      "id": "wo40hArXFik",
+      "title": "Red Sun Rises - Hyalus UHC S11 E3"
+    },
+    {
+      "id": "_lscdxY5dKw",
+      "title": "Cave Chaos - Hyalus UHC S11 E4"
+    },
+    {
+      "id": "Hd4eFRHWRBo",
+      "title": "A House Divided - Hyalus UHC S11 E5"
+    }
+  ],
+  "12": [
+    {
+      "id": "zmWnto3a8fY",
+      "title": "First is the Worst - Hyalus UHC S12 E1"
+    },
+    {
+      "id": "zc0x88fDII0",
+      "title": "Frames - Hyalus UHC S12 E2"
+    },
+    {
+      "id": "-Ms-sqpKMcA",
+      "title": "Hyalus UHC S12 Raw Footage"
+    },
+    {
+      "id": "EZn6o80MNgQ",
+      "title": "Hyalus UHC S12 Specator- Enzo_ vs. Caenum_ Final Fight!"
+    }
+  ],
+  "13": [
+    {
+      "id": "1LGqu5tjYX8",
+      "title": "Rough Start - Hyalus UHC S13 E1"
+    },
+    {
+      "id": "pFpDr0UH7wk",
+      "title": "Talkative - Hyalus UHC S13 E2"
+    },
+    {
+      "id": "fJVb9THyTVE",
+      "title": "Overpowered - Hyalus UHC S13 E3"
+    },
+    {
+      "id": "KcAk_1WgoU4",
+      "title": "Red & Blu - Hyalus UHC S13 E4"
+    },
+    {
+      "id": "HjCfHLviBGo",
+      "title": "War Between Brothers - Hylaus UHC S13 E5"
+    },
+    {
+      "id": "OIrErtHFTYg",
+      "title": "Falling Fast - Hyalus UHC S13 E6"
+    },
+    {
+      "id": "aDyIL2DL4lw",
+      "title": "Snowfall Downfall - Hyalus UHC S13 E7"
+    },
+    {
+      "id": "LYOyq2pHin4",
+      "title": "UHC Season 13 - Medley"
+    },
+    {
+      "id": "M8RTX8B9WNk",
+      "title": "UHC Hyalus S13 Raw Footage- Gameplay and Spectator"
+    }
+  ],
+  "14": [
+    {
+      "id": "E0b6CVTBZ7w",
+      "title": "UHC Season 14 - The Bestest Most Exciting Season Ever in Its Complete Completion!"
+    }
+  ],
+  "15": [
+    {
+      "id": "ZpRBQ-Htj60",
+      "title": "UHC Season 15 Raw Footage- Gameplay and Spectator"
+    }
+  ],
+  "16": [
+    {
+      "id": "PGNd-Fk0lpU",
+      "title": "Fresh Meat - Hyalus UHC S16 E1"
+    },
+    {
+      "id": "Vssig3tZSuw",
+      "title": "Hyalus UHC S16 Ep1- Getting Comfortable"
+    },
+    {
+      "id": "7ZM_1a-4KDI",
+      "title": "Dead Last - Hyalus UHC S16 E2"
+    },
+    {
+      "id": "Cpf7SORXFf8",
+      "title": "Bonding Time - Hyalus UHC S16 E3"
+    },
+    {
+      "id": "9s30ImFQq0U",
+      "title": "Gold Rush - Hyalus UHC S16 E4"
+    },
+    {
+      "id": "Hwsi4Kpj_lw",
+      "title": "Adagietto - Hyalus UHC S16 E5"
+    },
+    {
+      "id": "Qe1fGALEXfg",
+      "title": "Brothers - Hyalus UHC S16 E6"
+    },
+    {
+      "id": "OZKjSvf0P4w",
+      "title": "Tony Stark - Hyalus UHC S16 E7"
+    },
+    {
+      "id": "SYwbby0RuLs",
+      "title": "In the Cover of Darkness - Hyalus UHC S16 E8"
+    },
+    {
+      "id": "IsOTujcH9_o",
+      "title": "Who Let the Dogs Out? - Hyalus UHC S16 E9"
+    },
+    {
+      "id": "JWVPT2c5kQY",
+      "title": "Brazilian Mama Attacks - Hyalus UHC S16 E10"
+    },
+    {
+      "id": "-1QKAxlmddA",
+      "title": "Hyalus UHC S16 Ep∞ (Raw Footage)"
+    }
+  ],
+  "17": [
+    {
+      "id": "KThkRFwCZCA",
+      "title": "Race War - Hyalus UHC S17 E1"
+    },
+    {
+      "id": "Ftv44och8wA",
+      "title": "Too Many Voices - Hyalus UHC S17 E2"
+    },
+    {
+      "id": "VH4Ii8uq6gw",
+      "title": "A Visit from Coleam - Hyalus UHC S17 E3"
+    },
+    {
+      "id": "a_IHMbf0JFc",
+      "title": "Goodbye Skype - Hyalus UHC S17 E4"
+    },
+    {
+      "id": "x-6qGQSa38o",
+      "title": "Suicide Run - Hyalus UHC S17 E5"
+    },
+    {
+      "id": "X0wtBuqrGQo",
+      "title": "Eye in the Sky - Hyalus UHC S17 E6"
+    },
+    {
+      "id": "ijZe2VK3er0",
+      "title": "Spurting Out Watermelon Seeds - Hyalus UHC S17 E7"
+    },
+    {
+      "id": "eJwSTUO-p9k",
+      "title": "Power Shift - Hyalus UHC S17 E8"
+    },
+    {
+      "id": "cuZk5MInk_w",
+      "title": "Big Finish - Hyalus UHC S17 E9"
+    },
+    {
+      "id": "8HVYPJ3F1Vs",
+      "title": "Hyalus UHC S17 Ep∞ (Raw Footage)"
+    },
+    {
+      "id": "nwl8yMt2OnA",
+      "title": "UHC Season 17 PLUS Math Time with Caenum"
+    }
+  ],
+  "18": [
+    {
+      "id": "373Ow2TK6ps",
+      "title": "G.E.E.K.ing Out - Hyalus UHC S18 E1"
+    },
+    {
+      "id": "fkm1EhP38TY",
+      "title": "Explanations - Hyalus UHC S18 E2"
+    },
+    {
+      "id": "utPhTD2YuEY",
+      "title": "Errands Above - Hyalus UHC S18 E3"
+    },
+    {
+      "id": "oVVFJdoPhsY",
+      "title": "Killed Off In The Distance - Hyalus UHC S18 E4"
+    },
+    {
+      "id": "9twZARnO6uQ",
+      "title": "Waiting In A Tower - Hyalus UHC S18 E5"
+    },
+    {
+      "id": "fZi2pO08AVs",
+      "title": "I Think We Should Run - Hyalus UHC S18 E6"
+    },
+    {
+      "id": "BUnzsC05ZC8",
+      "title": "Now We're Back - Hyalus UHC S18 E7"
+    },
+    {
+      "id": "Rq98IjdENZw",
+      "title": "Swamp Slap Fight - Hyalus UHC S18 E8"
+    },
+    {
+      "id": "yP2aSaHgGIc",
+      "title": "Gunshow at the Village - Hyalus UHC S18 E9"
+    },
+    {
+      "id": "DdZVLYEQKvA",
+      "title": "A Plan of Descent - Hyalus UHC S18 E10"
+    },
+    {
+      "id": "2gyLXr_xI8k",
+      "title": "Mulgere Hircum - Hyalus UHC S18 E11"
+    },
+    {
+      "id": "4BfmTep6A1M",
+      "title": "E Pluribus Unum - Hyalus UHC S18 E12"
+    },
+    {
+      "id": "zGfNsURiLNY",
+      "title": "Hyalus UHC S18 Ep∞ (Raw Footage)"
+    }
+  ],
+  "19": [
+    {
+      "id": "QvF7W3nRUf4",
+      "title": "Quick Exits - Hyalus UHC S19 E1"
+    },
+    {
+      "id": "0aqgyDE5Xmk",
+      "title": "I Become Canadian - Hyalus UHC S19 E2"
+    },
+    {
+      "id": "0FU_C3YwzSQ",
+      "title": "Only the Men Remain - Hyalus UHC S19 E3"
+    },
+    {
+      "id": "P4i2VNh4ZIg",
+      "title": "Cinco, Cuatro, ... - Hyalus UHC S19 E4"
+    },
+    {
+      "id": "jb3TlvGZrQI",
+      "title": "Deforestation - Hyalus UHC S19 E5"
+    },
+    {
+      "id": "vSm6Pks2WJ0",
+      "title": "Art of War - Hyalus UHC S19 E6"
+    },
+    {
+      "id": "b3KiXnqBiSM",
+      "title": "Hyalus UHC S19 Ep∞ (Raw Footage)"
+    }
+  ],
+  "20": [
+    {
+      "id": "qnoMNSKnTCU",
+      "title": "Vocally Impaired - Hyalus UHC S20 E1"
+    },
+    {
+      "id": "5w-YLZ82d58",
+      "title": "PvE - Hyalus UHC S20 E2"
+    },
+    {
+      "id": "rCeMKSEL6BY",
+      "title": "Intermission - Hyalus UHC S20 E3"
+    },
+    {
+      "id": "l3WIJF7owYo",
+      "title": "Battle of the Five Armies - Hyalus UHC S20 E4"
+    },
+    {
+      "id": "Zj3H79gae40",
+      "title": "A Secret in the Underground - Hyalus UHC S20 E5"
+    },
+    {
+      "id": "ETl35cWoLcQ",
+      "title": "Talking in the Swamp - Hyalus UHC S20 E6"
+    },
+    {
+      "id": "oaO3kj1uFjU",
+      "title": "Pool Fight - Hyalus UHC S20 E7"
+    }
+  ],
+  "21": [
+    {
+      "id": "zQiS50pwjWQ",
+      "title": "1.9 Skeletons - Hyalus UHC S21 E1"
+    },
+    {
+      "id": "U4I-9eA6dRg",
+      "title": "1.9 Creepers - Hyalus UHC S21 E2"
+    },
+    {
+      "id": "cPR9s_q2vWU",
+      "title": "1.9 Nether  - Hyalus UHC S21 E3"
+    },
+    {
+      "id": "eMTWk9muZH8",
+      "title": "1.9 Battle Preparation - Hyalus UHC S21 E4"
+    },
+    {
+      "id": "ZUDVC45h_KI",
+      "title": "1.9 Ambush - Hyalus UHC S21 E5"
+    },
+    {
+      "id": "SyziK73wbxo",
+      "title": "1.9 Finale - Hyalus UHC S21 E7"
+    }
+  ],
+  "22": [
+    {
+      "id": "5oevNfNT0ik",
+      "title": "Fake & Real Damage - Hyalus UHC S22 E1"
+    },
+    {
+      "id": "0retTCbxO1Y",
+      "title": "Arachnophobia, Claustrophobia - Hyalus UHC S22 E2"
+    },
+    {
+      "id": "pUeQ785JhXU",
+      "title": "Above the Clouds - Hyalus UHC S22 E3"
+    },
+    {
+      "id": "cbKDAUxYd5w",
+      "title": "They Came From Hell - Hyalus UHC S22 E4"
+    },
+    {
+      "id": "QIbE8ioSlWw",
+      "title": "Kuch's Magical and Amazing Underground Forest - Hyalus UHC S22 E5"
+    },
+    {
+      "id": "iRn0u_LQDOE",
+      "title": "Better Dead than Red - Hyalus UHC S22 E6"
+    },
+    {
+      "id": "SMrVne7ibe4",
+      "title": "You Can Probably Guess How This One Ends - Hyalus UHC S22 E7"
+    }
+  ],
+  "23": [
+    {
+      "id": "Yd8kuJAxonY",
+      "title": "Season 23 Raw Footage"
+    }
+  ],
+  "24": [
+    {
+      "id": "UTSbNe0-a6E",
+      "title": "Season 24 Raw Footage"
+    },
+    {
+      "id": "WSb7SpBV45g",
+      "title": "Uhc24 Part 2 - arecue's perspective"
+    }
+  ],
+  "25": [
+    {
+      "id": "eqKWDNMRy0o",
+      "title": "Season 25 Raw Footage"
+    }
+  ],
+  "26": [
+    {
+      "id": "dcLWW0LK2z0",
+      "title": "UHC Season 26 Raw Footage"
+    }
+  ],
+  "27": [
+    {
+      "id": "EFfaqj147qY",
+      "title": "Hyalus UHC Season 27 Raw Footage"
+    },
+    {
+      "id": "JxUOC1DuG60",
+      "title": "uhc27 raw - arecue"
+    }
+  ],
+  "28": [
+    {
+      "id": "TNDLzxWSCxo",
+      "title": "Hyalus UHC Season 28 Raw Footage"
+    },
+    {
+      "id": "ljIGaEDzVeg",
+      "title": "Uhc28 raw - arecue's perspective"
+    }
+  ],
+  "29": [
+    {
+      "id": "3zbTpENh2Bc",
+      "title": "Hyalus UHC Season 29 Semi Raw Footage"
+    },
+    {
+      "id": "_mt5IC7-CRo",
+      "title": "MY MOST INTENSE UHC EVER!"
+    },
+    {
+      "id": "8BkCRVw22S8",
+      "title": "Uhc29 part 1 - arecue's perspective"
+    }
+  ],
+  "30": [
+    {
+      "id": "teZ1qLN_hGA",
+      "title": "Hyalus UHC S30 Raw Footage"
+    },
+    {
+      "id": "SQcTT0u3R7E",
+      "title": "Hyalus UHC Season 30"
+    },
+    {
+      "id": "5lIvQgQ_WPE",
+      "title": "I'm crying both ways"
+    }
+  ],
+  "31": [
+    {
+      "id": "QclIrn9kGMQ",
+      "title": "Hyalus UHC S31 Raw Footage"
+    },
+    {
+      "id": "7VumfUjaHrA",
+      "title": "Uhc31 raw - arecue's perspective"
+    }
+  ],
+  "32": [
+    {
+      "id": "OxLC6fePp-k",
+      "title": "Hyalus UHC Season 32 Raw Footage"
+    },
+    {
+      "id": "8F2NvXkf62Q",
+      "title": "uhc32 raw - spectator footage"
+    },
+    {
+      "id": "RX3XYG3Zcmc",
+      "title": "Nickitar UHC 32"
+    }
+  ],
+  "33": [
+    {
+      "id": "TfZGrRD87k8",
+      "title": "Hyalus UHC S33 Raw Footage"
+    },
+    {
+      "id": "4z_06r_bgGQ",
+      "title": "Hyalus UHC Season 33 Highlights"
+    },
+    {
+      "id": "eR5-sPKotEA",
+      "title": "Hyalus UHC S33 - Crack_Attack's Perspective"
+    },
+    {
+      "id": "vwVsEZUUioE",
+      "title": "Hyalus UHC S33 - Misrok's Perspective"
+    },
+    {
+      "id": "pc8VFtSWsr8",
+      "title": "Uhc33 raw footage - arecue"
+    }
+  ],
+  "34": [
+    {
+      "id": "S79URBcth60",
+      "title": "Hyalus UHC S34"
+    }
+  ],
+  "35": [
+    {
+      "id": "HC2I7GWKlmo",
+      "title": "S35 KINDA RAW"
+    }
+  ],
+  "36": [
+    {
+      "id": "YqAyJuKYXKs",
+      "title": "UHC S36"
+    }
+  ],
+  "37": [
+    {
+      "id": "5Ra2uwLwQsw",
+      "title": "uhcs37"
+    },
+    {
+      "id": "F67ZZABgEJw",
+      "title": "Hyalus UHC Season 37 - Enzo_ POV"
+    }
+  ]
+}

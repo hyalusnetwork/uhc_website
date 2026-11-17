@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const raw = JSON.parse(fs.readFileSync('../workbook-extracted.json', 'utf8').replace(/^\uFEFF/, ''));
 const displayName=value=>typeof value==='string'?value.replace(/\barecue\b/gi,'Happy_Guy555'):value;
+const survivorHearts = require('./references/survivor-hearts.json');
 const rows = s => raw[s - 1].rows.slice(1).map(r => Object.fromEntries(r.cells.map(c => [c.cell.replace(/\d/g, ''), displayName(c.value)]))).filter(r => r.A);
 const namedRows = s => {
   if(!raw[s-1])return [];
@@ -46,6 +47,17 @@ const seasons = namedRows(2).map(r => {
 });
 if(teamJoins.some(e=>!seasons.some(s=>s.id===e.season)))throw Error('Team-joining event references an unknown season');
 if(!seasons.length||new Set(seasons.map(s=>s.id)).size!==seasons.length||players.some(p=>!seasons.some(s=>s.id===p.season))) throw Error('Source reconciliation failed: missing or duplicate season metadata');
+for (const [id, heartsByPlayer] of Object.entries(survivorHearts)) {
+  const season = seasons.find(season => season.id === Number(id));
+  if (!season) throw Error(`Survivor hearts reference an unknown season: S${id}`);
+  for (const [name, hearts] of Object.entries(heartsByPlayer)) {
+    const player = season.players.find(player => player.name === name);
+    if (!player || player.type || player.death || !(hearts > 0) || !Number.isInteger(hearts * 2)) {
+      throw Error(`Invalid survivor hearts: S${id} ${name} (${hearts})`);
+    }
+    player.finalHearts = hearts;
+  }
+}
 fs.writeFileSync('dist/data.js', 'window.UHC_DATA = '+JSON.stringify(seasons)+';\n');
 console.log(`Imported ${seasons.length} seasons and ${players.length} participant records.`);
 console.log(`Imported ${teamJoins.length} player joins in ${seasons.reduce((n,s)=>n+s.teamJoins.length,0)} team events; ${seasons.filter(s=>s.hasRoamers).length} seasons with roamers.`);

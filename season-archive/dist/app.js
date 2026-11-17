@@ -1,3 +1,5 @@
+function seasonVideoLinks(id){const videos=window.UHC_SEASON_VIDEOS?.[id]||[],playlist="https://www.youtube.com/playlist?list=PL2lIZSsagJkI2UD_VM5v6c2ksedvxIaCL";return `<div class="achievement-strip season-video-strip">${videos.length?`<details><summary>YouTube videos (${videos.length})</summary><ul>${videos.map(v=>`<li><a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer">${escape(v.title)}</a></li>`).join("")}</ul></details>`:""}<a href="${playlist}" target="_blank" rel="noopener noreferrer">Full UHC playlist ↗</a></div>`;}
+function seasonAwardIcon(icon,label,description){return `<img class="season-award-icon" src="${window.UHC_ICONS[icon]}" alt="${label}" title="${label}: ${description}" width="22" height="22">`; }
 const seasons = window.UHC_DATA;
 const $ = id => document.getElementById(id);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -10,7 +12,19 @@ const crown = s => s.crown ? `<span class="crown"><a class="crown-link" href="#a
 function placeTooltip(button){const tip=button.parentElement.querySelector('.tooltip'),r=button.getBoundingClientRect();tip.style.position='fixed';tip.style.left=Math.max(12,Math.min(window.innerWidth-252,r.left-60))+'px';tip.style.top=(r.bottom+120>window.innerHeight?Math.max(12,r.top-115):r.bottom+8)+'px';}
 document.addEventListener('pointerover',e=>{const b=e.target.closest('.crown-link');if(b)placeTooltip(b);});
 document.addEventListener('focusin',e=>{const b=e.target.closest('.crown-link');if(b)placeTooltip(b);});
-function seasonPlayerRow(s,p){return `<tr class="${p.color==='Mole'?'mole-row':''}" style="${p.color==='Mole'?molePaint(s.id):''}--team:${colors[p.color]||'#b3bda9'}"><td><div class="player-cell">${playerFace(p.name)}<button class="player-name" data-player="${escape(p.name)}">${escape(p.name)}</button>${s.crown?.name===p.name?crown(s):''}${!/^Disqualif/i.test(p.type||'')&&p.achievement==='Ironman'?'<span class="badge iron" title="Last player to take damage this season">◈ Ironman</span>':''}${p.roamer?'<span class="badge roamer-badge">Roamer</span>':''}${p.debut?'<span class="badge debut" title="First appearance of this exact name in the records">Debut</span>':''}</div></td>${s.teamSize===1?'':`<td><div class="season-team-label"><span class="team-name">${historyTeamLink(p.team,p.color,s.id)}</span>${p.moleFor?`<small class="mole-cover">Cover team: <b style="color:${colors[p.moleFor]||'#c7d2e5'}">${escape(p.moleFor)}</b></small>`:''}</div></td>`}<td class="death">${escape(p.death||'N/A')}</td><td class="elapsed ${p.seconds==null?'unknown':''}">${duration(p.seconds)}</td></tr>`;}
+function seasonDeathResult(player){
+  if(player.finalHearts==null)return escape(player.death||'N/A');
+  const hearts=player.finalHearts;
+  const full='<img src="'+window.UHC_ICONS['hardcore-heart-full']+'" alt="" width="18" height="18">';
+  const half='<img src="'+window.UHC_ICONS['hardcore-heart-half']+'" alt="" width="18" height="18">';
+  const container=window.UHC_ICONS['hardcore-container'];
+  const empty='<img class="season-empty-heart" src="'+container+'" alt="" width="18" height="18">';
+  const capacity=Math.max(10,Math.ceil(hearts));
+  const label=hearts+' of '+capacity+' hearts remaining';
+  return '<span class="season-survivor-hearts" role="img" aria-label="'+label+'" title="'+label+'" style="--heart-container:url('+container+')">'+
+    full.repeat(Math.floor(hearts))+(hearts%1===0?'':half)+empty.repeat(capacity-Math.ceil(hearts))+'</span>';
+}
+function seasonPlayerRow(s,p){return `<tr class="${p.color==='Mole'?'mole-row':''}" style="${p.color==='Mole'?molePaint(s.id):''}--team:${colors[p.color]||'#b3bda9'}"><td><div class="player-cell">${playerFace(p.name)}<button class="player-name" data-player="${escape(p.name)}">${escape(p.name)}</button>${p.debut?seasonAwardIcon('oak-sapling','Debut','First recorded appearance'):''}${!/^Disqualif/i.test(p.type||'')&&p.achievement==='Ironman'?seasonAwardIcon('iron-chestplate','Ironman','Last player to take damage this season'):''}${p.achievement==='First Damage'?seasonAwardIcon('redstone','First Damage','First player to take damage this season'):''}${s.crown?.name===p.name?crown(s):''}${p.roamer?'<span class="badge roamer-badge">Roamer</span>':''}</div></td>${s.teamSize===1?'':`<td><div class="season-team-label"><span class="team-name">${historyTeamLink(p.team,p.color,s.id)}</span>${p.moleFor?`<small class="mole-cover">Cover team: <b style="color:${colors[p.moleFor]||'#c7d2e5'}">${escape(p.moleFor)}</b></small>`:''}</div></td>`}<td class="death">${seasonDeathResult(p)}</td><td class="elapsed ${p.seconds==null?'unknown':''}">${duration(p.seconds)}</td></tr>`;}
 function teamJoinRow(s,event){
  const label=event.kind==='formed'?'Team formed':event.kind==='roamer'?'Roamer joined':'Team joined';
  return `<tr class="team-join-row" style="--team:${colors[event.color]||'#b0b6c2'};--join-accent:${event.color==='Black'?'#b7c5da':event.color==='Navy'?'#9ab7ff':colors[event.color]||'#b0b6c2'}" data-join-seconds="${event.seconds}"><td colspan="3"><div class="team-join-content"><span class="team-join-marker" aria-hidden="true">+</span><div class="team-join-body"><div class="team-join-heading"><span>${label}</span><strong title="${escape(event.color)}">${historyTeamLink(event.team,event.color,s.id)}</strong></div><div class="team-join-members">${event.names.map(name=>`<span class="team-join-person">${playerFace(name)}<button class="player-name" data-player="${escape(name)}">${escape(name)}</button></span>`).join('')}</div></div></div></td><td class="elapsed team-join-time">${duration(event.seconds)}</td></tr>`;
@@ -22,9 +36,7 @@ function seasonLogRows(s){
  return log.map(e=>e.join?teamJoinRow(s,e.join):seasonPlayerRow(s,e.player)).join('');
 }
 function card(s){
-  const iron=s.players.filter(p=>!/^Disqualif/i.test(p.type||'')&&p.achievement==='Ironman').map(p=>p.name).join(', ');
-  const firstDamage=s.players.filter(p=>p.achievement==='First Damage').map(p=>p.name).join(', ');
-  return `<article class="season-card" id="season-${s.id}"><header class="season-top"><div class="season-number"><small>SEASON</small><strong>${String(s.id).padStart(2,'0')}</strong></div><div class="season-info"><h3>${date(s.date)}</h3><div class="metadata"><span>${s.players.length} participants</span><span>${s.teamSize===1?'Solo':`Teams of ${s.teamSize}`}</span><span${s.mode==='War'?` ${chartTip('War\nTwo large teams face each other.')}`:''}>${escape(s.mode)}</span>${s.dragon?'<span>Ender Dragon</span>':''}<span>v${escape(minecraftVersion(s.version))}</span>${s.hasRoamers?`<span class="season-roamer-flag" ${chartTip('Roamer game\nOne or more players started without a team while most others started with teammates.')}>Roamer game</span>`:''}</div><div class="faces" aria-label="Season participants">${s.players.map(p=>`<span title="${escape(p.name)}">${playerFace(p.name)}</span>`).join('')}</div></div><div class="time-box"><strong>${duration(s.seconds)}</strong><small>LAST RECORDED ELIMINATION</small></div></header><div class="achievement-strip"><span>◈ <b>Ironman</b> ${escape(iron || 'Not recorded')}</span>${firstDamage?`<span>First damage · ${escape(firstDamage)}</span>`:''}</div><div class="table-wrap" tabindex="0" role="region" aria-label="Season ${s.id} results"><table><caption>Season ${s.id} results${s.teamJoins?.length?' and team-joining events in chronological order':' in workbook order'}</caption><thead><tr><th scope="col">Player</th>${s.teamSize===1?'':'<th scope="col">Team</th>'}<th scope="col">Death / result</th><th scope="col">Time</th></tr></thead><tbody>${seasonLogRows(s)}</tbody></table></div><footer class="season-bottom"><span>${s.crown?`Crown after this season · <b>${escape(s.crown.name)}</b> ${s.players.some(p=>p.name===s.crown.name)?'':crown(s)}`:'Crown not recorded'}</span><span>Season ${s.id} · ${s.players.filter(p=>p.debut).length} debuts</span></footer></article>`;
+  return `<article class="season-card" id="season-${s.id}"><header class="season-top"><div class="season-number"><small>SEASON</small><strong>${String(s.id).padStart(2,'0')}</strong></div><div class="season-info"><h3>${date(s.date)}</h3><div class="metadata"><span>${s.players.length} participants</span><span>${s.teamSize===1?'Solo':`Teams of ${s.teamSize}`}</span><span${s.mode==='War'?` ${chartTip('War\nTwo large teams face each other.')}`:''}>${escape(s.mode)}</span>${s.dragon?'<span>Ender Dragon</span>':''}<span>v${escape(minecraftVersion(s.version))}</span>${s.hasRoamers?`<span class="season-roamer-flag" ${chartTip('Roamer game\nOne or more players started without a team while most others started with teammates.')}>Roamer game</span>`:''}</div><div class="faces" aria-label="Season participants">${s.players.map(p=>`<span title="${escape(p.name)}">${playerFace(p.name)}</span>`).join('')}</div></div><div class="time-box"><strong>${duration(s.seconds)}</strong><small>LAST RECORDED ELIMINATION</small></div></header>${seasonVideoLinks(s.id)}<div class="table-wrap" tabindex="0" role="region" aria-label="Season ${s.id} results"><table><caption>Season ${s.id} results${s.teamJoins?.length?' and team-joining events in chronological order':' in workbook order'}</caption><thead><tr><th scope="col">Player</th>${s.teamSize===1?'':'<th scope="col">Team</th>'}<th scope="col">Death / result</th><th scope="col">Time</th></tr></thead><tbody>${seasonLogRows(s)}</tbody></table></div><footer class="season-bottom"><span>${s.crown?`Crown after this season · <b>${escape(s.crown.name)}</b> ${s.players.some(p=>p.name===s.crown.name)?'':crown(s)}`:'Crown not recorded'}</span><span>Season ${s.id} · ${s.players.filter(p=>p.debut).length} debuts</span></footer></article>`;
 }
 function seasonFilterValue(season,category){
  return category==='size'?String(season.teamSize):category==='mode'?season.mode:category==='version'?minecraftVersion(season.version):season.date.slice(0,4);
@@ -60,7 +72,7 @@ function tab(){
 $('unique-count').textContent=profileData.recordedPlayers;
 $('season-index').innerHTML=seasons.map(s=>`<a href="#season-${s.id}" data-season="${s.id}" aria-label="Go to season ${s.id}">${String(s.id).padStart(2,'0')}</a>`).join('');
 const originalFilterWidth=$('year').getBoundingClientRect?.().width;
-if(originalFilterWidth&&window.innerWidth>720){$('year').style.width=(originalFilterWidth+10)+'px';$('season-filter-category').style.width=originalFilterWidth+'px';}
+if(originalFilterWidth&&window.innerWidth>720){$('season-filter-category').style.width=originalFilterWidth+'px';}
 updateSeasonFilterOptions();
 $('season-filter-category').addEventListener('change',()=>{updateSeasonFilterOptions();render();});
 $('search').addEventListener('input',render);$('year').addEventListener('change',()=>{$('year').title=$('year').selectedOptions[0]?.textContent||'';render();});$('order').addEventListener('change',render);
@@ -124,3 +136,37 @@ function initializeBackToTopPearl(){
  sync();
 }
 initializeBackToTopPearl();
+
+document.querySelectorAll('.about-gallery').forEach(gallery=>{
+ const header=document.querySelector('header.nav'),about=gallery.closest('.about-page');
+ if(header&&about){
+  const syncNavHeight=()=>about.style.setProperty('--about-nav-top',header.getBoundingClientRect().height+'px');
+  syncNavHeight();
+  if(typeof ResizeObserver==='function')new ResizeObserver(syncNavHeight).observe(header);
+ }
+ const region=gallery.querySelector('.about-slates');
+ const slates=[...gallery.querySelectorAll('.about-slate')];
+ const motion=matchMedia('(prefers-reduced-motion: reduce)');
+ let current=0,timer,visible=false,manual=false;
+ function advance(step){
+  slates[current].inert=true;
+  current=(current+step+slates.length)%slates.length;
+  slates[current].inert=false;
+ }
+ function schedule(){
+  clearInterval(timer);
+  if(visible&&!manual&&!motion.matches&&!document.hidden)timer=setInterval(()=>advance(1),7300);
+ }
+ new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;schedule()}).observe(gallery);
+ document.addEventListener('visibilitychange',schedule);
+ motion.addEventListener('change',schedule);
+ gallery.querySelectorAll('[data-slate-step]').forEach(button=>{
+  button.hidden=false;
+  button.addEventListener('click',()=>{
+   manual=true;
+   schedule();
+   region.setAttribute('aria-live','polite');
+   advance(Number(button.dataset.slateStep));
+  });
+ });
+});

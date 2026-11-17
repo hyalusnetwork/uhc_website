@@ -1,0 +1,10 @@
+const fs=require('fs');
+const html='dist/index.html',js='dist/app.js',css='dist/ore-theme.css';
+fs.writeFileSync(html,fs.readFileSync(html,'utf8').replace('<div class="legend"><p>READING THE ARCHIVE</p>','<div class="legend">'));
+let s=fs.readFileSync(js,'utf8');
+const re=/\$\{s\.crown\?\.name===p\.name\?crown\(s\):''\}\$\{(!\/\^Disqualif[^?]+)\?'<span class="badge iron"[^>]*>[^<]*<\/span>':''\}(\$\{p\.roamer[^\n]*?\})\$\{p\.debut\?'<span class="badge debut"[^>]*>[^<]*<\/span>':''\}/;
+if(!re.test(s))throw Error('Season row badges not found');
+s=s.replace(re,(_,iron,roamer)=>"${p.debut?seasonAwardIcon('oak-sapling','Debut','First recorded appearance'):''}${"+iron+"?seasonAwardIcon('iron-chestplate','Ironman','Last player to take damage this season'):''}${s.crown?.name===p.name?crown(s):''}"+roamer);
+s="function seasonAwardIcon(icon,label,description){return `<img class=\"season-award-icon\" src=\"${window.UHC_ICONS[icon]}\" alt=\"${label}\" title=\"${label}: ${description}\" width=\"22\" height=\"22\">`; }\n"+s;
+fs.writeFileSync(js,s);
+fs.appendFileSync(css,'\n.season-award-icon{flex:none;object-fit:contain;image-rendering:pixelated}\n#back-to-top-pearl{--pearl-depth:6px;padding:0 0 var(--pearl-depth)}\n#back-to-top-pearl:active{--pearl-depth:4px}\n#back-to-top-pearl::before,#back-to-top-pearl:active::before{bottom:var(--pearl-depth)}\n');

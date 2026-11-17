@@ -15,7 +15,7 @@ function buildPlayerRankings(data,seasons=[]){
  const priorGames=5;
  const {models,coverage}=require('./teammate-model.cjs').historicalModels(all,seasons,enduranceRecords);
  const bounded=(key,value)=>Math.max(0,key==='combat'?value:Math.min(1,value));
- const scoreComponents=(rates,durability)=>{
+ const scoreComponents=(rates,durability,penalty)=>{
   const result=Object.fromEntries(Object.entries(weights).filter(([key])=>key!=='defense').map(([key,weight])=>{
    const attainment=Math.min(1,rates[key]/benchmarks[key]);
    return [key,{points:weight*attainment,weight,adjustedRate:rates[key],benchmark:benchmarks[key],tier:tier(100*attainment)}];
@@ -24,10 +24,14 @@ function buildPlayerRankings(data,seasons=[]){
   const durabilityPoints=10*Math.min(1,durability/benchmarks.durability);
   const points=ironPoints+durabilityPoints;
   result.defense={points,weight:20,tier:tier(5*points),ironPoints,durabilityPoints,adjustedIronRate:rates.ironman,adjustedDurability:durability,adjustedRate:points/20,benchmark:1};
+  const {victories}=result;
+  const pointsAfterPenalty=Math.max(0,victories.points-penalty);
+  result.teamContribution={...victories,winPoints:victories.points,penalty,points:pointsAfterPenalty,tier:tier(100*pointsAfterPenalty/victories.weight)};
+  delete result.victories;
   return result;
  };
- const teamKillPenalty=rate=>Math.min(20,40*rate);
- const scoreAfterPenalty=(components,penalty)=>Math.max(0,Object.values(components).reduce((sum,component)=>sum+component.points,0)-penalty);
+ const teamKillPenalty=rate=>Math.min(10,40*rate);
+ const sumScore=(components)=>Math.max(0,Object.values(components).reduce((sum,component)=>sum+component.points,0));
  const players=all.filter(p=>p.games>=5).map(p=>{
   const survived=p.history.filter(h=>!h.death&&!h.type).length;
   const enduranceHistory=enduranceRecords.get(p.name),valid=enduranceHistory.filter(h=>h.available),outlastRate=valid.length?valid.reduce((n,h)=>n+h.rate,0)/valid.length:null;
@@ -42,18 +46,18 @@ function buildPlayerRankings(data,seasons=[]){
   let adjustedDurability=(valid.reduce((n,h)=>n+h.rate,0)+priorGames*baseline.durability)/(valid.length+priorGames);
   let personalDurability=adjustedDurability;
   if(models.durability){const estimate=models.durability.estimate(p.name);personalDurability=bounded('durability',models.durability.baseline+estimate.individual);adjustedDurability=bounded('durability',models.durability.baseline+estimate.individual+estimate.influence);influenceRates.durability=estimate.influence;}
-  const components=scoreComponents(adjusted,adjustedDurability);
-  const individualComponents=scoreComponents(individualAdjusted,personalDurability);
-  for(const key of Object.keys(components))components[key].personalPoints=individualComponents[key].points;
   const teamKillRate=p.teamKills/p.games,penalty=teamKillPenalty(teamKillRate);
+  const components=scoreComponents(adjusted,adjustedDurability,penalty);
+  const individualComponents=scoreComponents(individualAdjusted,personalDurability,penalty);
+  for(const key of Object.keys(components))components[key].personalPoints=individualComponents[key].points;
   const disciplineTier=p.teamKills===0?'S':teamKillRate<=.03?'A':teamKillRate<=.07?'B':teamKillRate<=.12?'C':teamKillRate<=.20?'D':'F';
-  const score=scoreAfterPenalty(components,penalty);
-  const individualScore=scoreAfterPenalty(individualComponents,penalty);
+  const score=sumScore(components);
+  const individualScore=sumScore(individualComponents);
   const bestSeason=p.history.map((game,index)=>{
    const rates={combat:game.kills,victories:Number(!!game.win),ironman:Number(!!game.iron),survival:Number(!game.death&&!game.type)};
    const durability=enduranceHistory[index].rate??baseline.durability;
-   const gameComponents=scoreComponents(rates,durability);
-   const gameScore=scoreAfterPenalty(gameComponents,teamKillPenalty(game.teamKills||0));
+   const gameComponents=scoreComponents(rates,durability,teamKillPenalty(game.teamKills||0));
+   const gameScore=sumScore(gameComponents);
    return {season:game.season,score:gameScore,kills:game.kills};
   }).sort((a,b)=>b.score-a.score||b.kills-a.kills||b.season-a.season)[0].season;
   const teammateInfluence=score-individualScore,teamCoverage=coverage.get(p.name);
@@ -68,6 +72,6 @@ function buildPlayerRankings(data,seasons=[]){
  };
  assignRanks('individualScore','individualRank');
  assignRanks('score','rank');
- return {players,weights,benchmarks,baseline,priorGames,minimumGames:5,teammateMethod:'Your score combines what you produce personally with the estimated effect you have on teammates. Strong help received is accounted for rather than attributed entirely to you. Your own positive or negative influence is included in the component scores, not added again afterward. Each historical statistic is fitted as: average + individual effect + average influence of teammates + match/team circumstances + ruleset and size effects. Individual effects use penalty 5; influence uses penalty 20, so small samples stay near average. Players below five matches are included only as uncertain internal context and never appear in these rankings. Games with changing or unknown allegiances contribute personal history but do not establish teammate relationships. Influence is an association, not causal proof; players who always play together remain difficult to separate. The score stays on the existing 0–100 scale. Damage and resource data are not used.',method:'40 points for PVP kills per game, 30 for team win rate, 20 for Defense, and 10 for survival. Defense combines up to 10 points for Ironman rate (30% benchmark) and up to 10 for average share of other timed deaths outlasted (80% benchmark). Each game has equal weight in that average. Full points for the other components require 1.5 kills per game, 40% wins, and 50% survival. Each rate is estimated jointly from recorded matches, accounting for individual performance, teammate influence, shared match/team circumstances, ruleset, field size and team size. Individual estimates shrink toward the average with a five-game-strength prior; teammate influence uses a stronger twenty-game-strength prior. Team Kills subtract 40 × (Team Kills / games), capped at 20 points. Total scores are capped by the component weights, floored at zero, and never scaled to force the leader to 100.',tiers:'Overall and individual stat tiers: S ≥ 80, A ≥ 60, B ≥ 38, C ≥ 30, D ≥ 20, F < 20. Individual stat tiers use the percentage of the adjusted benchmark attained. Discipline: S = no Team Kills; A = rate ≤ 0.03 per game; B ≤ 0.07; C ≤ 0.12; D ≤ 0.20; F > 0.20.',notes:'Five recorded games are required. Rates, not lifetime totals, drive the score; repeated strong performance matters more than attendance alone. Alias records are combined. Wins include eliminated and disconnected winning teammates, but exclude disqualified players. Team Kills are excluded from PVP kills. Survival requires no recorded death or other exit. The same ledger and identity rules used by player profiles apply here. Durability counts timed PVP, PVE, team-kill, disconnect and disqualification deaths. Survivors outlast all of them; otherwise only strictly earlier deaths count. Own deaths are excluded, and tied deaths do not count as outlasted. Games with no other timed deaths or unknown exit times are excluded from this average; coverage is shown. Historical bios do not supply score totals. Best season uses the Classic scoring weights on each recorded game, with the archive-wide average outlast rate when the game has no usable timing. Ties favor more PVP kills, then the more recent season.'};
+ return {players,weights,benchmarks,baseline,priorGames,minimumGames:5,teammateMethod:'Your score combines what you produce personally with the estimated effect you have on teammates. Strong help received is accounted for rather than attributed entirely to you. Your own positive or negative influence is included in the component scores, not added again afterward. Each historical statistic is fitted as: average + individual effect + average influence of teammates + match/team circumstances + ruleset and size effects. Individual effects use penalty 5; influence uses penalty 20, so small samples stay near average. Players below five matches are included only as uncertain internal context and never appear in these rankings. Games with changing or unknown allegiances contribute personal history but do not establish teammate relationships. Influence is an association, not causal proof; players who always play together remain difficult to separate. The score stays on the existing 0–100 scale. Damage and resource data are not used.',method:'40 points for PVP kills per game, 30 for Team Contribution, 20 for Defense, and 10 for survival. Defense combines up to 10 points for Ironman rate (30% benchmark) and up to 10 for average share of other timed deaths outlasted (80% benchmark). Each game has equal weight in that average. Full points for the other components require 1.5 kills per game, 40% wins, and 50% survival. Each rate is estimated jointly from recorded matches, accounting for individual performance, teammate influence, shared match/team circumstances, ruleset, field size and team size. Individual estimates shrink toward the average with a five-game-strength prior; teammate influence uses a stronger twenty-game-strength prior. Team Contribution starts with up to 30 points for the adjusted win rate. Team Kills deduct 40 × (Team Kills / games), capped at 10 points, within this category. The category cannot go below zero. Total scores are capped by the component weights, floored at zero, and never scaled to force the leader to 100.',tiers:'Overall and individual stat tiers: S ≥ 80, A ≥ 60, B ≥ 38, C ≥ 30, D ≥ 20, F < 20. Individual stat tiers use the percentage of the adjusted benchmark attained. Discipline: S = no Team Kills; A = rate ≤ 0.03 per game; B ≤ 0.07; C ≤ 0.12; D ≤ 0.20; F > 0.20.',notes:'Five recorded games are required. Rates, not lifetime totals, drive the score; repeated strong performance matters more than attendance alone. Alias records are combined. Wins include eliminated and disconnected winning teammates, but exclude disqualified players. Team Kills are excluded from PVP kills. Survival requires no recorded death or other exit. The same ledger and identity rules used by player profiles apply here. Durability counts timed PVP, PVE, team-kill, disconnect and disqualification deaths. Survivors outlast all of them; otherwise only strictly earlier deaths count. Own deaths are excluded, and tied deaths do not count as outlasted. Games with no other timed deaths or unknown exit times are excluded from this average; coverage is shown. Historical bios do not supply score totals. Best season uses the Classic scoring weights on each recorded game, with the archive-wide average outlast rate when the game has no usable timing. Ties favor more PVP kills, then the more recent season.'};
 }
 module.exports={buildPlayerRankings,tier};

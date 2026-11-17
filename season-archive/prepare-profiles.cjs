@@ -16,6 +16,16 @@ if(misrok){
  if(!cell)misrok.cells.push({value:'Formerly Known As: FaithInChrist'});
  else if(!/\bFaithInChrist\b/i.test(cell.value))cell.value+=', FaithInChrist';
 }else bios.push({name:'Misrok',cells:[{value:'Formerly Known As: FaithInChrist'}]});
+const crackAttack=bios.find(b=>b.name==='Crack_Attack');
+if(!crackAttack)throw Error('Missing Crack_Attack bio');
+const crackAliases=crackAttack.cells.find(c=>String(c.value).startsWith('Formerly Known As:'));
+if(!crackAliases)crackAttack.cells.push({value:'Formerly Known As: AbsorptionV'});
+else if(!/\bAbsorptionV\b/i.test(crackAliases.value))crackAliases.value+=', AbsorptionV';
+const tulltull=bios.find(b=>b.name.toLowerCase()==='tulltull')||{name:'tulltull',cells:[]};
+if(!bios.includes(tulltull))bios.push(tulltull);
+const tulltullAliases=tulltull.cells.find(c=>String(c.value).startsWith('Formerly Known As:'));
+if(!tulltullAliases)tulltull.cells.push({value:'Formerly Known As: Nocturn2'});
+else if(!/\bNocturn2\b/i.test(tulltullAliases.value))tulltullAliases.value+=', Nocturn2';
 const output=buildProfiles(window.UHC_DATA,bios,specials);
 const damage=read('season-37-damage.json');
 const roster=window.UHC_DATA.find(s=>s.id===damage.season).players;
