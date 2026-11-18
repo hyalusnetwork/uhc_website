@@ -1,3 +1,4 @@
+require('./prepare-season-replay.cjs');
 const fs=require('node:fs');
 let html=fs.readFileSync('dist/index.html','utf8');
 const oreTheme=fs.readFileSync('dist/ore-theme.css','utf8').replace(
@@ -45,6 +46,7 @@ html=html.replaceAll('src="hardcore-heart.webp"',`src="${heart}"`).replace('href
 html=html.replace('<link rel="stylesheet" href="styles.css">',()=>`<style>${css}</style>`).replace('<script defer src="data.js"></script><script defer src="app.js"></script>','');
 html=html.replace('<link rel="stylesheet" href="players.css">','').replace('<link rel="stylesheet" href="stats.css">','').replace('<link rel="stylesheet" href="rankings.css">','').replace('<link rel="stylesheet" href="player-rankings.css">','').replace(/<script defer src="(?:data|app|profiles|icons|players|faces|stats|stats-data|rankings|rankings-data|player-rankings|player-rankings-data)\.js(?:\?v=[a-f0-9]+)?"><\/script>/g,'');
 html=html.replace('<link rel="stylesheet" href="ore-theme.css">','').replace('<link rel="stylesheet" href="trivia.css">','').replace(/<script defer src="(?:trivia|trivia-data)\.js"><\/script>/g,'');
-html=html.replace('</body>',()=>`<script>${[data,profiles,iconScript,seasonVideoScript,faceScript,statsData,rankingsData,playerRankingsData,triviaData,players,stats,rankings,playerRankings,trivia,app,crownHistory].join('\n;\n').replace(/<\/script/gi,'<\\/script')}</script></body>`);
+html=html.replace(/<script defer src="season-replay(?:-data)?\.js"><\/script>/g,'');
+html=html.replace('</body>',()=>`<script>${[data,profiles,iconScript,seasonVideoScript,faceScript,statsData,rankingsData,playerRankingsData,triviaData,players,stats,rankings,playerRankings,trivia,app,crownHistory,fs.readFileSync("dist/season-replay-data.js","utf8"),fs.readFileSync("dist/season-replay.js","utf8")].join('\n;\n').replace(/<\/script/gi,'<\\/script')}</script></body>`);
 fs.writeFileSync('../UHC.html',html);
 console.log('Created self-contained UHC.html');

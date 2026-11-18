@@ -1,0 +1,5 @@
+const fs=require('fs');let q=fs.readFileSync('qa-season-replay.cjs','utf8');
+q=q.replace("let initial=await evaluate", "let initial=await evaluate");
+q=q.replace("console.log(initial);assert.equal(initial.hearts,180);", "console.log(initial);assert.equal(initial.hearts,180);assert(await evaluate(\"(()=>{const s=seasons.find(s=>s.id===37),actual=[...document.querySelectorAll('#season-37 tbody .player-name')].map(n=>n.textContent),expected=[...s.players].sort((a,b)=>(a.team||a.color||'None').localeCompare(b.team||b.color||'None')||a.name.localeCompare(b.name)).map(p=>p.name);return JSON.stringify(actual)===JSON.stringify(expected)})()\"));");
+q=q.replace("console.log('Replay initial", "await evaluate(\"document.querySelector('[data-replay-action=toggle]').click()\");await new Promise(r=>setTimeout(r,500));assert(await evaluate(\"UHC_REPLAY_API.states.get(37).time>0\"));await evaluate(\"document.querySelector('[data-replay-action=toggle]').click()\");console.log('Replay initial");
+fs.writeFileSync('qa-season-replay.cjs',q);

@@ -1,0 +1,3 @@
+const fs=require('fs');let q=fs.readFileSync('qa-stable-replay-rows.cjs','utf8');
+q=q.replace('await evaluate("document.querySelector(\'.season-animation-launch\').click();','const originalHeight=await evaluate("Math.min(...[...document.querySelectorAll(\'#season-37 tbody tr\')].map(r=>r.getBoundingClientRect().height))");await evaluate("document.querySelector(\'.season-animation-launch\').click();');
+q=q.replace('h===64','Math.abs(h-originalHeight)<0.1').replace('columnStable:true','originalHeight,playbackHeight:metrics.heights[0],columnStable:true');fs.writeFileSync('qa-original-replay-height.cjs',q);

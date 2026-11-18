@@ -1,0 +1,2 @@
+const fs=require('fs');let p=fs.readFileSync('dist/season-replay.js','utf8').replace('step="0.1"','step="any"');fs.writeFileSync('dist/season-replay.js',p);
+let q=fs.readFileSync('qa-season-replay.cjs','utf8');q=q.replace('console.log(await evaluate("typeof window.UHC_REPLAY_API"));', 'await send("Page.reload",{ignoreCache:true});await new Promise(r=>setTimeout(r,700));console.log(await evaluate("typeof window.UHC_REPLAY_API"));');fs.writeFileSync('qa-season-replay.cjs',q);

@@ -1,0 +1,21 @@
+const fs=require('fs');let a=fs.readFileSync('dist/app.js','utf8');
+a=a.replace('${duration(p.seconds)}</td></tr>',"${p.seconds==null&&!p.type&&!p.death?'':duration(p.seconds)}</td></tr>");
+const start=a.indexOf(" const content=button.dataset.seasonMenu"),end=a.indexOf(" dialog.setAttribute('aria-labelledby'",start);
+if(start<0||end<0)throw Error('Dialog content missing');
+a=a.slice(0,start)+`
+ const isVideo=button.dataset.seasonMenu==='videos';
+ dialog.classList.toggle('season-menu-is-video',isVideo);
+ const play='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 10 6-10 6Z" fill="currentColor"/></svg>';
+ const content=isVideo?'<p class="season-menu-intro">'+videos.length+' available video'+(videos.length===1?'':'s')+' · Choose a perspective to watch.</p><ul class="season-menu-videos">'+videos.map((v,i)=>'<li><a href="https://www.youtube.com/watch?v='+v.id+'" target="_blank" rel="noopener noreferrer"><span class="season-video-play">'+play+'</span><span class="season-video-copy"><strong>'+escape(v.title)+'</strong><small>WATCH ON YOUTUBE</small></span><span class="season-video-external" aria-hidden="true">↗</span></a></li>').join('')+'</ul><a class="season-playlist-link" href="https://www.youtube.com/playlist?list=PL2lIZSsagJkI2UD_VM5v6c2ksedvxIaCL" target="_blank" rel="noopener noreferrer">Browse the full UHC playlist ↗</a>':'<dl class="season-menu-info"><dt>Game format</dt><dd>'+escape(season.mode)+(season.teamSize===1?' · Solo':' · Teams of '+season.teamSize)+'</dd><dt>World seed</dt><dd>Not available</dd></dl>';
+ dialog.innerHTML='<div class="season-menu-heading"><div><p class="season-menu-eyebrow">SEASON '+String(season.id).padStart(2,'0')+'</p><h2 id="season-menu-title">'+(isVideo?'Watch the season':'Season information')+'</h2></div><button type="button" class="season-menu-close">Close</button></div>'+content;
+`+a.slice(end);fs.writeFileSync('dist/app.js',a);
+let s=fs.readFileSync('dist/season-replay.js','utf8');
+s=s.replace("elapsed.textContent=state.dead?duration(p.seconds??state.time):'—';","elapsed.textContent=state.dead?duration(p.seconds??state.time):'';");
+s=s.replace(" const before=new Map([...st.rows].map(([n,r])=>[n,r.getBoundingClientRect().top]));","");
+const marker=' for(const p of sorted){';
+s=s.replace(marker,` const orderKey=sorted.map(p=>p.name).join('|'),changed=st.orderKey!==orderKey;
+ const before=changed?new Map([...st.rows].map(([n,r])=>[n,r.getBoundingClientRect().top])):new Map();
+ if(changed)for(const row of st.rows.values())row.getAnimations().forEach(animation=>animation.cancel());
+ st.orderKey=orderKey;
+`+marker);
+s=s.replace('if(animate&&!reduced.matches)for','if(changed&&animate&&!reduced.matches)for');fs.writeFileSync('dist/season-replay.js',s);
