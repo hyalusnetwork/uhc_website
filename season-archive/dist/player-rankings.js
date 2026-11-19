@@ -116,8 +116,12 @@ function renderSeasonGrades(hash){
   }).join('')}</tr></thead>
   <tbody>${rows.map(player=>{
    const mark=player.grades[category.id];
-   return `<tr><th scope="row"><span class="season-grade-player">${playerFace(player.name)}${escape(player.name)}</span></th>
-    <td>${mark?`<strong class="pr-mini-tier pr-tier-${mark.grade}">${mark.grade}</strong><small>${mark.score.toFixed(1)} / 100${mark.provisional?' · Provisional':''}</small>`:'—'}</td>
+   const provisional=player.games<5||mark?.provisional;
+   const tier=provisional?'unknown':mark?.grade;
+   const name=profileByName(player.name)?
+    `<a class="season-grade-bio-link" href="${profileHref(player.name)}">${escape(player.name)}</a>`:escape(player.name);
+   return `<tr><th scope="row"><span class="season-grade-player">${playerFace(player.name)}${name}</span></th>
+    <td>${mark?`<strong class="pr-mini-tier pr-tier-${tier}"${provisional?` aria-label="${player.games} of 5 required games"`:''}>${provisional?'?':mark.grade}</strong><small>${mark.score.toFixed(1)} / 100${provisional?` · ${player.games} of 5 required games`:''}</small>`:'—'}</td>
     ${columns.map(column=>{
      if(!overall)return metricCell(player.results[column.key],column);
      const component=player.grades[column.key];

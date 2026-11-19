@@ -188,3 +188,57 @@ document.querySelectorAll('.about-gallery').forEach(gallery=>{
   });
  });
 });
+
+document.querySelector('.hero-motion-toggle')?.addEventListener('click',event=>{const button=event.currentTarget,hero=button.closest('.hero'),paused=hero.classList.toggle('hero-photos-paused');button.setAttribute('aria-pressed',String(paused));button.setAttribute('aria-label',paused?'Play background images':'Pause background images');button.title=button.getAttribute('aria-label');button.innerHTML=paused?'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 8 5-8 5Z" fill="currentColor"/></svg>':'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3v10M11 3v10" stroke="currentColor" stroke-width="2"/></svg>';});
+
+/* Fit the square heart to the actual ink bounds of UHC, rather than its line box. */
+(()=>{
+ const letters=document.querySelector('.hero-wordmark-uhc .hero-wordmark-letters');
+ const heart=document.querySelector('.hero-wordmark-bottom>img');
+ if(!letters||!heart)return;
+ const baseline=document.createElement('span');
+ baseline.setAttribute('aria-hidden','true');
+ baseline.style.cssText='display:inline-block;width:0;height:0;padding:0;margin:0;vertical-align:baseline';
+ letters.append(baseline);
+ const context=document.createElement('canvas').getContext('2d');
+ const alignHeart=()=>{
+  const style=getComputedStyle(letters);
+  context.font=style.font;
+  const ink=context.measureText('UHC');
+  const size=ink.actualBoundingBoxAscent+ink.actualBoundingBoxDescent;
+  if(!size)return;
+  heart.style.width=heart.style.height=size+'px';
+  heart.style.translate='none';
+  const top=baseline.getBoundingClientRect().top-ink.actualBoundingBoxAscent;
+  heart.style.translate='0 '+(top-heart.getBoundingClientRect().top)+'px';
+ };
+ new ResizeObserver(alignHeart).observe(letters);
+ document.fonts.ready.then(alignHeart);
+})();
+/* A synchronized image copy keeps the blur independent of browser backdrop repaints. */
+(()=>{
+ const hero=document.querySelector('.hero-with-photos');
+ const glass=hero?.querySelector('.hero-copy-glass');
+ const scene=hero?.querySelector(':scope>.hero-photo-window');
+ if(!glass||!scene)return;
+ // Shuffle once, then repeat that same order for a continuous loop and matching blur.
+ const groups=[...scene.querySelectorAll('.hero-photo-group')];
+ const images=[...groups[0].children];
+ for(let i=images.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [images[i],images[j]]=[images[j],images[i]];
+ }
+ groups[0].replaceChildren(...images);
+ for(const group of groups.slice(1))group.replaceChildren(...images.map(image=>image.cloneNode(true)));
+ glass.replaceChildren(scene.cloneNode(true),hero.querySelector(':scope>.hero-photo-shade').cloneNode(true));
+ const original=scene.querySelector('.hero-photo-track');
+ const blurred=glass.querySelector('.hero-photo-track');
+ const sync=()=>{
+  hero.style.setProperty('--hero-scene-width',hero.getBoundingClientRect().width+'px');
+  const source=original.getAnimations()[0],copy=blurred.getAnimations()[0];
+  if(source&&copy)copy.currentTime=source.currentTime;
+ };
+ new ResizeObserver(sync).observe(hero);
+ requestAnimationFrame(sync);
+ matchMedia('(prefers-reduced-motion:reduce)').addEventListener('change',()=>requestAnimationFrame(sync));
+})();

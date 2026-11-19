@@ -1,6 +1,7 @@
 require('./prepare-season-replay.cjs');
 const fs=require('node:fs');
 let html=fs.readFileSync('dist/index.html','utf8');
+html=html.replace(/src="(images\/hero-season-\d+\.webp)"/g,(_,path)=>'src="data:image/webp;base64,'+fs.readFileSync('dist/'+path).toString('base64')+'"');
 const oreTheme=fs.readFileSync('dist/ore-theme.css','utf8').replace(
  /images\/(?:player-grades|classic-era)-[a-z-]+\.(webp|jpg)/g,
  (path,extension)=>`data:image/${extension==='jpg'?'jpeg':extension};base64,${fs.readFileSync('dist/'+path).toString('base64')}`

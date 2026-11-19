@@ -1,0 +1,3 @@
+const fs=require('fs');let h=fs.readFileSync('dist/index.html','utf8');const old='<h1 class="hero-wordmark" aria-label="Hyalus UHC"><img src="hardcore-heart.webp" alt="" width="108" height="108"><span class="hero-wordmark-text"><span class="hero-wordmark-name">Hyalus</span><span class="hero-wordmark-uhc">UHC</span></span></h1>';
+if(!h.includes(old))throw Error('Wordmark missing');
+h=h.replace(old,'<h1 class="hero-wordmark" aria-label="Hyalus UHC"><span class="hero-wordmark-name">HYALUS</span><span class="hero-wordmark-bottom"><span class="hero-wordmark-uhc">UHC</span><img src="hardcore-heart.webp" alt="" width="58" height="58"></span></h1>');fs.writeFileSync('dist/index.html',h);
