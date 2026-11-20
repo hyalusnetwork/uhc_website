@@ -1,0 +1,16 @@
+function updateDistributionHighlight(chart,category){
+ chart.querySelectorAll('.distribution-season-button').forEach(tile=>tile.classList.toggle('distribution-muted',category!=null&&tile.dataset.distributionCategory!==category));
+ chart.querySelectorAll('.team-size-arc').forEach(arc=>arc.setAttribute('aria-pressed',String(arc.dataset.distributionCategory===chart.dataset.selectedCategory)));
+}
+function initializeDistributionInteractions(){
+ const segment=target=>target?.closest?.('.distribution-visual .team-size-arc');
+ const preview=event=>{const arc=segment(event.target);if(arc)updateDistributionHighlight(arc.closest('.distribution-visual'),arc.dataset.distributionCategory);};
+ const restore=event=>{const arc=segment(event.target);if(!arc||segment(event.relatedTarget)===arc)return;const chart=arc.closest('.distribution-visual');updateDistributionHighlight(chart,chart.dataset.selectedCategory);};
+ document.addEventListener('pointerover',preview);
+ document.addEventListener('pointerout',restore);
+ document.addEventListener('focusin',preview);
+ document.addEventListener('focusout',restore);
+ const select=arc=>{const chart=arc.closest('.distribution-visual'),category=arc.dataset.distributionCategory;if(chart.dataset.selectedCategory===category)delete chart.dataset.selectedCategory;else chart.dataset.selectedCategory=category;updateDistributionHighlight(chart,chart.dataset.selectedCategory);};
+ document.addEventListener('click',event=>{const arc=segment(event.target);if(arc)select(arc);});
+ document.addEventListener('keydown',event=>{const arc=segment(event.target);if(!arc)return;if(event.key==='Enter'||event.key===' '){event.preventDefault();select(arc);}else if(event.key==='Escape'){const chart=arc.closest('.distribution-visual');delete chart.dataset.selectedCategory;updateDistributionHighlight(chart);}});
+}

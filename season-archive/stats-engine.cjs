@@ -22,7 +22,7 @@ function buildStats(seasons,data){
  const victimPairs=players.flatMap(p=>Object.entries(p.victims).map(([victim,count])=>[p.name,victim,count]));
  const killerMax=new Map(),victimMax=new Map();
  for(const [killer,victim,count] of victimPairs){killerMax.set(killer,Math.max(killerMax.get(killer)||0,count));victimMax.set(victim,Math.max(victimMax.get(victim)||0,count));}
- add('victims','Favorite Victim',[['Killer','player'],['Victim','player'],['Count','number']],victimPairs.filter(([killer,victim,count])=>count>=2&&(count===killerMax.get(killer)||count===victimMax.get(victim))).sort((a,b)=>b[2]-a[2]||a[0].localeCompare(b[0])||a[1].localeCompare(b[1])),'Pairs must have at least two recorded PVP kills and tie for either the killer’s highest count against any victim or the victim’s highest count from any killer. All ties are included.');
+ add('victims','Favorite Victim',[['Killer','player'],['Victim','player'],['Count','number']],victimPairs.filter(([killer,victim,count])=>count>=3&&(count===killerMax.get(killer)||count===victimMax.get(victim))).sort((a,b)=>b[2]-a[2]||a[0].localeCompare(b[0])||a[1].localeCompare(b[1])),'Pairs must have at least three recorded PVP kills and tie for either the killer’s highest count against any victim or the victim’s highest count from any killer. All ties are included.');
  add('ironmen','All-Time Ironmen',[['Player Name','player'],['Total','number']],rank('ironmen'));
  const types=['Lived','PVP','PVE','Team Kill','Disconnect','Disqualification'];
  const type=p=>!p.type?'Lived':p.type==='Disqualified'?'Disqualification':p.type;

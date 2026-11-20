@@ -1,3 +1,8 @@
+function statsTableTitle(table,info,columns){
+ const tools=table.id==='pve'?statsViewSwitch('By cause','By season','PVE deaths by season',pveBySeason,'data-pve-toggle'):'';
+ const content=`<div class="stats-integrated-title"><h2>${escape(table.title)}<span>.</span></h2><div class="stats-title-tools">${table.id==='pve'?'':`<span>${escape(info)}</span>`}${tools}</div></div>`;
+ return columns?`<tr class="stats-title-row"><th colspan="${columns}">${content}</th></tr>`:content;
+}
 const statsData=window.UHC_STATS;
 let outcomeView='count';
 let pveBySeason=false;
@@ -103,9 +108,28 @@ function seasonMoleTint(seasonId){
 }
 function seasonStatsTable(table,rows){
  const count=new Set(rows.map(r=>r[0])).size;
- return `<div class="stats-section-heading"><div><p class="eyebrow">THE SEASON LEDGER</p><h2>${escape(table.title)}<span>.</span></h2></div><span>${count} of ${statsData.counts.seasons} seasons${rows.length!==count?' · '+rows.length+' entries':''}</span></div>${table.note?`<p class="stats-note">${escape(table.note)}</p>`:''}<div class="season-stat-frame"><div class="table-wrap season-stat-scroll" tabindex="0" role="region" aria-label="${escape(table.title)} table"><table class="stats-table season-stat-table ${table.id==='winners'?'season-winners-table':table.id==='top-killer'?'season-top-killer-table':''}"><caption>${escape(table.title)}</caption><thead><tr>${table.columns.map(([title],i)=>table.id==='winners'&&i===1?'':`<th scope="col" aria-sort="${statsSort.column===i?(statsSort.direction===1?'ascending':'descending'):'none'}"><button data-sort-column="${i}">${escape(title)} <span aria-hidden="true">${statsSort.column===i?(statsSort.direction===1?'↑':'↓'):'↕'}</span></button></th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr class="${seasonSubjectIsMole(table,row)?'mole-row':''}" style="${seasonSubjectIsMole(table,row)?molePaint(row[0])+seasonMoleTint(row[0]):''}--season-team-background:${seasonSubjectBackground(table,row)};--season-rail:${seasonSubjectRail(table,row)}">${row.map((v,i)=>table.id==='winners'&&i===1?'':`<td${table.columns[i][1]==='number'?' class="season-stat-numeric"':''}>${table.id==='winners'&&table.columns[i][0]==='Team Name'&&seasons.find(s=>s.id===row[0])?.teamSize===1?'':seasonStatCell(v,table.columns[i][1],table.columns[i][0])}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${table.columns.length-(table.id==='winners'?1:0)}" class="season-stat-empty">No records match your search.</td></tr>`}</tbody></table></div><div class="season-stat-footer"><span>Click a season or player to explore their records.</span><span>All recorded ties included</span></div></div>`;
+ return `<div class="season-stat-frame"><div class="table-wrap season-stat-scroll" tabindex="0" role="region" aria-label="${escape(table.title)} table"><table class="stats-table season-stat-table ${table.id==='winners'?'season-winners-table':table.id==='top-killer'?'season-top-killer-table':''}"><caption>${escape(table.title)}</caption><thead>${statsTableTitle(table,count+' of '+statsData.counts.seasons+' seasons'+(rows.length!==count?' · '+rows.length+' entries':''),table.columns.length-(table.id==='winners'?1:0))}<tr>${table.columns.map(([title],i)=>table.id==='winners'&&i===1?'':`<th scope="col" aria-sort="${statsSort.column===i?(statsSort.direction===1?'ascending':'descending'):'none'}"><button data-sort-column="${i}">${escape(title)} <span aria-hidden="true">${statsSort.column===i?(statsSort.direction===1?'↑':'↓'):'↕'}</span></button></th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr class="${seasonSubjectIsMole(table,row)?'mole-row':''}" style="${seasonSubjectIsMole(table,row)?molePaint(row[0])+seasonMoleTint(row[0]):''}--season-team-background:${seasonSubjectBackground(table,row)};--season-rail:${seasonSubjectRail(table,row)}">${row.map((v,i)=>table.id==='winners'&&i===1?'':`<td${table.columns[i][1]==='number'?' class="season-stat-numeric"':''}>${table.id==='winners'&&table.columns[i][0]==='Team Name'&&seasons.find(s=>s.id===row[0])?.teamSize===1?'':seasonStatCell(v,table.columns[i][1],table.columns[i][0])}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${table.columns.length-(table.id==='winners'?1:0)}" class="season-stat-empty">No records match your search.</td></tr>`}</tbody></table></div><div class="season-stat-footer"><span>Click a season or player to explore their records.</span><span>All recorded ties included</span></div></div>`;
 }
-function statsTable(){const {table,rows}=statsTableRows();if(['wins','pve','mob-damage','pvp','ironmen','victims'].includes(table.id)){$('stats-content').innerHTML=`<div class="stats-section-heading"><div><p class="eyebrow">THE ALL-TIME LEDGER</p><h2>${escape(table.title)}<span>.</span></h2></div>${table.id==='pve'?statsViewSwitch('By cause','By season','PVE deaths by season',pveBySeason,'data-pve-toggle'):`<span>${rows.length} ${table.id==='victims'?'pairs':'entries'}</span>`}</div>${table.note?`<p class="stats-note">${escape(table.note)}</p>`:''}${groupedAllTime(table,rows)}`;return;}$('stats-content').innerHTML=seasonStatsTable(table,rows);}
+function statsTable(){
+ const {table,rows}=statsTableRows();
+ $('stats-content').classList.remove('stats-graph-surface');
+ $('stats-content').classList.add('stats-table-surface');
+ if(['wins','pve','mob-damage','pvp','ironmen','victims'].includes(table.id)){
+  const info=rows.length+' '+(table.id==='victims'?'pairs':'entries');
+  let body=groupedAllTime(table,rows);
+  if(['ironmen','victims'].includes(table.id)){
+   const column=table.columns.findIndex(c=>c[1]==='number'),groups=new Map();
+   for(const row of rows){const count=row[column];if(!groups.has(count))groups.set(count,[]);groups.get(count).push(row);}
+   body=`<table class="stats-grouped stats-grouped-table"><colgroup><col class="stats-total-column"><col></colgroup><thead>${statsTableTitle(table,info,2)}<tr><th scope="col">${escape(table.columns[column][0])}</th><th scope="col">${table.id==='victims'?'Killer → victim':'Players'}</th></tr></thead><tbody>${[...groups].sort((a,b)=>b[0]-a[0]).map(([count,entries])=>`<tr><td class="stats-count"><strong>${count}</strong><span>${table.id==='ironmen'?(count===1?'Ironman':'Ironmen'):(count===1?'kill':'kills')}</span></td><td><div class="stats-count-people">${entries.map(row=>`<span class="stats-count-person">${row.map((v,i)=>i===column?'':(i===1&&table.id==='victims'?'<span class="stats-pair-arrow" aria-label="killed">→</span>':'')+statCell(v,table.columns[i][1])).join('')}</span>`).join('')}</div></td></tr>`).join('')||'<tr><td colspan="2" class="stats-table-note">No records match your search.</td></tr>'}</tbody></table>`;
+  }else{
+   body=body.replace(/^(<div class="[^"]*\bpve-ledger\b[^"]*">)/,(_,opening)=>opening+statsTableTitle(table,info));
+   if(!body.includes('stats-integrated-title'))body=statsTableTitle(table,info)+body;
+  }
+  $('stats-content').innerHTML=body+(table.note?`<p class="stats-table-note">${escape(table.note)}</p>`:'');
+  return;
+ }
+ $('stats-content').innerHTML=seasonStatsTable(table,rows);
+}
 const typeColors={'Lived':'#7fa8dd','PVP':'#dc7974','PVE':'#e6c56f','Team Kill':'#9abf75','Disconnect':'#e8a26a','Disqualification':'#a75b69'};
 const gradeColors={S:'#dc7974',A:'#e8a26a',B:'#e6c56f',C:'#9abf75',D:'#7fa8dd'};
 const chartTip=text=>`data-chart-tip="${escape(text)}" tabindex="0" aria-label="${escape(text.replace(/\n/g,', '))}"`;
@@ -166,9 +190,9 @@ function teamSizeGraph(g){
  if(isVersion)palette.push('#d292b8','#80bda8','#b3b886');
  let angle=-Math.PI/2;
  const arcs=g.data.map((r,i)=>{if(!r.count)return '';const start=angle;angle+=r.count/total*Math.PI*2;const end=angle,c=palette[i%palette.length],x=(a,radius)=>180+radius*Math.cos(a),y=(a,radius)=>180+radius*Math.sin(a),large=end-start>Math.PI?1:0;
-  return `<path class="team-size-arc" d="M${x(start,142)} ${y(start,142)} A142 142 0 ${large} 1 ${x(end,142)} ${y(end,142)} L${x(end,100)} ${y(end,100)} A100 100 0 ${large} 0 ${x(start,100)} ${y(start,100)} Z" fill="${c}" stroke="#191c21" stroke-width="3" ${chartTip(`${escape(format(r))}\n${r.count} seasons · ${(r.count/total*100).toFixed(1)}%${isVersion||isDay?'\nSeasons: '+r.seasons.map(s=>'S'+s).join(', '):''}`)}/>`;
+  return `<path class="team-size-arc" data-distribution-category="${i}" role="button" aria-pressed="false" d="M${x(start,142)} ${y(start,142)} A142 142 0 ${large} 1 ${x(end,142)} ${y(end,142)} L${x(end,100)} ${y(end,100)} A100 100 0 ${large} 0 ${x(start,100)} ${y(start,100)} Z" fill="${c}" stroke="#191c21" stroke-width="3" ${chartTip(`${escape(format(r))}\n${r.count} seasons · ${(r.count/total*100).toFixed(1)}%${isVersion||isDay?'\nSeasons: '+r.seasons.map(s=>'S'+s).join(', '):''}`)}/>`;
  }).join('');
- return `<div class="outcome-visual"><div class="outcome-chart-meta"><span>${isDay?'DAY OF WEEK DISTRIBUTION':isVersion?'GAME VERSION DISTRIBUTION':'TEAM SIZE DISTRIBUTION'}</span><span>${total} SEASONS · ALL RECORDED MATCHES</span></div><div class="team-size-layout"><svg class="team-size-donut" viewBox="0 0 360 360" role="group" aria-label="${isDay?'Days of the week':isVersion?'Game versions':'Configured team sizes'} across ${total} seasons">${arcs}<text class="team-size-total" x="180" y="180" text-anchor="middle">${total}</text><text class="team-size-center-label" x="180" y="204" text-anchor="middle">SEASONS</text></svg><div class="team-size-breakdown"><div class="team-size-breakdown-heading"><span>${isDay?'Day':isVersion?'Version':'Format'}</span><span>Seasons</span><span>Share</span></div>${g.data.map((r,i)=>`<div class="team-size-breakdown-row"><span class="team-size-format"><i style="background:${palette[i%palette.length]}"></i>${escape(format(r))}</span><b>${r.count}</b><span>${(100*r.count/total).toFixed(1)}%</span><div class="team-size-share-track" aria-hidden="true"><i style="width:${100*r.count/total}%;background:${palette[i%palette.length]}"></i></div></div>`).join('')}</div></div></div>`;
+ return `<div class="outcome-visual distribution-visual"><div class="team-size-layout"><svg class="team-size-donut" viewBox="0 0 360 360" role="group" aria-label="${isDay?'Days of the week':isVersion?'Game versions':'Configured team sizes'} across ${total} seasons">${arcs}<text class="team-size-total" x="180" y="180" text-anchor="middle">${total}</text><text class="team-size-center-label" x="180" y="204" text-anchor="middle">SEASONS</text></svg><div class="distribution-season-panel"><div class="distribution-legend" aria-label="Category colors">${g.data.map((r,i)=>`<span style="--key-color:${palette[i%palette.length]}"><i></i>${escape(format(r))}</span>`).join('')}</div><div class="distribution-season-grid" aria-label="Seasons in numerical order">${g.data.flatMap((r,i)=>(r.seasons||seasons.filter(s=>s.teamSize===r.size).map(s=>s.id)).map(id=>({id,category:i,label:format(r),color:palette[i%palette.length]}))).sort((a,b)=>a.id-b.id).map(({id,category,label,color})=>`<a class="distribution-season-button" data-distribution-category="${category}" href="#season-${id}" style="--season-button-color:${color}" ${chartTip(`Season ${id} · ${label}`)}>${String(id).padStart(2,'0')}</a>`).join('')}</div></div></div></div>`;
 }
 function calendarGraph(g){
  const total=g.data.reduce((n,r)=>n+r.count,0),max=Math.max(1,...g.data.map(r=>r.count),...g.months.map(r=>r.count));
@@ -188,9 +212,83 @@ function timelineGraph(g){
  const groups=[...years].map(([year,rows])=>`<section class="cadence-year"><div class="cadence-year-heading"><h3>${escape(year)}</h3><span>${rows.length} ${rows.length===1?'season':'seasons'}</span></div><div class="cadence-events">${rows.map(r=>`<a class="cadence-event ${r.days>=180?'cadence-hiatus':''}" href="#season-${r.season}" aria-label="Season ${r.season}, ${escape(fullDate(r.date))}${r.days==null?'':', '+r.days+' days since the previous season'}"><div class="cadence-event-top"><strong>S${String(r.season).padStart(2,'0')}</strong><time datetime="${escape(r.date)}">${escape(dateLabel(r.date))}</time><span aria-hidden="true">↗</span></div><div class="cadence-gap">${r.days==null?'The first recorded season':r.days>=180?`<i aria-hidden="true"></i>After ${r.days.toLocaleString()} days away`:gapLabel(r.days)}</div></a>`).join('')}</div></section>`).join('');
  return `<div class="outcome-visual cadence"><div class="outcome-chart-meta"><span>THE MATCH CALENDAR</span><span>${entries.length} SEASONS · ${years.size} ACTIVE YEARS</span></div><div class="cadence-summary"><div><span>THE ARCHIVE</span><strong>${entries[0]?.date.slice(0,4)||'—'}<small> — </small>${entries.at(-1)?.date.slice(0,4)||'—'}</strong></div><div><span>TYPICAL GAP · MEDIAN</span><strong>${median}<small> days</small></strong></div><div><span>LONGEST HIATUS</span><strong>${longest?longest.days.toLocaleString():'—'}<small> days</small></strong>${longest?`<a href="#season-${longest.season}">S${entries[entries.indexOf(longest)-1].season} → S${longest.season}</a>`:''}</div></div><div class="cadence-years">${groups}</div></div>`;
 }
-function statsGraph(){const g=statsData.graphs.find(g=>g.id===statsTab);$('stats-content').innerHTML=`<div class="stats-section-heading"><div><p class="eyebrow">THE BIGGER PICTURE</p><h2>${escape(g.title)}<span>.</span></h2></div>${g.id==='death-type'?`<div class="outcome-switch"><span class="outcome-mode-label ${outcomeView==='count'?'selected':''}">Count</span><button type="button" class="ore-outcome-toggle" role="switch" aria-label="Percentage view" aria-checked="${outcomeView==='percent'}" data-outcome-toggle><span class="ore-toggle-track" aria-hidden="true"><span class="ore-toggle-on"></span><span class="ore-toggle-off"></span></span><span class="ore-toggle-thumb" aria-hidden="true"></span></button><span class="outcome-mode-label ${outcomeView==='percent'?'selected':''}">Percentage</span></div>`:''}</div>${g.id==='day-of-week'?calendarGraph(g):g.id==='death-time'?histogram(g):g.id==='death-type'?stackedDeathGraph(g,outcomeView==='percent'):g.id==='timing'?timingGraph(g):['team-size','game-version','day-of-week'].includes(g.id)?teamSizeGraph(g):timelineGraph(g)}<p class="chart-caption">Hover, focus, or tap a chart segment for details.</p>`;}
-function renderStats(){const allTimeIds=['wins','pve','mob-damage','pvp','victims','ironmen'];const entries=statsMode==='graphs'?statsData.graphs:statsData.tables.filter(t=>statsMode==='all-time'?allTimeIds.includes(t.id):!allTimeIds.includes(t.id));if(!entries.some(t=>t.id===statsTab))statsTab=entries[0].id;$('stats-subtabs').innerHTML=entries.map(t=>`<button data-stats-tab="${t.id}" class="${statsTab===t.id?'active':''}" aria-pressed="${statsTab===t.id}">${escape(t.title)}</button>`).join('');$('stats-table-controls').hidden=statsMode==='graphs';document.querySelectorAll('[data-stats-mode]').forEach(b=>{b.classList.toggle('active',b.dataset.statsMode===statsMode);b.setAttribute('aria-pressed',String(b.dataset.statsMode===statsMode));});statsMode==='graphs'?statsGraph():statsTable();}
+function statsGraph(){
+ const target=$('stats-content'),g=statsData.graphs.find(g=>g.id===statsTab);
+ target.classList.remove('stats-table-surface');target.classList.add('stats-graph-surface');
+ const tools=g.id==='death-type'?`<div class="outcome-switch"><span class="outcome-mode-label ${outcomeView==='count'?'selected':''}">Count</span><button type="button" class="ore-outcome-toggle" role="switch" aria-label="Percentage view" aria-checked="${outcomeView==='percent'}" data-outcome-toggle><span class="ore-toggle-track" aria-hidden="true"><span class="ore-toggle-on"></span><span class="ore-toggle-off"></span></span><span class="ore-toggle-thumb" aria-hidden="true"></span></button><span class="outcome-mode-label ${outcomeView==='percent'?'selected':''}">Percentage</span></div>`:'';
+ const title=`<div class="stats-integrated-title stats-graph-title"><h2>${escape(g.title)}<span>.</span></h2>${tools}</div>`;
+ const chart=g.id==='day-of-week'?calendarGraph(g):g.id==='death-time'?histogram(g):g.id==='death-type'?stackedDeathGraph(g,outcomeView==='percent'):g.id==='timing'?timingGraph(g):['team-size','game-version'].includes(g.id)?teamSizeGraph(g):timelineGraph(g);
+ target.innerHTML=chart.replace(/^(<div class="outcome-visual[^"]*">)/,(_,opening)=>opening+title);
+}
+function statsEntries(mode){
+ const allTimeIds=['wins','pve','mob-damage','pvp','victims','ironmen'];
+ return mode==='graphs'?statsData.graphs:statsData.tables.filter(t=>mode==='all-time'?allTimeIds.includes(t.id):!allTimeIds.includes(t.id));
+}
+function renderStats(){
+ const entries=statsEntries(statsMode);
+ if(!entries.some(t=>t.id===statsTab))statsTab=entries[0].id;
+ document.querySelector('#stats-view .stats-mode').innerHTML=[['graphs','Graphs'],['all-time','All-Time Tables'],['season','Season Tables']].map(([mode,label])=>`<details class="stats-dropdown ${statsMode===mode?'active':''}"><summary>${label}<span aria-hidden="true">▾</span></summary><div class="stats-dropdown-menu">${statsEntries(mode).map(t=>`<button type="button" data-stats-choice="${t.id}" data-choice-mode="${mode}" aria-pressed="${statsMode===mode&&statsTab===t.id}">${escape(t.title)}</button>`).join('')}</div></details>`).join('');
+ $('stats-table-controls').hidden=statsMode==='graphs';
+ requestAnimationFrame(updateStatsHeaderBlur);
+ statsMode==='graphs'?statsGraph():statsTable();
+}
+function updateDistributionHighlight(chart,category){
+ chart.querySelectorAll('.distribution-season-button').forEach(tile=>tile.classList.toggle('distribution-muted',category!=null&&tile.dataset.distributionCategory!==category));
+ chart.querySelectorAll('.team-size-arc').forEach(arc=>arc.setAttribute('aria-pressed',String(arc.dataset.distributionCategory===chart.dataset.selectedCategory)));
+ const svg=chart.querySelector('.team-size-donut');
+ let outline=svg.querySelector('.distribution-segment-outline');
+ const active=Array.from(svg.querySelectorAll('.team-size-arc')).find(arc=>arc.dataset.distributionCategory===category);
+ if(!active){outline?.remove();return;}
+ if(!outline){outline=document.createElementNS('http://www.w3.org/2000/svg','path');outline.setAttribute('class','distribution-segment-outline');outline.setAttribute('aria-hidden','true');svg.appendChild(outline);}
+ outline.setAttribute('d',active.getAttribute('d'));
+}
+function initializeDistributionInteractions(){
+ const segment=target=>target?.closest?.('.distribution-visual .team-size-arc');
+ const preview=event=>{const arc=segment(event.target);if(arc)updateDistributionHighlight(arc.closest('.distribution-visual'),arc.dataset.distributionCategory);};
+ const restore=event=>{const arc=segment(event.target);if(!arc||segment(event.relatedTarget)===arc)return;const chart=arc.closest('.distribution-visual');updateDistributionHighlight(chart,chart.dataset.selectedCategory);};
+ document.addEventListener('pointerover',preview);
+ document.addEventListener('pointerout',restore);
+ document.addEventListener('focusin',preview);
+ document.addEventListener('focusout',restore);
+ const select=arc=>{const chart=arc.closest('.distribution-visual'),category=arc.dataset.distributionCategory;if(chart.dataset.selectedCategory===category)delete chart.dataset.selectedCategory;else chart.dataset.selectedCategory=category;updateDistributionHighlight(chart,chart.dataset.selectedCategory);};
+ document.addEventListener('click',event=>{const arc=segment(event.target);if(arc)select(arc);});
+ document.addEventListener('keydown',event=>{const arc=segment(event.target);if(!arc)return;if(event.key==='Enter'||event.key===' '){event.preventDefault();select(arc);}else if(event.key==='Escape'){const chart=arc.closest('.distribution-visual');delete chart.dataset.selectedCategory;updateDistributionHighlight(chart);}});
+}
+
+function updateStatsHeaderBlur(){
+ const header=document.querySelector('#stats-view .stats-header');
+ if(!header||!header.getClientRects().length)return;
+ const origin=header.getBoundingClientRect(),heading=header.querySelector('.stats-heading').getBoundingClientRect();
+ const controls=Array.from(header.querySelectorAll('.stats-dropdown summary,.stats-table-controls .search')).filter(el=>el.getClientRects().length).map(el=>el.getBoundingClientRect());
+ if(!controls.length)return;
+ const pad=22,offset=64;
+ const x=value=>Math.round(value-origin.left+offset),y=value=>Math.round(value-origin.top+offset);
+ const left=x(heading.left-pad),top=y(heading.top-pad),step=x(heading.right+pad);
+ const right=x(Math.max(heading.right,...controls.map(r=>r.right))+pad);
+ const bottom=y(Math.max(heading.bottom,...controls.map(r=>r.bottom))+pad);
+ const controlTop=y(Math.min(...controls.map(r=>r.top))-pad);
+ const sideBySide=Math.min(...controls.map(r=>r.left))>=heading.right;
+ const points=sideBySide?`${left},${top} ${step},${top} ${step},${controlTop} ${right},${controlTop} ${right},${bottom} ${left},${bottom}`:`${left},${top} ${right},${top} ${right},${bottom} ${left},${bottom}`;
+ const width=Math.ceil(origin.width+offset*2),height=Math.ceil(origin.height+offset*2);
+ // Fade the blur's opacity itself, like the hero's masked scenery layer.
+ // The extra inset gives the feather room to disappear before the layer ends.
+ const mask=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><defs><filter id="fade" filterUnits="userSpaceOnUse" x="0" y="0" width="${width}" height="${height}"><feGaussianBlur stdDeviation="18"/></filter></defs><polygon points="${points}" fill="white" filter="url(#fade)"/></svg>`;
+ header.style.setProperty('--stats-blur-mask',`url("data:image/svg+xml,${encodeURIComponent(mask)}")`);
+}
 function initializeStats(){
+ const header=document.querySelector('#stats-view .stats-header');
+ if(header&&typeof ResizeObserver==='function'){
+  const observer=new ResizeObserver(updateStatsHeaderBlur);
+  observer.observe(header);observer.observe(header.querySelector('.stats-heading'));observer.observe(header.querySelector('.stats-header-controls'));
+ }
+ window.addEventListener('resize',updateStatsHeaderBlur);
+ initializeDistributionInteractions();
+ document.addEventListener('keydown',event=>{if(event.key==='Escape')document.querySelectorAll('.stats-dropdown[open]').forEach(d=>{d.open=false;d.querySelector('summary').focus();});});
+ document.addEventListener('click',event=>{
+  document.querySelectorAll('.stats-dropdown[open]').forEach(d=>{if(!d.contains(event.target))d.open=false;});
+  const choice=event.target.closest('[data-stats-choice]');
+  if(choice){statsMode=choice.dataset.choiceMode;statsTab=choice.dataset.statsChoice;statsSort.column=null;renderStats();if(event.detail===0)document.querySelector('.stats-dropdown.active summary').focus();}
+ });
  $('stats-search').addEventListener('input',statsTable);
  document.addEventListener('click',event=>{if(event.target.closest('[data-pve-toggle]')){pveBySeason=!pveBySeason;statsTable();if(event.detail===0)$('stats-content').querySelector('[data-pve-toggle]').focus();return;}const outcome=event.target.closest('[data-outcome-toggle]');if(outcome){outcomeView=outcomeView==='count'?'percent':'count';statsGraph();if(event.detail===0)$('stats-content').querySelector('[data-outcome-toggle]').focus();return;}const mode=event.target.closest('[data-stats-mode]'),tab=event.target.closest('[data-stats-tab]'),sort=event.target.closest('[data-sort-column]');if(mode){statsMode=mode.dataset.statsMode;statsTab='';statsSort.column=null;renderStats();}if(tab){statsTab=tab.dataset.statsTab;statsSort.column=null;renderStats();}if(sort){const c=Number(sort.dataset.sortColumn);statsSort={column:c,direction:statsSort.column===c?-statsSort.direction:1};statsTable();}});
 }

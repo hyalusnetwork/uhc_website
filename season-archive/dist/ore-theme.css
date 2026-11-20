@@ -929,3 +929,186 @@ html{scrollbar-color:#626b79 #14171b}
 .nav-wordmark-name{font:750 23px/1 'Segoe UI',Arial,sans-serif;letter-spacing:.4px;color:#e7e9ed}
 .nav-wordmark-title{font:800 23px/1 'Segoe UI',Arial,sans-serif;letter-spacing:.4px;color:#a8c7ff}
 .nav .navbar-heart{display:block;flex:none;width:29px;height:29px;object-fit:contain;image-rendering:pixelated}
+.career-other-ores{display:flex;flex-wrap:nowrap;gap:5px;overflow-x:auto;padding:3px 0;scrollbar-width:thin}
+.career-ore-cell{display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;gap:5px;padding:5px 7px;background:#252a32;border:1px solid #46505d;font-size:12px;font-variant-numeric:tabular-nums}
+.career-ore-cell img{display:block;width:20px;height:20px;object-fit:contain;image-rendering:pixelated}
+
+/* Stats categories open their own view menus. */
+.stats-header-controls{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.stats-header-controls .stats-mode{display:flex;gap:10px;flex-wrap:wrap}
+.stats-header-controls .stats-table-controls{flex:1;min-width:180px}
+.stats-header-controls .stats-table-controls .search{margin:0;min-height:48px;box-sizing:border-box}
+.stats-dropdown{position:relative}
+.stats-dropdown summary{display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;list-style:none;padding:10px 14px 14px;color:#f5f7fa;background:linear-gradient(#596575,#394454);border:2px solid #252d39;box-shadow:inset 0 0 0 2px #ffffff38,inset 0 -6px #29313f;font-size:13px;font-weight:600}
+.stats-dropdown summary::-webkit-details-marker{display:none}
+.stats-dropdown.active summary{color:#101c2c;background:linear-gradient(#c0d7ff,#a8c7ff);border-color:#667c9f;box-shadow:inset 0 0 0 2px #ffffff38,inset 0 -6px #768eb5}
+.stats-dropdown summary:hover{filter:brightness(1.12)}
+.stats-dropdown summary:focus-visible{outline:2px solid #dbe8ff;outline-offset:2px}
+.stats-dropdown-menu{position:absolute;top:calc(100% + 6px);left:0;z-index:20;min-width:220px;max-width:calc(100vw - 48px);max-height:55vh;overflow-y:auto;padding:5px;background:#20252d;border:1px solid #697587;box-shadow:0 6px 16px #0008}
+#stats-view .stats-mode .stats-dropdown-menu button{display:block;width:100%;text-align:left;border:0;padding:10px 12px;background:none;box-shadow:none;color:#e0e3e8;min-height:36px;transform:none}
+#stats-view .stats-mode .stats-dropdown-menu button::before{content:none}
+#stats-view .stats-mode .stats-dropdown-menu button:hover,#stats-view .stats-mode .stats-dropdown-menu button:focus-visible{background:#394454;outline:1px solid #a8c7ff}
+#stats-view .stats-mode .stats-dropdown-menu button[aria-pressed="true"]{background:#a8c7ff;color:#101c2c}
+@media(min-width:1100px){.stats-header{grid-template-columns:minmax(225px,1fr) minmax(0,2.8fr)}}
+@media(max-width:600px){.stats-header-controls{gap:10px}.stats-header-controls .stats-mode{gap:6px;width:100%}.stats-dropdown{flex:1}.stats-dropdown summary{font-size:11px;padding:10px 8px 14px;gap:6px}.stats-dropdown:last-child .stats-dropdown-menu{left:auto;right:0}.stats-header-controls .stats-table-controls{flex-basis:100%}}
+
+/* Match the raised OreUI faces used by Player Bios tabs. */
+.stats-dropdown summary{
+ --trophy-color:#394454;position:relative;isolation:isolate;
+ background:color-mix(in srgb,var(--trophy-color) 66%,#101218);
+ border:2px solid color-mix(in srgb,var(--trophy-color) 45%,#090a0c);
+ border-radius:0;box-shadow:none;transition:transform .08s ease-out
+}
+.stats-dropdown.active summary{
+ --trophy-color:#a8c7ff;
+ background:color-mix(in srgb,var(--trophy-color) 66%,#101218);
+ border-color:color-mix(in srgb,var(--trophy-color) 45%,#090a0c);
+ box-shadow:none
+}
+.stats-dropdown summary::before{
+ content:'';position:absolute;inset:0 0 6px;z-index:-1;pointer-events:none;
+ background:linear-gradient(180deg,color-mix(in srgb,var(--trophy-color) 91%,white),var(--trophy-color));
+ box-shadow:inset 0 0 0 2px #ffffff38;transition:filter .1s ease
+}
+.stats-dropdown summary:hover{filter:none}
+@media(hover:hover){.stats-dropdown summary:hover::before{filter:brightness(1.16)}}
+.stats-dropdown summary:active{transform:translateY(2px)}
+.stats-dropdown summary:active::before{bottom:4px}
+@media(prefers-reduced-motion:reduce){.stats-dropdown summary,.stats-dropdown summary::before{transition:none}}
+
+#stats-content.stats-table-surface{padding:0;border:0;background:transparent}
+.stats-integrated-title{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 24px;background:linear-gradient(110deg,#303a49,#20252d);border-bottom:2px solid #596678;box-shadow:inset 0 2px #ffffff0a;text-align:left}
+.stats-integrated-title h2{margin:0;color:var(--cream);font-size:26px;line-height:1.25;letter-spacing:-.5px}
+.stats-integrated-title h2>span{color:#a8c7ff}
+.stats-title-tools{display:flex;align-items:center;gap:20px;color:var(--muted);font-size:11px;font-weight:400;white-space:nowrap}
+.stats-title-row>th{padding:0!important;text-transform:none!important;letter-spacing:normal!important}
+.season-stat-table .stats-title-row{background:transparent}
+.stats-table-note{padding:14px 18px;border:1px solid var(--line);margin:0;color:var(--muted);font-size:11px;background:#191c21}
+@media(max-width:600px){.stats-integrated-title{padding:18px 14px;flex-wrap:wrap;gap:12px}.stats-integrated-title h2{font-size:22px}.stats-title-tools{gap:12px;flex-wrap:wrap}}
+.stats-grouped-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.stats-grouped-table th{text-align:left}
+.stats-grouped-table thead tr:not(.stats-title-row) th{padding:12px 18px;background:#111315;color:var(--muted);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+.stats-grouped-table thead tr:not(.stats-title-row) th:first-child{width:100px}
+.stats-grouped-table td{padding:0;border-top:1px solid var(--line);background:#242629}
+.stats-grouped-table tbody tr:nth-child(even) td{background:#282b2f}
+.stats-grouped-table .stats-count{display:table-cell;vertical-align:middle;text-align:center;width:100px;border-right:2px solid var(--line);padding:18px 10px}
+.stats-grouped-table .stats-count span{display:block}
+@media(max-width:600px){.stats-grouped-table thead tr:not(.stats-title-row) th:first-child,.stats-grouped-table .stats-count{width:66px}}
+.stats-grouped-table col.stats-total-column{width:100px}
+@media(max-width:600px){.stats-grouped-table col.stats-total-column{width:66px}}
+
+#stats-content.stats-graph-surface{padding:0;border:0;background:transparent}
+.stats-graph-surface>.outcome-visual{margin-top:0}
+.stats-graph-title{min-width:0}
+.calendar-landscape>.stats-graph-title{margin:-20px -20px 20px}
+@media(max-width:600px){.stats-graph-title{flex-wrap:wrap}.calendar-landscape>.stats-graph-title{margin:-12px -12px 16px}}
+
+.distribution-season-buttons{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;padding:3px 0 2px}
+.distribution-season-button{
+ position:relative;isolation:isolate;display:grid;place-items:center;
+ width:38px;height:42px;box-sizing:border-box;padding-bottom:6px;
+ color:#10151c;text-decoration:none;font:700 12px Consolas,monospace;
+ background:color-mix(in srgb,var(--season-button-color) 60%,#101218);
+ border:2px solid color-mix(in srgb,var(--season-button-color) 42%,#090a0c);
+ border-radius:0;transition:transform .08s ease-out
+}
+.distribution-season-button::before{
+ content:'';position:absolute;inset:0 0 6px;z-index:-1;pointer-events:none;
+ background:linear-gradient(180deg,color-mix(in srgb,var(--season-button-color) 91%,white),var(--season-button-color));
+ box-shadow:inset 0 0 0 2px #ffffff38
+}
+.distribution-season-button:hover::before{filter:brightness(1.16)}
+.distribution-season-button:focus-visible{outline:2px solid #dbe8ff;outline-offset:2px}
+.distribution-season-button:active{transform:translateY(2px)}
+.distribution-season-button:active::before{bottom:4px}
+@media(prefers-reduced-motion:reduce){.distribution-season-button{transition:none}}
+
+.distribution-season-grid{display:grid;grid-template-columns:repeat(6,38px);gap:8px;justify-content:start;align-content:center}
+@media(max-width:700px){.distribution-season-grid{justify-content:center}}
+
+.distribution-season-panel{min-width:0;container-type:inline-size;align-self:start}
+.distribution-legend{display:flex;flex-wrap:wrap;gap:9px 16px;margin:8px 0 20px;color:var(--muted);font-size:11px;line-height:1.5}
+.distribution-legend>span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.distribution-legend i{display:block;flex:none;width:9px;height:9px}
+.distribution-season-grid{grid-template-columns:repeat(6,minmax(0,1fr));max-width:268px;gap:8px;align-content:start}
+.distribution-season-grid .distribution-season-button{width:100%;height:auto;aspect-ratio:38/42}
+@container(min-width:314px){.distribution-season-grid{grid-template-columns:repeat(7,minmax(0,1fr));max-width:314px}}
+@container(min-width:360px){.distribution-season-grid{grid-template-columns:repeat(8,minmax(0,1fr));max-width:360px}}
+@container(min-width:406px){.distribution-season-grid{grid-template-columns:repeat(9,minmax(0,1fr));max-width:406px}}
+@container(min-width:452px){.distribution-season-grid{grid-template-columns:repeat(10,minmax(0,1fr));max-width:452px}}
+@media(max-width:700px){.distribution-season-grid{margin-inline:auto}.distribution-legend{justify-content:center}}
+
+/* A compact chart paired with an inset season board and its color key. */
+.distribution-visual .team-size-layout{grid-template-columns:minmax(240px,.9fr) minmax(0,1.1fr);gap:24px;padding:24px;align-items:center;margin-inline:auto}
+.distribution-visual .team-size-donut{max-width:380px}
+.distribution-season-panel{display:flex;flex-direction:column;gap:18px;padding:18px;align-self:center;background:linear-gradient(135deg,#12161c,#1b2028);border:2px solid #101216;box-shadow:inset 0 2px #ffffff08,0 1px #ffffff12}
+.distribution-season-panel .distribution-season-grid{order:0;margin:0;align-self:start;width:100%}
+.distribution-legend{order:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px;margin:0;padding-top:14px;border-top:1px solid #ffffff14;max-width:452px;width:100%;color:#d1d7e1;font-size:11px}
+.distribution-legend>span{padding:5px 7px;background:#ffffff04;min-width:0;white-space:normal;border-left:3px solid var(--key-color)}
+.distribution-legend i{display:none}
+@media(max-width:700px){.distribution-visual .team-size-layout{grid-template-columns:1fr;gap:14px;padding:16px}.distribution-visual .team-size-donut{max-width:280px}.distribution-season-panel{width:100%;box-sizing:border-box;max-width:492px;justify-self:center;padding:14px}.distribution-season-panel .distribution-season-grid{align-self:center}.distribution-legend{align-self:center}}
+@media(max-width:380px){.distribution-visual .team-size-layout{padding:10px}.distribution-season-panel{padding:10px}.distribution-legend{font-size:10px;gap:4px 8px}}
+
+/* Keep the inset board flush with the ten-column tile grid and legend. */
+.distribution-season-panel{width:100%;max-width:492px;box-sizing:border-box;justify-self:start}
+@media(max-width:700px){.distribution-season-panel{justify-self:center}}
+
+.distribution-season-button.distribution-muted{filter:grayscale(1);opacity:.3}
+.distribution-visual .team-size-arc{cursor:pointer}
+.distribution-visual .team-size-arc[aria-pressed="true"]{stroke:#e5edf9;stroke-width:3;filter:brightness(1.12)}
+.distribution-visual .team-size-arc:focus-visible{outline:none;stroke:#fff;stroke-width:3;filter:brightness(1.12)}
+
+/* Highlight above adjacent slices so every edge has the same visible stroke. */
+.distribution-visual .team-size-arc,
+.distribution-visual .team-size-arc:is(:hover,:focus,:focus-visible,:active,.chart-active,[aria-pressed="true"]){outline:none!important;stroke:#191c21;stroke-width:3}
+.distribution-segment-outline{fill:none;stroke:#e5edf9;stroke-width:3;stroke-linejoin:round;pointer-events:none}
+
+/* Seasonal clusters belong only to Stats. 20 blocks per 960px = Trivia's 48px scale. */
+body:has(#stats-view:not([hidden])){
+ background-color:#303a3c;
+ background-image:linear-gradient(#10151a66,#10151a66),url("images/seasonal-block-clusters.svg");
+ background-size:auto,960px 960px;
+ background-position:calc((100vw - 960px) / 2) 0;
+ background-repeat:repeat;
+ background-attachment:fixed;
+}
+#stats-view .stats-heading{text-shadow:0 2px 4px #000,0 0 14px #0009}
+@media(max-width:700px){body:has(#stats-view:not([hidden])){background-attachment:scroll}}
+
+
+/* Keep the category controls on the title row rather than the eyebrow row. */
+#stats-view .stats-header{padding-top:0}
+#stats-view .stats-heading .eyebrow{margin:0 0 16px}
+#stats-view .stats-heading h1{margin:0;line-height:1.1}
+@media(min-width:801px){
+ #stats-view .stats-header{align-items:end}
+ #stats-view .stats-header-controls{align-self:end;margin-bottom:2px}
+}
+
+/* Hero-style heavy blur with a smoothly feathered mask around the header. */
+#stats-view .stats-header{position:relative;isolation:isolate;z-index:2}
+#stats-view .stats-header::before{
+ content:'';position:absolute;inset:-64px;z-index:-1;pointer-events:none;
+ backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+ background:#1218200a;
+ mask-image:var(--stats-blur-mask,linear-gradient(transparent,transparent));
+ -webkit-mask-image:var(--stats-blur-mask,linear-gradient(transparent,transparent));
+ mask-size:100% 100%;-webkit-mask-size:100% 100%;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;
+}
+#stats-view .stats-heading{justify-self:start;width:max-content;max-width:100%}
+#stats-view .stats-header-controls .stats-mode{width:fit-content;max-width:100%}
+
+/* Keep the layout and fixed cave backdrop stable as page height changes. */
+
+
+
+/* Draw the page scrollbar over the viewport, never in a reserved gutter. */
+html.overlay-page-scrollbars{scrollbar-width:none;scrollbar-gutter:auto}
+html.overlay-page-scrollbars::-webkit-scrollbar{display:none;width:0;height:0}
+.page-overlay-scrollbar{position:fixed;inset:0 0 0 auto;width:14px;z-index:10000;background:#14171bcc;border-left:1px solid #101216;box-shadow:inset 1px 0 #252b34;touch-action:none;user-select:none;cursor:default}
+.page-overlay-scrollbar[hidden]{display:none}
+.page-overlay-scrollbar-thumb{position:absolute;inset:0 0 auto;min-height:44px;box-sizing:border-box;background:#626b79;border:2px solid #252b34;box-shadow:inset 1px 1px #8b95a5,inset -1px -2px #414955;pointer-events:auto}
+.page-overlay-scrollbar-thumb:hover{background:#798497}
+.page-overlay-scrollbar.dragging .page-overlay-scrollbar-thumb{background:#a8c7ff;box-shadow:inset 1px 1px #d2e2ff,inset -1px -2px #526e97}
+.page-overlay-scrollbar:focus-visible{outline:2px solid #dbe8ff;outline-offset:-2px}
+.page-overlay-scrollbar{overflow:hidden}

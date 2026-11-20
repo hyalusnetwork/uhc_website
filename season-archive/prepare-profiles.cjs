@@ -53,6 +53,13 @@ for(let i=2;i<oreRows.length&&oreRows[i][0]!=='Total';i+=2){
    counts.forEach((count,k)=>{game.metrics[k]??=count;});
  }
 }
+for(const [name,ores] of Object.entries(read('season-37-other-ores.json'))){
+ const person=output.allPlayers.find(p=>p.name===identity(reportNames[name]||name));
+ const game=person?.history.find(h=>h.season===37);
+ if(!game)throw Error('Ore report player missing: '+name);
+ if(Object.values(ores).some(n=>!Number.isInteger(n)||n<0))throw Error('Invalid ore count: '+name);
+ game.otherOres=ores;
+}
 const participant=name=>roster.find(p=>identity(p.name)===identity(reportNames[name]||name));
 const heartHits=read('season-37-heart-damage.json');
 const damageByPlayer=new Map();

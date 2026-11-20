@@ -1,8 +1,9 @@
 require('./prepare-season-replay.cjs');
 const fs=require('node:fs');
+require('./prepare-seasonal-background.cjs');
 let html=fs.readFileSync('dist/index.html','utf8');
 html=html.replace(/src="(images\/hero-season-\d+\.webp)"/g,(_,path)=>'src="data:image/webp;base64,'+fs.readFileSync('dist/'+path).toString('base64')+'"');
-const oreTheme=fs.readFileSync('dist/ore-theme.css','utf8').replace(
+const oreTheme=fs.readFileSync('dist/ore-theme.css','utf8').replaceAll('images/seasonal-block-clusters.svg','data:image/svg+xml;base64,'+fs.readFileSync('dist/images/seasonal-block-clusters.svg').toString('base64')).replace(
  /images\/(?:player-grades|classic-era)-[a-z-]+\.(webp|jpg)/g,
  (path,extension)=>`data:image/${extension==='jpg'?'jpeg':extension};base64,${fs.readFileSync('dist/'+path).toString('base64')}`
 );
@@ -48,6 +49,7 @@ html=html.replace('<link rel="stylesheet" href="styles.css">',()=>`<style>${css}
 html=html.replace('<link rel="stylesheet" href="players.css">','').replace('<link rel="stylesheet" href="stats.css">','').replace('<link rel="stylesheet" href="rankings.css">','').replace('<link rel="stylesheet" href="player-rankings.css">','').replace(/<script defer src="(?:data|app|profiles|icons|players|faces|stats|stats-data|rankings|rankings-data|player-rankings|player-rankings-data)\.js(?:\?v=[a-f0-9]+)?"><\/script>/g,'');
 html=html.replace('<link rel="stylesheet" href="ore-theme.css">','').replace('<link rel="stylesheet" href="trivia.css">','').replace(/<script defer src="(?:trivia|trivia-data)\.js"><\/script>/g,'');
 html=html.replace(/<script defer src="season-replay(?:-data)?\.js"><\/script>/g,'');
-html=html.replace('</body>',()=>`<script>${[data,profiles,iconScript,seasonVideoScript,faceScript,statsData,rankingsData,playerRankingsData,triviaData,players,stats,rankings,playerRankings,trivia,app,crownHistory,fs.readFileSync("dist/season-replay-data.js","utf8"),fs.readFileSync("dist/season-replay.js","utf8")].join('\n;\n').replace(/<\/script/gi,'<\\/script')}</script></body>`);
+html=html.replace('<script defer src="overlay-scrollbar.js"></script>','');
+html=html.replace('</body>',()=>`<script>${[data,profiles,iconScript,seasonVideoScript,faceScript,statsData,rankingsData,playerRankingsData,triviaData,players,stats,rankings,playerRankings,trivia,app,crownHistory,fs.readFileSync("dist/overlay-scrollbar.js","utf8"),fs.readFileSync("dist/season-replay-data.js","utf8"),fs.readFileSync("dist/season-replay.js","utf8")].join('\n;\n').replace(/<\/script/gi,'<\\/script')}</script></body>`);
 fs.writeFileSync('../UHC.html',html);
 console.log('Created self-contained UHC.html');

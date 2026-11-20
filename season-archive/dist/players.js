@@ -76,7 +76,7 @@ function displayChartTooltip(target,event){
   clearTimeout(chartTooltipHideTimer);
   const tip=$('chart-tooltip');if(activeChartTarget&&activeChartTarget!==target){activeChartTarget.removeAttribute('aria-describedby');activeChartTarget.classList.remove('chart-active');}activeChartTarget=target;target.classList.add('chart-active');
   tip.classList.toggle('death-time-tooltip',!!target.dataset.deathTip);
-  const chartAccent=target.matches('.team-size-arc, .milestone-dot, .outcome-segment')?target.getAttribute('fill'):target.style.getPropertyValue('--calendar-color')||target.style.getPropertyValue('--team-color')||(target.matches('.pve-bar-row')?target.style.getPropertyValue('--cause'):'');
+  const chartAccent=target.matches('.team-size-arc, .milestone-dot, .outcome-segment')?target.getAttribute('fill'):target.style.getPropertyValue('--season-button-color')||target.style.getPropertyValue('--calendar-color')||target.style.getPropertyValue('--team-color')||(target.matches('.pve-bar-row')?target.style.getPropertyValue('--cause'):'');
   tip.classList.toggle('colored-chart-tooltip',!!chartAccent);
   const mole=target.matches('.team-color-segment.mole-color');
   tip.classList.toggle('mole-chart-tooltip',mole);
@@ -344,6 +344,11 @@ function potionParts(game,total){
 function potionTypeIcon(part){
   return `<span class="potion-type-icon" style="--potion-hue:${part.hue}deg;--potion-color:${part.color}">${trophyImage('potion')}</span>`;
 }
+const otherOreItems=[['coal','Coal','coal'],['copper','Copper','raw-copper'],['iron','Iron','raw-iron'],['lapis','Lapis','lapis-lazuli'],['redstone','Redstone','redstone'],['emerald','Emerald','emerald'],['nether_quartz','Quartz','quartz'],['ancient_debris','Ancient Debris','ancient-debris']];
+function otherOreCells(game){
+ if(!game.otherOres)return '';
+ return `<div class="career-other-ores" aria-label="Other ore blocks mined">${otherOreItems.map(([key,label,icon])=>`<span class="career-ore-cell" title="${label}: ${game.otherOres[key]}" role="img" aria-label="${label}: ${game.otherOres[key]}">${trophyImage(icon)}<b aria-hidden="true">${game.otherOres[key]}</b></span>`).join('')}</div>`;
+}
 function careerMetricCharts(p,metrics){
   const games=p.history.filter(game=>metrics.some(([, , ,field])=>game.metrics?.[field]!=null));
   if(!games.length)return '<p class="chart-caption">No recorded data for this player.</p>';
@@ -361,7 +366,7 @@ function careerMetricCharts(p,metrics){
         }
         return `<div class="career-metric-bar" aria-label="${label}: ${value}" role="img" style="--bar-color:${color};--bar-width:${100*value/max}%">
           ${trophyImage(icon)}<span class="career-metric-track" aria-hidden="true"><span></span></span><b aria-hidden="true">${value}</b></div>`;
-      }).join('')}</div></section>`).join('')}</div>`;
+      }).join('')}${metrics===oreMetrics?otherOreCells(game):''}</div></section>`).join('')}</div>`;
 }
 function careerTeammates(p){
   const byPlayer=new Map();
