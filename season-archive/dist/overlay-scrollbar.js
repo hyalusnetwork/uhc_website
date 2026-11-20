@@ -12,7 +12,12 @@
  const thumb=document.createElement('div');thumb.className='page-overlay-scrollbar-thumb';
  rail.appendChild(thumb);document.body.appendChild(rail);
  root.classList.add('overlay-page-scrollbars');
- let frame=0,drag=null;
+ let frame=0,drag=null,idleTimer=0;
+ const showActivity=()=>{
+  rail.classList.add('scrolling');
+  clearTimeout(idleTimer);
+  idleTimer=setTimeout(()=>rail.classList.remove('scrolling'),900);
+ };
  const metrics=()=>{
   const viewport=root.clientHeight,max=Math.max(0,root.scrollHeight-viewport);
   const height=Math.min(viewport,Math.max(44,viewport*viewport/Math.max(1,root.scrollHeight)));
@@ -30,6 +35,7 @@
  rail.addEventListener('pointerdown',event=>{
   if(event.button!==0)return;event.preventDefault();
   const m=metrics();if(!m.max||!m.travel)return;
+  showActivity();
   rail.focus({preventScroll:true});
   if(event.target!==thumb)go(Math.max(0,Math.min(m.max,(event.clientY-m.height/2)/m.travel*m.max)));
   drag={y:event.clientY,top:window.scrollY};rail.setPointerCapture(event.pointerId);
@@ -39,14 +45,14 @@
   if(!drag)return;const m=metrics();
   if(m.travel)go(Math.max(0,Math.min(m.max,drag.top+(event.clientY-drag.y)*m.max/m.travel)));
  });
- const stop=()=>{drag=null;rail.classList.remove('dragging');};
+ const stop=()=>{drag=null;rail.classList.remove('dragging');showActivity();};
  rail.addEventListener('pointerup',stop);rail.addEventListener('pointercancel',stop);rail.addEventListener('lostpointercapture',stop);
  rail.addEventListener('keydown',event=>{
   const m=metrics(),steps={ArrowDown:40,ArrowUp:-40,PageDown:m.viewport*.9,PageUp:-m.viewport*.9,' ':m.viewport*.9*(event.shiftKey?-1:1)};
   if(event.key==='Home'||event.key==='End'){event.preventDefault();go(event.key==='Home'?0:m.max);}
   else if(Object.hasOwn(steps,event.key)){event.preventDefault();go(Math.max(0,Math.min(m.max,window.scrollY+steps[event.key])));}
  });
- window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',update);
+ window.addEventListener('scroll',()=>{showActivity();schedule();},{passive:true});window.addEventListener('resize',update);
  if(typeof ResizeObserver==='function'){
   const observer=new ResizeObserver(update);observer.observe(document.body);observer.observe(root);
  }

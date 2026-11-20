@@ -60,6 +60,25 @@ for(const [name,ores] of Object.entries(read('season-37-other-ores.json'))){
  if(Object.values(ores).some(n=>!Number.isInteger(n)||n<0))throw Error('Invalid ore count: '+name);
  game.otherOres=ores;
 }
+const majorMinerSeasons=[...new Set(output.allPlayers.flatMap(p=>p.history.filter(h=>h.metrics?.slice(0,2).some(n=>n!=null)).map(h=>h.season)))];
+for(const season of majorMinerSeasons){
+ const candidates=output.allPlayers.flatMap(player=>{
+   const game=player.history.find(h=>h.season===season);
+   if(!game||!game.metrics?.slice(0,2).some(n=>n!=null))return [];
+   const total=(game.metrics[0]??0)+(game.metrics[1]??0)+Object.values(game.otherOres||{}).reduce((n,v)=>n+v,0);
+   return [{player,total}];
+ });
+ const most=Math.max(0,...candidates.map(c=>c.total));
+ const winners=candidates.filter(c=>c.total===most&&most>0);
+ for(const {player,total} of winners){
+   let trophy=player.trophies.find(t=>t.key==='major-miner');
+   if(!trophy){trophy={key:'major-miner',label:'Major Miner',icon:'diamond-pickaxe',count:0,events:[]};player.trophies.push(trophy);}
+   trophy.count++;
+   trophy.events.push({season,detail:`Mined ${total} ore blocks—the most recorded in this season${winners.length>1?' (tied)':''}.`});
+ }
+}
+for(const player of output.allPlayers)player.trophies.sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
+require('./profile-engine.cjs').refreshTrophyTrivia(output.allPlayers);
 const participant=name=>roster.find(p=>identity(p.name)===identity(reportNames[name]||name));
 const heartHits=read('season-37-heart-damage.json');
 const damageByPlayer=new Map();

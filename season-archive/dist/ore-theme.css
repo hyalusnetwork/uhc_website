@@ -1112,3 +1112,99 @@ html.overlay-page-scrollbars::-webkit-scrollbar{display:none;width:0;height:0}
 .page-overlay-scrollbar.dragging .page-overlay-scrollbar-thumb{background:#a8c7ff;box-shadow:inset 1px 1px #d2e2ff,inset -1px -2px #526e97}
 .page-overlay-scrollbar:focus-visible{outline:2px solid #dbe8ff;outline-offset:-2px}
 .page-overlay-scrollbar{overflow:hidden}
+/* Compact player links use the same two-face OreUI construction as the tabs. */
+#player-directory .player-introduction{
+ position:relative;isolation:isolate;box-sizing:border-box;
+ background:#233143;border:2px solid #1d2a39;border-radius:0;box-shadow:none;
+ padding:0 0 6px;transition:transform .08s ease-out
+}
+#player-directory .player-introduction::before{
+ content:'';position:absolute;inset:0 0 6px;z-index:-1;pointer-events:none;
+ background:#42566e;
+ box-shadow:inset 0 2px #9aafc5,inset 2px 0 #788fa8,inset -2px 0 #788fa8,inset 0 -2px #607b96;transition:filter .1s ease
+}
+#player-directory .player-introduction:hover{background:#233143;border-color:#1d2a39;transform:none}
+@media(hover:hover){#player-directory .player-introduction:hover::before{filter:brightness(1.16)}}
+#player-directory .player-introduction:active{transform:translateY(2px);padding-bottom:4px;margin-bottom:2px}
+#player-directory .player-introduction:active::before{bottom:4px}
+#player-directory .player-introduction:focus-visible{outline:2px solid #dbe8ff;outline-offset:2px}
+#player-directory .directory-portrait{padding:0;border:0;background:none;box-shadow:none}
+#player-directory .directory-portrait .face{box-shadow:2px 2px 0 #151a23}
+#player-directory .directory-debut{color:#d0dbea}
+@media(prefers-reduced-motion:reduce){#player-directory .player-introduction,#player-directory .player-introduction::before{transition:none}}
+#player-directory .directory-portrait{
+ padding:3px;background:#1c2836;border:1px solid #17212c;
+ box-shadow:inset 1px 1px #71869e,inset -1px -1px #101923,0 2px 0 #14202d
+}
+#player-directory .directory-portrait .face{box-shadow:none}
+#player-directory .directory-portrait{
+ padding:4px;background:#35465a;border:2px solid #2a3848;
+ box-shadow:inset 0 0 0 2px #50647b
+}
+#player-directory .directory-portrait{
+ padding:0;background:none;border:0;
+ box-shadow:0 -1px 0 #b9cadd66,1px 0 0 #243447,-1px 0 0 #748ba3,0 3px 0 #243447
+}
+#player-directory .directory-portrait .face{width:40px;height:40px;box-shadow:none}
+
+/* Phone cards stay in pairs while there is room for a readable name and portrait. */
+@media(max-width:650px){
+ #player-directory .player-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,130px),1fr))}
+}
+
+/* Mobile scroll feedback overlays the content briefly, without a visible track. */
+@media(max-width:800px),(hover:none) and (pointer:coarse){
+ .page-overlay-scrollbar{
+  width:6px;background:transparent;border:0;box-shadow:none;
+  opacity:0;pointer-events:none;transition:opacity .18s ease
+ }
+ .page-overlay-scrollbar.scrolling,.page-overlay-scrollbar.dragging,.page-overlay-scrollbar:focus-visible{
+  opacity:1;pointer-events:auto
+ }
+ .page-overlay-scrollbar-thumb{
+  background:#a6abb5b3;border:0;border-radius:3px;box-shadow:none
+ }
+}
+@media(prefers-reduced-motion:reduce){.page-overlay-scrollbar{transition:none}}
+
+/* Keep the season log readable without horizontal scrolling on phones. */
+.mobile-season-team,.mobile-season-time{display:none}
+@media(max-width:800px){
+ .season-card .table-wrap>table{width:100%;min-width:0;table-layout:fixed}
+ .season-card .table-wrap>table th:last-child,
+ .season-card .table-wrap>table th:nth-child(2):nth-last-child(3),
+ .season-card .table-wrap>table .season-team-cell,
+ .season-card .table-wrap>table td.elapsed{display:none}
+ .season-card .table-wrap>table th:first-child,
+ .season-card .table-wrap>table td:first-child{width:52%}
+ .season-card .table-wrap>table th,.season-card .table-wrap>table td{padding:9px 7px;vertical-align:top}
+ .season-card .table-wrap>table th{font-size:8px;letter-spacing:.7px}
+ .season-card .player-cell{gap:4px 5px;min-width:0}
+ .season-card .player-cell>.face{width:20px;height:20px}
+ .season-card .player-name{font-size:11px;line-height:1.4;overflow-wrap:anywhere;max-width:100%}
+ .season-card .player-cell>.player-name{max-width:calc(100% - 25px)}
+ .season-card .season-award-icon{width:16px;height:16px;object-fit:contain}
+ .season-card .mobile-season-team{display:block;margin:3px 0 0 25px}
+ .season-card .mobile-season-team .season-team-label{min-width:0;gap:2px;font-size:9px;line-height:1.4;overflow-wrap:anywhere}
+ .season-card .mobile-season-team .mole-cover{font-size:9px;margin:0}
+ .season-card .death{font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+ .season-card .mobile-season-time{display:block;margin:3px 0 0;font:10px/1.4 Consolas,monospace;color:var(--muted);white-space:nowrap}
+ .season-card .mobile-season-time:empty{display:none}
+ .season-card .season-survivor-hearts{max-width:100%;flex-wrap:wrap;gap:1px}
+ .season-card .season-survivor-hearts img{width:14px;height:14px}
+ .season-card .team-join-content{gap:7px;align-items:flex-start}
+ .season-card .team-join-marker{width:20px;height:20px;font-size:17px}
+ .season-card .team-join-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:10px;align-items:start}
+ .season-card .team-join-heading{min-width:0;max-width:none;height:auto;gap:2px}
+ .season-card .team-join-heading>span{font-size:8px;white-space:normal;line-height:1.4;letter-spacing:.5px}
+ .season-card .team-join-heading strong{font-size:10px;white-space:normal;overflow-wrap:anywhere;overflow:visible}
+ .season-card .team-join-heading .mobile-season-time{border:0;padding:0;margin:2px 0 0;letter-spacing:0}
+ .season-card .team-join-members{gap:5px}
+ .season-card .team-join-person{white-space:normal;min-width:0;gap:5px;max-width:100%}
+ .season-card .team-join-person .face{width:18px;height:18px;flex-shrink:0}
+ .season-card .team-join-person .player-name{font-size:10px;min-width:0}
+ .season-replaying .table-wrap>table>thead>tr,
+ .season-replaying .table-wrap>table>tbody>tr{grid-template-columns:52% 48%}
+ .season-replaying .table-wrap>table>tbody>tr{height:auto;min-height:var(--replay-row-height,60px)}
+ .season-replaying .table-wrap>table>tbody>tr>td{padding:9px 7px;align-items:flex-start}
+}

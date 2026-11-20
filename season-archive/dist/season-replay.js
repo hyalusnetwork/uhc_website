@@ -47,10 +47,11 @@ function paint(st,animate=true){
  const before=changed?new Map([...st.rows].map(([n,r])=>[n,r.getBoundingClientRect().top])):new Map();
  if(changed)for(const row of st.rows.values())row.querySelectorAll(".replay-cell-content").forEach(cell=>cell.getAnimations().forEach(animation=>animation.cancel()));
  st.orderKey=orderKey;
- for(const p of sorted){const row=st.rows.get(p.name),state=model.get(p.name),death=row.querySelector('.death .replay-cell-content'),elapsed=row.querySelector('.elapsed .replay-cell-content');
+ for(const p of sorted){const row=st.rows.get(p.name),state=model.get(p.name),death=row.querySelector('.season-result'),elapsed=row.querySelector('.elapsed .replay-cell-content');
  const markup=state.dead?escape(p.death||'Died'):hearts(state.health,state.abs);
  if(death.innerHTML!==markup)death.innerHTML=markup;
  elapsed.textContent=state.dead?duration(p.seconds??state.time):'';
+ row.querySelector('.mobile-season-time').textContent=elapsed.textContent;
  row.classList.toggle('replay-dead',state.dead);
  row.querySelectorAll('.season-award-icon').forEach(icon=>{icon.hidden=icon.alt==='Ironman'?st.time<data.end:icon.alt==='First Damage'?st.time<(data.events.find(e=>e.name===p.name)?.t??Infinity):false;});
  row.querySelectorAll('.crown').forEach(c=>c.hidden=st.time<data.end);

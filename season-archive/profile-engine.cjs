@@ -185,6 +185,24 @@ function buildProfiles(seasons,bios,specials){
     p.trophies.sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
   }
   const allPlayers=[...players.values()];
+  const perfectPlayers=allPlayers.flatMap(player=>{
+    const ids=[...new Set(player.trophies.find(t=>t.key==='perfect-ironman')?.events.map(e=>e.season)||[])].sort((a,b)=>a-b);
+    return ids.length?[{player,ids}]:[];
+  });
+  const firstPerfectSeason=Math.min(Infinity,...perfectPlayers.map(p=>p.ids[0]));
+  for(const {player,ids} of perfectPlayers){
+    const first=ids[0]===firstPerfectSeason;
+    const suffix=perfectPlayers.length===1?'The first and only player to do so.':first?`The first of ${perfectPlayers.length} players to do so.`:`1 of ${perfectPlayers.length} players to do so.`;
+    player.trivia.push(`Took no damage in an entire game (${ids.map(id=>'S'+id).join(', ')}). ${suffix}`);
+  }
+
+  for(const [stat,key] of [['We Need to Go Deeper','nether'],['The End?','the-end']]){
+    const first=[...specials].filter(e=>e.stat===stat).sort((a,b)=>a.season-b.season)[0];
+    const player=first&&players.get(identity(first.name));
+    if(player?.history.some(h=>h.season===first.season))
+      player.trivia.push(`Was the first recorded player to earn "${stat}" (Season ${first.season}).`);
+  }
+
   const teamPalette=new Set(['Green','Purple','Blue','Yellow','Red','Pink','Orange','Maroon','Cyan','Navy','Black','White','Lime','Turquoise']);
   const teamSeasons=new Set(seasons.filter(s=>s.teamSize!==1).map(s=>s.id));
   for(const p of allPlayers){
@@ -283,6 +301,32 @@ function buildProfiles(seasons,bios,specials){
   }
   const endVisitors=allPlayers.filter(p=>p.trophies.some(t=>t.key==='the-end'));
   for(const p of endVisitors){const ids=[...new Set(p.trophies.find(t=>t.key==='the-end').events.map(e=>e.season))].sort((a,b)=>a-b);p.trivia.push(`Has traveled to the End (one of ${endVisitors.length} recorded players to do so) (${ids.length===1?'Season':'Seasons'} ${ids.join(', ')}).`);}
+  const finalBossKillSeasons=new Map();
+  for(const season of seasons){
+    const timed=season.players.filter(v=>v.type==='PVP'&&v.seconds!=null);
+    const last=Math.max(-Infinity,...timed.map(v=>v.seconds));
+    for(const victim of timed.filter(v=>v.seconds===last)){
+      const killer=identity(victim.result);
+      if(killer===identity(victim.name)||!season.players.some(r=>identity(r.name)===killer))continue;
+      if(!finalBossKillSeasons.has(killer))finalBossKillSeasons.set(killer,new Set());
+      finalBossKillSeasons.get(killer).add(season.id);
+    }
+  }
+  for(const player of allPlayers){
+    for(const [verb,ids] of [
+      ['Drew First Blood',new Set(player.trophies.find(t=>t.key==='first-blood')?.events.map(e=>e.season)||[])],
+      ['Killed the Final Boss',finalBossKillSeasons.get(player.name)||new Set()]
+    ]){
+      const runs=[];let run=[];
+      for(const id of [...ids].sort((a,b)=>a-b)){
+        if(run.length&&id!==run.at(-1)+1){runs.push(run);run=[];}
+        run.push(id);
+      }
+      if(run.length)runs.push(run);
+      const longest=Math.max(0,...runs.map(r=>r.length));
+      if(longest>=2)player.trivia.push(`${verb} in ${longest} consecutive seasons: ${runs.filter(r=>r.length===longest).map(r=>'(S'+r.join(', S')+')').join('; ')}.`);
+    }
+  }
   const consecutiveKillRecords=[];
   for(const p of allPlayers){
     const runs=[];let run=[];
@@ -446,10 +490,27 @@ function buildProfiles(seasons,bios,specials){
     const colorNotes=[...sameColors].filter(([,ids])=>ids.length>=2).map(([color,ids])=>ids.length===wins.length?`${wins.length===2?'Both wins':'All '+wins.length+' wins'} were on the ${color} team.`:`This roster also won on the ${color} team in Seasons ${listNames(ids)}.`);
     for(const name of roster)players.get(name).trivia.push(`Won with the exact same team roster ${wins.length} times (${listNames(roster)}) in Seasons ${listNames(wins.map(w=>w.season))}.${colorNotes.length?' '+colorNotes.join(' '):''}`);
   }
+  refreshTrophyTrivia(allPlayers);
   const records=[['teamKills','Has the most total Team Kills','career'],['bestTeamKills','Has the most Team Kills in a single game','teamKills'],['bestRangedKills','Has the most Ranged Kills in a single game','ranged']];
   for(const [field,label,seasonField] of records){const max=Math.max(0,...allPlayers.map(p=>p[field]));if(!max)continue;const holders=allPlayers.filter(p=>p[field]===max);for(const p of holders){const ids=seasonField==='career'?[]:p.history.filter(h=>h[seasonField]===max).map(h=>h.season);p.trivia.push(`${holders.length>1?'Tied for ':''}${holders.length>1?label.replace('Has the ','the '):label}: ${max}${ids.length?' (S'+ids.join(', S')+')':''}.`);}}
   const profiles=[...players.values()].filter(p=>p.games>=5).sort((a,b)=>b.games-a.games||a.name.localeCompare(b.name));
   return {allPlayers,profiles,identities:Object.fromEntries(canonical),recordedPlayers:players.size,deathCount:deathNumber,milestones:milestoneList,winnerSources,definitions:{rangedKills:'PVP deaths recorded as shot by. The ledger contains no sniped by messages.',runnerUp:'Only the player awarded Final Boss counts as runner-up. Their teammates do not count. Streaks require Final Boss in consecutive games played, ignoring skipped seasons; tied Final Boss awards follow the recorded-time rule.',teamColors:'Each game contributes one recorded team color. Missing colors appear as Not recorded; percentages include every game played.',recordTrivia:'Kill records compare all recorded players, including those ineligible for a full profile. Shared maximums count as ties.',wins:'Every member of the winning team counts except disqualified players. Disqualification also revokes Ironman for that match. A winner is inferred when only one recorded team has players with no recorded death or exit. Historical documented wins are used if inference is ambiguous.',kills:'Only deaths classified PVP credit a kill, using Death Result as the killer. Team kills are counted separately.',finalBoss:'Last PVP victim by recorded death time. Ties share the achievement; PVE deaths do not count.',firstBlood:'Killer of the earliest timed PVP victim. Ties share the achievement.',teamWipe:'One player kills every recorded member of an opposing team of at least two players. Teams use recorded team color, or team name when color is missing. Solo opponents are excluded.',overpowered:'Eating an Enchanted Golden Apple; awarded only from explicit special-achievement records. Repeated rows count as multiple recorded apple events.',perfectIronman:'Taking no damage in a match; awarded only from an explicit record, not inferred from Ironman.',milestones:'PVP, PVE, team kills, disconnects and disqualifications in season order, then recorded death time. Tied times preserve workbook row order.',outlived:'Percentage of the other participants with an earlier timed death; equal death times do not count. Players without a recorded death or exit outlive all opponents. Missing exit times remain unavailable.',aliases:'Only aliases explicitly named in the bios are combined. Match tables retain the names recorded at the time.',killStreak:'PVP kills without a recorded death, across games played. All recorded deaths and other exits reset the streak.'}};
 }
-module.exports={buildProfiles,seasonNumbers};
+function refreshTrophyTrivia(allPlayers){
+  for(const p of allPlayers)p.trivia=p.trivia.filter(t=>!/^Earned \d+ troph(?:y|ies) in a single game \(S/.test(t));
+  const trophyPeaks=allPlayers.map(player=>{
+    const counts=new Map();
+    for(const trophy of player.trophies)for(const event of trophy.events)counts.set(event.season,(counts.get(event.season)||0)+1);
+    const count=Math.max(0,...counts.values());
+    return {player,count,seasons:[...counts].filter(([,n])=>n===count).map(([id])=>id).sort((a,b)=>a-b)};
+  });
+  const trophyRecord=Math.max(0,...trophyPeaks.map(p=>p.count));
+  const trophyRecordHolders=trophyPeaks.filter(p=>p.count===trophyRecord&&p.count>0);
+  for(const peak of trophyPeaks){
+    if(peak.count<3)continue;
+    const suffix=peak.count===trophyRecord?(trophyRecordHolders.length>1?' This is tied for the all-time record for trophies earned in a single game.':' This is the all-time record for trophies earned in a single game.'):'';
+    peak.player.trivia.push(`Earned ${peak.count} ${peak.count===1?'trophy':'trophies'} in a single game (${peak.seasons.map(id=>'S'+id).join(', ')}).${suffix}`);
+  }
+}
+module.exports={buildProfiles,seasonNumbers,refreshTrophyTrivia};
 
