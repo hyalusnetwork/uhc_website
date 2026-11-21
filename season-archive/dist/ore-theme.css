@@ -846,7 +846,7 @@ body{width:100vw}
 /* Contiguous screenshot reel, moving right at a constant, unhurried pace. */
 .hero-with-photos{isolation:isolate}
 .hero-photo-window{position:absolute;inset:0;overflow:hidden;z-index:-3;pointer-events:none}
-.hero-photo-track{display:flex;width:max-content;height:100%;gap:0;transform:translateX(-50%);animation:hero-photos-right 763.888890s linear infinite;will-change:transform}
+.hero-photo-track{display:flex;width:max-content;height:100%;gap:0;transform:translateX(-50%);animation:hero-photos-right 889.850890s linear infinite;will-change:transform}
 .hero-photo-group{display:flex;flex:none;height:100%;gap:0}
 .hero-photo-group img{display:block;flex:none;width:clamp(640px,65vw,960px);height:100%;object-fit:cover;object-position:center;max-width:none}
 @keyframes hero-photos-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
