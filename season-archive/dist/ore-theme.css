@@ -27,29 +27,13 @@ input::placeholder{color:#a9afb8}
 .ranking-mode-switch a.active{background:#303d51;border-color:#a8c7ff;border-bottom-color:#526e97}
 .rankings-mode{position:relative;z-index:1;flex-wrap:wrap;margin:0 0 24px}
 .ranking-era-hero{
- display:grid;align-content:center;grid-template-rows:max-content max-content calc(1lh + 8px);
- min-height:250px;padding:clamp(20px,5vw,64px);margin-bottom:20px;
+ position:relative;isolation:isolate;overflow:hidden;display:grid;align-content:center;grid-template-rows:max-content max-content calc(1lh + 8px);
+ min-height:290px;padding:clamp(20px,5vw,64px);padding-block:calc(clamp(20px,5vw,64px) + 20px);margin-bottom:20px;
  border:2px solid #62666e;border-bottom:5px solid #0b0c0e;background-color:#20262d;
  background-image:var(--era-shade,linear-gradient(90deg,#101318f5,#14192388 55%,#14192315)),var(--era-image);
  background-size:cover;
  background-position:center,center 55%
 }
-.modern-era-hero{--era-image:url("images/player-grades-axolotl-pool.jpg")}
-#season-grades-panel[data-banner="1"] .modern-era-hero{--era-image:url("images/player-grades-lush-cave.webp")}
-#season-grades-panel[data-banner="2"] .modern-era-hero{
- --era-image:url("images/player-grades-overworld.webp");
- --era-shade:linear-gradient(90deg,#101318fa,#101318bc 35%,#10131824 70%,#1013180d)
-}
-#season-grades-panel[data-banner="3"] .modern-era-hero{
- --era-image:url("images/player-grades-cherry-grove.jpg");
- --era-shade:linear-gradient(90deg,#101318fa,#101318bc 35%,#10131824 70%,#1013180d)
-}
-#season-grades-panel[data-banner="4"] .modern-era-hero{--era-image:url("images/player-grades-cave.webp")}
-.classic-era-hero{
- --era-image:url("images/classic-era-cave.webp");
- --era-shade:linear-gradient(90deg,#101318f5,#101318bd 22%,#10131822 57%,#1013180d)
-}
-#player-rankings-panel[data-banner="1"] .classic-era-hero{--era-image:url("images/classic-era-cavern.webp")}
 .ranking-era-hero h1{margin:0;color:#f4f4f5}
 .ranking-era-hero .eyebrow{color:#a8c7ff}
 .ranking-era-hero .ranking-era-meta{margin:8px 0 0;color:#d1d9e6}
@@ -87,7 +71,7 @@ input::placeholder{color:#a9afb8}
 .grade-weight-track i{display:block;height:100%;background:#a8c7ff}
 .grade-dialog-scoring{background:#181c23;border:1px solid #434c5c;padding:14px}
 .grade-dialog-scoring h3+p{margin:0}
-.grade-cutoffs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin:12px 0}
+.grade-cutoffs{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:5px;margin:12px 0}
 .grade-cutoffs div{text-align:center;padding:5px 2px;background:#252a34;border:1px solid #485261}
 .grade-cutoffs dt{font-weight:750}
 .grade-cutoffs dd{margin:0;color:#c8cdd6;font-size:12px}
@@ -108,15 +92,27 @@ input::placeholder{color:#a9afb8}
 #season-grade-table .pr-mini-tier{position:static;display:inline-block;font-size:12px;line-height:15px}
 #season-grade-table .pr-mini-tier+small{display:inline-block;margin:0 0 0 7px}
 #season-grade-table .pr-tier-unknown{color:#c8cdd6;border:1px solid currentColor}
+.pr-tier-Netherite{color:#c3a8cf;background:#3b3242}
+.pr-tier-Diamond{color:#77e5ef;background:#183b44}
+.pr-tier-Gold{color:#f4d06b;background:#423719}
+.pr-tier-Iron{color:#d8dce1;background:#34383e}
+.pr-tier-Copper{color:#e9a16e;background:#463025}
+#season-grade-table .pr-mini-tier{border:1px solid currentColor;padding:2px 6px}
+.pr-tier-texture{display:inline-block;object-fit:contain;image-rendering:pixelated;vertical-align:middle}
+#season-grade-table .pr-mini-tier{vertical-align:middle;padding:2px;min-width:26px;text-align:center}
+.grade-cutoffs .pr-tier-texture{display:block;margin:2px auto}
 #season-grade-table .season-grade-bio-link{color:inherit;font:inherit;text-decoration:none}
 .season-grade-player{display:flex;align-items:center;gap:9px}
+.grade-era-coverage{display:block;color:var(--muted);font-size:10px;line-height:12px;font-weight:400}
+#ranking-era-filter{display:block;height:42px;padding:4px 30px 9px 12px;border:0;background:transparent;box-shadow:none;color:var(--cream);font:inherit;font-size:12px;cursor:pointer}
+#ranking-era-filter option{background:#394454;color:#f5f7fa}
 .season-grade-player .face{width:30px;height:30px}
 .pr-tier-key>div{flex-wrap:wrap}
 .pr-influence-toggle{display:inline-flex;align-items:center;gap:6px;margin-left:7px;color:var(--cream);font-size:12px;cursor:pointer}
 .pr-influence-toggle input{width:16px;height:16px;flex:none;margin:0;accent-color:#a9c9ff;cursor:pointer}
 #pr-result-count{margin-inline-start:9px;white-space:nowrap;font-size:11px}
 @media(max-width:560px){
- .ranking-era-hero{min-height:185px;grid-template-rows:max-content max-content calc(2lh + 8px)}
+ .ranking-era-hero{min-height:209px;padding-block:calc(clamp(20px,5vw,64px) + 12px);grid-template-rows:max-content max-content calc(2lh + 8px)}
 }
 :is(.pr-podium-card,.trivia-featured){box-shadow:0 4px 0 #08090b,inset 0 2px 0 #ffffff0c}
 .trophy{background:#202225;border-top-color:#5d626b}
@@ -702,7 +698,7 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 
 /* Keep the site layout independent of the root scrollbar. */
 html{overflow-x:clip}
-body{width:100vw}
+body{width:100%}
 .damage-table .damage-row-red{--damage-row-bg:#48272d}
 .damage-table .damage-row-yellow{--damage-row-bg:#44391f}
 .damage-table :is(.damage-row-red,.damage-row-yellow)>:not([rowspan]){background:var(--damage-row-bg)}
@@ -911,18 +907,10 @@ body:has(#seasons-view:not([hidden])){
 .hero-copy-glass>.hero-photo-shade{inset:0;width:var(--hero-scene-width,100vw)}
 @media(min-width:851px){.hero-with-photos .hero-copy-glass{mask-image:linear-gradient(to right,transparent max(0px,calc(var(--hero-content-inset) - 140px)),#000 calc(var(--hero-content-inset) - 35px),#000 72%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent max(0px,calc(var(--hero-content-inset) - 140px)),#000 calc(var(--hero-content-inset) - 35px),#000 72%,transparent 100%)}}
 @media(max-width:850px){.hero-copy-glass>.hero-photo-window{filter:blur(18px)}}
-/* Main page scrollbar, matching the inset OreUI scrollbars used in profiles. */
-html{scrollbar-color:#626b79 #14171b}
-@supports selector(::-webkit-scrollbar){
- html{scrollbar-color:auto;scrollbar-width:auto}
- html::-webkit-scrollbar{width:14px;height:14px}
- html::-webkit-scrollbar-track{background:#14171b;border:1px solid #101216;box-shadow:inset 1px 0 #252b34}
- html::-webkit-scrollbar-thumb{min-height:44px;min-width:44px;background:#626b79;border:2px solid #252b34;border-radius:0;box-shadow:inset 1px 1px #8b95a5,inset -1px -2px #414955}
- html::-webkit-scrollbar-thumb:hover{background:#798497}
- html::-webkit-scrollbar-thumb:active{background:#a8c7ff;box-shadow:inset 1px 1px #d2e2ff,inset -1px -2px #526e97}
- html::-webkit-scrollbar-button{display:none}
- html::-webkit-scrollbar-corner{background:#14171b}
-}
+/* Native page scrollbar. */
+html{scrollbar-color:#697382 #171a1f;scrollbar-gutter:stable}
+
+
 /* Single-row identity, sharing the hero's white and blue lettering. */
 .nav .brand{gap:10px}
 .nav-wordmark{display:flex;align-items:baseline;gap:7px;line-height:1;white-space:nowrap}
@@ -1102,16 +1090,6 @@ body:has(#stats-view:not([hidden])){
 
 
 
-/* Draw the page scrollbar over the viewport, never in a reserved gutter. */
-html.overlay-page-scrollbars{scrollbar-width:none;scrollbar-gutter:auto}
-html.overlay-page-scrollbars::-webkit-scrollbar{display:none;width:0;height:0}
-.page-overlay-scrollbar{position:fixed;inset:0 0 0 auto;width:14px;z-index:10000;background:#14171bcc;border-left:1px solid #101216;box-shadow:inset 1px 0 #252b34;touch-action:none;user-select:none;cursor:default}
-.page-overlay-scrollbar[hidden]{display:none}
-.page-overlay-scrollbar-thumb{position:absolute;inset:0 0 auto;min-height:44px;box-sizing:border-box;background:#626b79;border:2px solid #252b34;box-shadow:inset 1px 1px #8b95a5,inset -1px -2px #414955;pointer-events:auto}
-.page-overlay-scrollbar-thumb:hover{background:#798497}
-.page-overlay-scrollbar.dragging .page-overlay-scrollbar-thumb{background:#a8c7ff;box-shadow:inset 1px 1px #d2e2ff,inset -1px -2px #526e97}
-.page-overlay-scrollbar:focus-visible{outline:2px solid #dbe8ff;outline-offset:-2px}
-.page-overlay-scrollbar{overflow:hidden}
 /* Compact player links use the same two-face OreUI construction as the tabs. */
 #player-directory .player-introduction{
  position:relative;isolation:isolate;box-sizing:border-box;
@@ -1151,21 +1129,6 @@ html.overlay-page-scrollbars::-webkit-scrollbar{display:none;width:0;height:0}
 @media(max-width:650px){
  #player-directory .player-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,130px),1fr))}
 }
-
-/* Mobile scroll feedback overlays the content briefly, without a visible track. */
-@media(max-width:800px),(hover:none) and (pointer:coarse){
- .page-overlay-scrollbar{
-  width:6px;background:transparent;border:0;box-shadow:none;
-  opacity:0;pointer-events:none;transition:opacity .18s ease
- }
- .page-overlay-scrollbar.scrolling,.page-overlay-scrollbar.dragging,.page-overlay-scrollbar:focus-visible{
-  opacity:1;pointer-events:auto
- }
- .page-overlay-scrollbar-thumb{
-  background:#a6abb5b3;border:0;border-radius:3px;box-shadow:none
- }
-}
-@media(prefers-reduced-motion:reduce){.page-overlay-scrollbar{transition:none}}
 
 /* Keep the season log readable without horizontal scrolling on phones. */
 .mobile-season-team,.mobile-season-time{display:none}
@@ -1207,4 +1170,72 @@ html.overlay-page-scrollbars::-webkit-scrollbar{display:none;width:0;height:0}
  .season-replaying .table-wrap>table>tbody>tr{grid-template-columns:52% 48%}
  .season-replaying .table-wrap>table>tbody>tr{height:auto;min-height:var(--replay-row-height,60px)}
  .season-replaying .table-wrap>table>tbody>tr>td{padding:9px 7px;align-items:flex-start}
+}
+
+.grade-weight-list li.grade-weight-item{display:block;padding:0;border:0;background:none;min-width:0}
+#rankings-view .grade-weight-tile{width:100%;min-height:74px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px 12px;align-items:center;text-align:left;font:inherit;font-size:13px;padding:14px 12px 18px}
+.grade-weight-tile>span:first-child{overflow-wrap:anywhere}
+.grade-weight-static{position:relative;border:2px solid #566274;background:#303b4a;color:#f5f7fa;box-shadow:inset 0 3px #ffffff20,inset 0 -6px #161c25;cursor:default}
+.grade-weight-tile .grade-weight-track{width:100%}
+
+/* Share the main hero screenshot collection with a quicker dissolve and pan. */
+.ranking-photo-deck{position:absolute;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.ranking-photo-deck img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 48%;opacity:0;transform:scale(1.055) translateX(-.5%);transition:opacity .7s ease,transform 3.3s ease-out}
+.ranking-photo-deck img.is-current{opacity:1;transform:scale(1.015) translateX(.5%)}
+.ranking-era-hero::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#0b111bee,#0b111b99 42%,#0b111b15 85%)}
+@media(prefers-reduced-motion:reduce){.ranking-photo-deck img{transition:none;transform:none}}
+#rankings-view{isolation:isolate}
+.ranking-photo-backdrop{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:#11151d}
+.ranking-photo-backdrop img{
+ position:absolute;inset:-50px;width:calc(100% + 100px);height:calc(100% + 100px);
+ object-fit:cover;object-position:center;filter:blur(32px) saturate(.8);
+ opacity:0;transition:opacity .7s ease
+}
+.ranking-photo-backdrop img.is-current{opacity:1}
+.ranking-photo-backdrop::after{
+ content:'';position:absolute;inset:0;
+ background:linear-gradient(180deg,#10141b99,#10141bd6 55%,#10141be8)
+}
+@media(prefers-reduced-motion:reduce){.ranking-photo-backdrop img{transition:none}}
+
+.trophy-dialog .trophy-season-button{display:grid;grid-template-columns:minmax(0,1fr);gap:0;width:44px}
+.trophy-dialog li{grid-template-columns:44px minmax(0,1fr)}
+.trophy-dialog .trophy-season-button{width:var(--trophy-season-width,34px)}
+.trophy-dialog .trophy-season-button>a{height:var(--trophy-season-height,30px)}
+.trophy-dialog li{grid-template-columns:var(--trophy-season-width,34px) minmax(0,1fr)}
+
+/* Profile touch interactions and compact phone layouts. */
+#career-panel,.team-color-bar,.history-highlight,#chart-tooltip{
+ -webkit-user-select:none;user-select:none;-webkit-touch-callout:none
+}
+#career-panel img,.team-color-bar img,.history-highlight img{-webkit-user-drag:none}
+#career-panel .profile-chart,.team-color-bar{touch-action:none}
+#career-panel .table-wrap,#career-panel .career-metric-plot{touch-action:pan-y}
+#career-panel{min-width:0;max-width:100%}
+.career-teammate-rows{width:100%;max-width:100%;min-width:0;box-sizing:border-box;overflow-x:auto;touch-action:pan-x pan-y}
+.career-teammate-row{min-width:var(--teammate-tile-width,36px)}
+.trophy-dialog{box-sizing:border-box;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#697382 #171a1f}
+.trophy-dialog:focus{outline:none}
+.trophy-dialog-header{z-index:1}
+.trophy-dialog-header h2{min-width:0;overflow-wrap:anywhere}
+.trophy-dialog-header form{flex-shrink:0}
+.trophy-dialog-header button:focus:not(:focus-visible){outline:none}
+.history-highlight{display:inline-grid;place-items:center;width:30px;height:30px;padding:3px;border:0;background:none;color:inherit;vertical-align:middle;cursor:pointer;touch-action:none}
+.history-highlight img{display:block;width:24px;height:24px;object-fit:contain;image-rendering:pixelated}
+.history-highlight:focus-visible{outline:2px solid #a8c7ff;outline-offset:1px}
+@media(max-width:600px){
+ /* Reserve count space on phones while preserving the original desktop tiles. */
+ .profile-primary .trophy-tile .trophy-count{position:absolute;inset:auto 8px 10px auto;transform:none;line-height:1;font-size:12px;max-width:calc(100% - 16px)}
+ .season-history-table{display:block;min-width:0;width:100%;font-size:13px}
+ .season-history-table thead{display:none}
+ .season-history-table tbody{display:grid;gap:12px}
+ .season-history-table tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);background:#1b1e23;border:1px solid var(--line);border-left:4px solid var(--team);padding:10px;gap:10px 12px}
+ .season-history-table td,.season-history-table td:first-child{display:block;min-width:0;width:auto;padding:0;border:0;background:none;overflow-wrap:anywhere}
+ .season-history-table td::before{content:attr(data-label);display:block;color:var(--muted);font-size:10px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px}
+ .season-history-table td:last-child{grid-column:1/-1}
+ .season-history-table .elapsed{display:block;margin-top:4px}
+ .season-history-table .mole-row>td:first-child:before{position:static;width:auto;height:auto;background:none;animation:none}
+ .profile-primary .trophy-tile{padding:10px 7px 30px;gap:6px}
+ .profile-primary .trophy-tile img{width:clamp(40px,13vw,68px);height:clamp(40px,13vw,68px)}
+ .profile-primary .trophy-tile strong{font-size:12px;line-height:1.25;overflow-wrap:anywhere}
 }

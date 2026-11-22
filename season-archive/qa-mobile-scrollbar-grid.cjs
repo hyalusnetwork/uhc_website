@@ -53,29 +53,15 @@ const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
      const rail = document.querySelector('.page-overlay-scrollbar');
      return { columns: getComputedStyle(grid).gridTemplateColumns.split(' ').length,
       scrollWidth: document.documentElement.scrollWidth, gutter: innerWidth - document.documentElement.clientWidth,
-      opacity: +getComputedStyle(rail).opacity, railWidth: rail.getBoundingClientRect().width,
-      pointerEvents: getComputedStyle(rail).pointerEvents,
+      overlay: !!rail,
       overflow: [...grid.querySelectorAll('.directory-header')].some(e => e.scrollWidth > e.clientWidth + 1) };
     })()`);
-    assert.equal(layout.scrollWidth, width, 'No page overflow at ' + width);
-    assert.equal(layout.gutter, 0, 'No page gutter at ' + width);
+    assert(layout.scrollWidth <= width, 'No page overflow at ' + width);
+    assert.equal(layout.overlay, false, 'Native scrollbar at ' + width);
     assert.equal(layout.overflow, false, 'Player contents fit at ' + width);
     if (width === 280) assert.equal(layout.columns, 1, 'Single column on very narrow screens');
     else assert(layout.columns >= 2, 'At least two players per row at ' + width);
     if (width >= 320 && width <= 414) assert.equal(layout.columns, 2);
-    if (width <= 800) {
-     assert.equal(layout.opacity, 0, 'Hidden when idle');
-     assert.equal(layout.pointerEvents, 'none', 'Idle rail does not intercept taps');
-     assert.equal(layout.railWidth, 6);
-     await evaluate('window.scrollTo(0,180)');
-     await pause(220);
-     assert.equal(await evaluate("+getComputedStyle(document.querySelector('.page-overlay-scrollbar')).opacity"), 1, 'Visible during scrolling');
-     await pause(1100);
-     assert.equal(await evaluate("+getComputedStyle(document.querySelector('.page-overlay-scrollbar')).opacity"), 0, 'Fades after scrolling');
-    } else {
-     assert.equal(layout.opacity, 1, 'Desktop rail remains visible');
-     assert.equal(layout.railWidth, 14);
-    }
     console.log(file, width, JSON.stringify(layout));
    }
    await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });

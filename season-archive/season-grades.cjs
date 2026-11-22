@@ -25,10 +25,23 @@ const metrics={
  ironman:{label:'Ironman rate',rate:true}
 };
 const average=values=>values.reduce((sum,value)=>sum+value,0)/values.length;
-const grade=score=>score>=90?'S':score>=70?'A':score>=50?'B':score>=35?'C':score>=20?'D':'F';
+const grade=score=>score>=90?'Netherite':score>=70?'Diamond':score>=50?'Gold':score>=35?'Iron':'Copper';
 const combatDeath=type=>isRecordedDeath(type)&&!isAdministrativeDeath(type);
 
-function buildSeasonGrades(data,seasons,seasonIds){
+function buildSeasonGrades(data,seasons,seasonIds,options={}){
+ const excluded=new Set(options.excludeMetrics||[]);
+ const activeMetrics=Object.fromEntries(Object.entries(metrics).filter(([key])=>!excluded.has(key)));
+ const activeCategories=categories.map(category=>{
+  const included=category.metrics.filter(key=>!excluded.has(key));
+  const total=included.reduce((sum,key)=>sum+category.weights[key],0);
+  return {...category,metrics:included,weights:Object.fromEntries(included.map(key=>[key,100*category.weights[key]/total])),
+   explanation:options.classic?({
+    survival:'Lower PvE death rates and more Ironman awards earn higher grades. Self-inflicted deaths count as PvE. Disconnects and disqualifications count as deaths in the archive but are excluded from this PvE-specific rate, just as in Modern. Disqualification forfeits Ironman. Damage is unavailable and omitted.',
+    combat:'More enemy kills earn higher grades relative to peers in the same season. Team kills are excluded. Damage is unavailable and omitted.',
+    'team-contribution':'Winning earns more credit; fewer team kills earns more credit in team games. Eliminated and disconnected winning teammates receive win credit; disqualified players do not. Unknown winners are excluded from win rates. Friendly damage and mining are unavailable and omitted.'
+   }[category.id]):category.explanation};
+ });
+
  const identity=name=>data.identities[name?.toLowerCase()]||name;
  const groups=new Map(seasonIds.map(id=>[id,[]]));
  const people=new Map();
@@ -64,7 +77,7 @@ function buildSeasonGrades(data,seasons,seasonIds){
 
  // Compare each result with other measured players in the same season.
  // A tie counts as half a comparison, including when the entire field ties.
- for(const field of groups.values())for(const [key,metric] of Object.entries(metrics)){
+ for(const field of groups.values())for(const [key,metric] of Object.entries(activeMetrics)){
   const measured=field.filter(game=>Number.isFinite(game.values[key]));
   if(measured.length<2)continue;
   for(const game of measured){
@@ -80,28 +93,29 @@ function buildSeasonGrades(data,seasons,seasonIds){
  }
 
  const players=[...people].map(([name,games])=>{
-  const results=Object.fromEntries(Object.keys(metrics).map(key=>{
+  const results=Object.fromEntries(Object.keys(activeMetrics).map(key=>{
    const observed=games.map(game=>game.values[key]).filter(Number.isFinite);
    const scores=games.map(game=>game.scores[key]).filter(Number.isFinite);
    return [key,{total:observed.reduce((sum,value)=>sum+value,0),games:observed.length,
     score:scores.length?average(scores):null,scoredGames:scores.length}];
   }));
-  const grades=Object.fromEntries(categories.map(category=>{
-   const components=category.metrics.map(key=>results[key]);
-   const score=components.every(item=>item.score!==null)?
-    category.metrics.reduce((sum,key)=>sum+results[key].score*category.weights[key]/100,0):null;
+  const grades=Object.fromEntries(activeCategories.map(category=>{
+   const measured=category.metrics.filter(key=>results[key].score!==null);
+   const weight=measured.reduce((sum,key)=>sum+category.weights[key],0);
+   const score=weight?measured.reduce((sum,key)=>sum+results[key].score*category.weights[key]/weight,0):null;
+   const comparableGames=games.filter(game=>category.metrics.some(key=>Number.isFinite(game.scores[key]))).length;
    return [category.id,score===null?null:{score,grade:grade(score),
-    provisional:components.some(item=>item.scoredGames<5)}];
+    games:comparableGames,provisional:comparableGames<5}];
   }));
-  const categoryGrades=categories.map(category=>grades[category.id]);
+  const categoryGrades=activeCategories.map(category=>grades[category.id]);
   const overallScore=categoryGrades.every(Boolean)?
-   categories.reduce((sum,category)=>sum+grades[category.id].score*category.overallWeight/100,0):null;
+   activeCategories.reduce((sum,category)=>sum+grades[category.id].score*category.overallWeight/100,0):null;
   grades.overall=overallScore===null?null:{
    score:overallScore,grade:grade(overallScore),provisional:categoryGrades.some(mark=>mark.provisional)
   };
   return {name,games:games.length,results,grades};
  });
- return {seasons:seasonIds,categories,metrics,players};
+ return {seasons:seasonIds,categories:activeCategories,metrics:activeMetrics,players};
 }
 
-module.exports={buildSeasonGrades};
+module.exports={buildSeasonGrades,grade};

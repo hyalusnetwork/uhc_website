@@ -77,6 +77,28 @@ for(const season of majorMinerSeasons){
    trophy.events.push({season,detail:`Mined ${total} ore blocks—the most recorded in this season${winners.length>1?' (tied)':''}.`});
  }
 }
+// Confirmed connected PvP shots: {season, player, target, distance} in blocks.
+const longShots=read('references/long-shots.json');
+for(const season of new Set(longShots.map(r=>r.season))){
+ const shots=longShots.filter(r=>r.season===season);
+ const roster=window.UHC_DATA.find(s=>s.id===season)?.players||[];
+ for(const shot of shots){
+  if(!Number.isFinite(shot.distance)||shot.distance<=0||identity(shot.player)===identity(shot.target)||![shot.player,shot.target].every(name=>roster.some(r=>identity(r.name)===identity(name))))throw Error('Invalid Long Shot record');
+ }
+ const longest=Math.max(...shots.map(r=>r.distance)),leaders=shots.filter(r=>r.distance===longest);
+ const names=new Set(leaders.map(r=>identity(r.player)));
+ for(const name of names){
+  const player=output.allPlayers.find(p=>p.name===name);
+  let trophy=player.trophies.find(t=>t.key==='long-shot');
+  if(!trophy){trophy={key:'long-shot',label:'Long Shot',icon:'arrow',count:0,events:[]};player.trophies.push(trophy);}
+  trophy.count++;
+  const details=[...new Set(leaders.filter(r=>identity(r.player)===name).map(shot=>{
+   const projectile=shot.projectile==='Trident'?'Trident':'Arrow';
+   return `${name} hit ${identity(shot.target)} with ${projectile==='Arrow'?'an':'a'} ${projectile} from ~${Math.round(shot.distance)} blocks away.`;
+  }))];
+  trophy.events.push({season,detail:details.join(' ')});
+ }
+}
 for(const player of output.allPlayers)player.trophies.sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
 require('./profile-engine.cjs').refreshTrophyTrivia(output.allPlayers);
 const participant=name=>roster.find(p=>identity(p.name)===identity(reportNames[name]||name));
@@ -168,7 +190,13 @@ const historicalSeasons=window.UHC_DATA.filter(season=>season.id<=36);
 const historicalProfiles=buildProfiles(historicalSeasons,bios,specials);
 const playerRankings=buildPlayerRankings(historicalProfiles,historicalSeasons);
 const {buildSeasonGrades}=require('./season-grades.cjs');
+playerRankings.classicGrades=buildSeasonGrades(output,window.UHC_DATA,window.UHC_DATA.filter(s=>s.id<=36).map(s=>s.id),{classic:true,excludeMetrics:['pveDamage','enemyDamage','friendlyDamage','diamondOre','goldOre']});
 playerRankings.seasonGrades=buildSeasonGrades(output,window.UHC_DATA,[damage.season]);
+const {buildCombinedRankings}=require('./combined-rankings.cjs');
+playerRankings.combinedGrades=buildCombinedRankings(
+ playerRankings.classicGrades,playerRankings.seasonGrades,output,
+ fs.existsSync('season-objectives.json')?read('season-objectives.json'):{}
+);
 fs.writeFileSync('dist/player-rankings-data.js','window.UHC_PLAYER_RANKINGS = '+JSON.stringify(playerRankings)+';\n');
 if(fs.existsSync('trivia-document-reference.json')&&fs.existsSync('trivia-records-reference.json')){
  const {buildTrivia}=require('./trivia-engine.cjs');

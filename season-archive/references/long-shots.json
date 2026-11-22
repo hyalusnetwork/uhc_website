@@ -1,0 +1,12 @@
+[
+  {
+    "season": 37,
+    "player": "Enzo_",
+    "target": "Pecus",
+    "projectile": "Arrow",
+    "distance": 100.96720627944299,
+    "estimated": true,
+    "source": "analysis/s37-longest-arrow/outputs/S37-longest-arrow-report.txt",
+    "coverage": "Longest identifiable shot among hits with recorded launches; other hits have unknown distances."
+  }
+]

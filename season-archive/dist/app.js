@@ -80,10 +80,13 @@ function filtered(){
 let observer;
 function render(){const visible=filtered();$('result-count').textContent=`${visible.length} of ${seasons.length} seasons`;$('season-list').innerHTML=visible.map(card).join('')||'<div class="empty">No seasons found. Try another search or filter.</div>';document.querySelectorAll('.season-index a').forEach(a=>a.classList.toggle('filtered',!visible.some(s=>s.id===Number(a.dataset.season))));observer?.disconnect();observer=new IntersectionObserver(entries=>{const current=entries.find(e=>e.isIntersecting);if(current)document.querySelectorAll('.season-index a').forEach(a=>a.classList.toggle('selected',a.hash===`#${current.target.id}`));},{rootMargin:'-90px 0px -65% 0px'});document.querySelectorAll('.season-card').forEach(c=>observer.observe(c));}
 function tab(){
- const hash=location.hash.slice(1);
+ const pageName=location.pathname?.split('/').pop()?.replace(/\.html$/,'');
+ const pageRoute={players:'players',stats:'stats',rankings:'rankings-teams',trivia:'trivia',about:'about'}[pageName]||'seasons';
+ const hash=location.hash.slice(1)||pageRoute;
  const switchingModernCategory=visibleRankingEra==='modern'&&getRankingsMode(location.hash)==='grades';
  updateRankingEraBanner(location.hash);
  const selected=hash==='about'||hash.startsWith('about-')?'about':hash==='rankings'||hash.startsWith('rankings-')||hash.startsWith('rank-player-')||hash.startsWith('team-color-')?'rankings':hash==='players'||hash.startsWith('player-')?'players':['stats','trivia'].includes(hash)?hash:'seasons';
+ document.title=selected[0].toUpperCase()+selected.slice(1)+' | Hyalus UHC';
  for(const page of ['seasons','players','stats','rankings','trivia','about'])$(page+'-view').hidden=selected!==page;
  $('placeholder-view').hidden=true;
  if(selected==='trivia')renderTrivia();if(selected==='rankings')rankingsRoute();if(selected==='stats')renderStats();if(selected==='players')playersRoute();
@@ -91,6 +94,22 @@ function tab(){
  document.querySelectorAll('[data-tab]').forEach(a=>{a.classList.toggle('active',a.dataset.tab===selected);if(a.dataset.tab===selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
  if(selected==='about')requestAnimationFrame(()=>{if(hash==='about')window.scrollTo?.({top:0,behavior:'instant'});else document.getElementById(hash)?.scrollIntoView?.({block:'start'});});
 }
+// Reuse the loaded views for navbar clicks while retaining directly loadable URLs.
+document.addEventListener('click',event=>{
+ const link=event.target.closest('a[data-tab]');
+ if(!link||event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey||link.hasAttribute('download')||(link.target&&link.target!=='_self'))return;
+ const href=link.getAttribute('href');
+ if(!/^(?:index|players|stats|rankings|trivia|about)\.html$/.test(href))return;
+ try{
+  history.pushState(null,'',href);
+ }catch{
+  return;
+ }
+ event.preventDefault();
+ tab();
+ window.scrollTo({top:0,behavior:'instant'});
+});
+window.addEventListener('popstate',()=>tab());
 $('unique-count').textContent=profileData.recordedPlayers;
 $('season-index').innerHTML=seasons.map(s=>`<a href="#season-${s.id}" data-season="${s.id}" aria-label="Go to season ${s.id}">${String(s.id).padStart(2,'0')}</a>`).join('');
 const originalFilterWidth=$('year').getBoundingClientRect?.().width;

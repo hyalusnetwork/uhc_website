@@ -17,7 +17,7 @@ const trophy=(p,key)=>p.trophies.find(t=>t.key===key);
 assert.equal(trophy(ace,'team-wipe').count,5);assert.equal(trophy(ace,'first-blood').count,5);
 assert.equal(trophy(enemy,'final-boss').count,5);assert.equal(trophy(ace,'crown').count,1);
 assert.equal(trophy(ace,'perfect-ironman').count,1);assert.equal(trophy(ace,'overpowered').count,1);
-assert.equal(trophy(ace,'sharpshooter').count,5);assert.equal(trophy(ace,'triple-threat'),undefined);assert.equal(trophy(ace,'grand-slam').count,5);
+assert.equal(trophy(ace,'sharpshooter').count,5);assert.equal(trophy(ace,'sharpshooter').icon,'bow');assert.equal(trophy(ace,'triple-threat'),undefined);assert.equal(trophy(ace,'grand-slam').count,5);
 assert.match(trophy(ace,'grand-slam').events[1].detail,/retained the Crown/);
 assert(ace.trivia.includes('Earned Ironman on his debut (Season 1) (the only recorded player to do so).'));
 assert.equal(data.deathCount,16);

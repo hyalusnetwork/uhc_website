@@ -75,7 +75,7 @@ function buildProfiles(seasons,bios,specials){
         if(victim.seconds!=null&&victim.seconds===firstTime&&!kp.trophies.find(t=>t.key==='first-blood')?.events.some(e=>e.season===s.id))add(kp,'first-blood','First Blood',s.id,deathMessage,'golden-sword');
       }else if(victim.type==='Team Kill'&&killerRecord&&killer!==victim.id)ensure(killer).teamKills++;
       activeStreaks.set(victim.id,0);
-      if(victim.type==='PVP'&&victim.seconds!=null&&victim.seconds===lastTime)add(p,'final-boss','Final Boss',s.id,`Last PVP victim: ${deathMessage}`,'creeper');
+      if(victim.type==='PVP'&&victim.seconds!=null&&victim.seconds===lastTime)add(p,'final-boss','Final Boss',s.id,deathMessage,'creeper');
     }
     const maxKills=Math.max(0,...Object.values(killCounts));
     for(const r of roster){
