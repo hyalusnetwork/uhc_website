@@ -36,7 +36,7 @@ function buildSeasonGrades(data,seasons,seasonIds,options={}){
   const total=included.reduce((sum,key)=>sum+category.weights[key],0);
   return {...category,metrics:included,weights:Object.fromEntries(included.map(key=>[key,100*category.weights[key]/total])),
    explanation:options.classic?({
-    survival:'Lower PvE death rates and more Ironman awards earn higher grades. Self-inflicted deaths count as PvE. Disconnects and disqualifications count as deaths in the archive but are excluded from this PvE-specific rate, just as in Modern. Disqualification forfeits Ironman. Damage is unavailable and omitted.',
+    survival:'Lower PvE death rates and more Ironman awards earn higher grades. Self-inflicted deaths count as PvE. Disconnects and disqualifications count as deaths in the recorded results but are excluded from this PvE-specific rate, just as in Modern. Disqualification forfeits Ironman. Damage is unavailable and omitted.',
     combat:'More enemy kills earn higher grades relative to peers in the same season. Team kills are excluded. Damage is unavailable and omitted.',
     'team-contribution':'Winning earns more credit; fewer team kills earns more credit in team games. Eliminated and disconnected winning teammates receive win credit; disqualified players do not. Unknown winners are excluded from win rates. Friendly damage and mining are unavailable and omitted.'
    }[category.id]):category.explanation};
