@@ -3,7 +3,8 @@ const fs=require('node:fs');
 require('./prepare-seasonal-background.cjs');
 const profilePhotos=require('./prepare-profile-photos.cjs');
 const profilePhotoScript='window.UHC_PROFILE_PHOTOS = '+JSON.stringify(profilePhotos.map(photo=>({...photo,src:'data:image/webp;base64,'+fs.readFileSync('dist/'+photo.src).toString('base64')})))+';';
-let html=fs.readFileSync('dist/index.html','utf8');
+// The hosted pages version every asset; embed the same files for offline use.
+let html=require('./asset-versioning.cjs').stripAssetVersions(fs.readFileSync('dist/index.html','utf8'));
 html=html.replace(/src="(images\/hero-season-\d+\.webp)"/g,(_,path)=>'src="data:image/webp;base64,'+fs.readFileSync('dist/'+path).toString('base64')+'"');
 const oreTheme=fs.readFileSync('dist/ore-theme.css','utf8').replaceAll('images/seasonal-block-clusters.svg','data:image/svg+xml;base64,'+fs.readFileSync('dist/images/seasonal-block-clusters.svg').toString('base64')).replace(
  /images\/(?:player-grades|classic-era)-[a-z-]+\.(webp|jpg)/g,

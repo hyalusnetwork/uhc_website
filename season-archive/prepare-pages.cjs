@@ -23,7 +23,7 @@ const attribute = value => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').
 const videos = JSON.parse(fs.readFileSync(path.join(__dirname, 'season-videos.json'), 'utf8'));
 const videoScript = '<script id="season-videos-data">window.UHC_SEASON_VIDEOS = '
   + JSON.stringify(videos).replace(/</g, '\\u003c') + ';</script>';
-const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
+const template = require('./asset-versioning.cjs').versionAssets(fs.readFileSync(path.join(dist, 'index.html'), 'utf8'))
   .replace(/<script id="season-videos-data">[\s\S]*?<\/script>/g, '')
   .replace(/<meta\b[^>]*(?:name="(?:description|application-name|twitter:[^"]+)"|property="og:[^"]+")[^>]*>\s*/g, '')
   .replace(/<link\b[^>]*rel="canonical"[^>]*>\s*/g, '')

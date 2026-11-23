@@ -11,6 +11,6 @@ fs.writeFileSync('dist/profile-photos-data.js','window.UHC_PROFILE_PHOTOS = '+JS
 let html=fs.readFileSync('dist/index.html','utf8');
 const duplicate='data:image/webp;base64,'+fs.readFileSync('dist/images/hero-season-26.webp').toString('base64');
 html=html.replace(/<img\b[^>]*>/g,img=>img.includes('src="'+duplicate+'"')||img.includes('src="images/hero-season-26.webp"')?'':img);
-if(!html.includes('src="profile-photos-data.js"'))html=html.replace('<script defer src="players.js"></script>','<script defer src="profile-photos-data.js"></script><script defer src="players.js"></script>');
+if(!/src="profile-photos-data\.js(?:\?[^"\s]*)?"/.test(html))html=html.replace(/<script defer src="players\.js(?:\?[^"\s]*)?"><\/script>/,'<script defer src="profile-photos-data.js"></script><script defer src="players.js"></script>');
 fs.writeFileSync('dist/index.html',html);
 module.exports=photos;

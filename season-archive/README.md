@@ -4,6 +4,8 @@ About is an illustrated field guide based on `references/about-user.md`, with th
 
 Open `dist/index.html` in a browser. This is a buildless website and also works from a static web host.
 
+GitHub Pages publishes `season-archive/dist`. Run `node make-html.cjs` before committing a release: it rebuilds the offline archive and all six hosted pages. Hosted JavaScript and stylesheet URLs include content hashes so browsers request updated assets together after a release. `node verify-asset-versioning.cjs` verifies every hosted asset version and checks that `../UHC.html` still embeds its scripts and styles. `node qa-versioned-build.cjs` checks the current Player Bio features in both formats. If a browser is still showing a cached page from a previous release, use a hard refresh or a private tab.
+
 The import contains 36 seasons and 515 participant records from `UHC_Data.xlsx`. The workbook is unchanged. To refresh, run `./import-workbook.ps1` and then `node prepare-data.cjs` from this directory. The importer reads the workbook in the parent folder and `prepare-data.cjs` generates `dist/data.js`.
 
 Seasons include player and team search, year filtering, chronological sorting, a season index, Ironman badges, debut badges, and crown tooltips. Players adds full profiles for players with at least five recorded games, combining only aliases explicitly listed in the bios workbook. Search accepts current and former names. Profiles include trophy cases, season histories, teams, frequent teammates/victims/killers, kill and survival charts, generated trivia, and expandable historical descriptions. Trivia and Links remain reserved tabs.
