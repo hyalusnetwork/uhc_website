@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -15,17 +16,52 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  upload:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        id: upload
+        with:
+          name: github-pages
+          path: season-archive/dist
+
   deploy:
+    needs: upload
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - name: Wait for the uploaded Pages artifact to become visible
+        uses: actions/github-script@v9
+        env:
+          PAGES_ARTIFACT_ID: ${{ needs.upload.outputs.artifact_id }}
         with:
-          path: season-archive/dist
+          script: |
+            const expected = process.env.PAGES_ARTIFACT_ID;
+            if (!expected) throw new Error('The upload job did not return an artifact ID.');
+            for (let attempt = 1; attempt <= 20; attempt++) {
+              const { data } = await github.rest.actions.listWorkflowRunArtifacts({
+                ...context.repo,
+                run_id: context.runId,
+                name: 'github-pages',
+                per_page: 100
+              });
+              const artifacts = data.artifacts.filter(a => a.name === 'github-pages' && !a.expired);
+              if (artifacts.length > 1) throw new Error('Multiple Pages artifacts found. Start a new workflow run instead of re-running the upload job.');
+              if (artifacts.some(a => String(a.id) === expected)) {
+                core.info('The uploaded Pages artifact is visible and ready to deploy.');
+                return;
+              }
+              if (attempt < 20) await new Promise(resolve => setTimeout(resolve, 3000));
+            }
+            throw new Error('The uploaded Pages artifact was not visible after one minute.');
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages
