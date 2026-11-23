@@ -19,8 +19,20 @@ assert.equal(trophy(enemy,'final-boss').count,5);assert.equal(trophy(ace,'crown'
 assert.equal(trophy(ace,'perfect-ironman').count,1);assert.equal(trophy(ace,'overpowered').count,1);
 assert.equal(trophy(ace,'sharpshooter').count,5);assert.equal(trophy(ace,'sharpshooter').icon,'bow');assert.equal(trophy(ace,'triple-threat'),undefined);assert.equal(trophy(ace,'grand-slam').count,5);
 assert.match(trophy(ace,'grand-slam').events[1].detail,/retained the Crown/);
-assert(ace.trivia.includes('Earned Ironman on his debut (Season 1) (the only recorded player to do so).'));
+assert(ace.trivia.includes('Earned Ironman on his debut (S1) (the only recorded player to do so).'));
 assert.equal(data.deathCount,16);
+const dragonAwards=buildProfiles(rounds,bios,[{season:1,name:'Ace',stat:'Free the End'},{season:1,name:'Partner',stat:'Free the End'}]);
+assert.equal(trophy(dragonAwards.allPlayers.find(p=>p.name==='Ace'),'free-the-end').count,1);
+assert.equal(trophy(dragonAwards.allPlayers.find(p=>p.name==='Partner'),'free-the-end').count,1);
+assert.equal(trophy(dragonAwards.allPlayers.find(p=>p.name==='Enemy1'),'free-the-end'),undefined);
+assert(!buildProfiles(rounds.map(s=>({...s,dragon:true})),bios,[]).allPlayers.some(p=>trophy(p,'free-the-end')));
+assert(ace.trivia.includes('Got two PVP kills within the span of 10 seconds (S1, S2, S3, S4, S5).'));
+const slowerRounds=rounds.map(s=>({...s,players:s.players.map(p=>p.name==='Enemy2'?{...p,seconds:21}:p)}));
+assert(!buildProfiles(slowerRounds,bios,[]).allPlayers.find(p=>p.name==='Ace').trivia.some(t=>t.startsWith('Got two PVP kills within the span of 10 seconds')));
+const finishRounds=rounds.map(s=>({...s,players:s.players.filter(p=>p.name!=='OneGame')}));
+assert.equal(buildProfiles(finishRounds,bios,[]).allPlayers.find(p=>p.name==='Ace').trivia.filter(t=>t.includes('PVP kills after his last teammate died')).length,5);
+const lateTeammateRounds=finishRounds.map(s=>({...s,players:s.players.map(p=>p.name==='Partner'?{...p,seconds:15}:p)}));
+assert(!buildProfiles(lateTeammateRounds,bios,[]).allPlayers.find(p=>p.name==='Ace').trivia.some(t=>t.includes('PVP kills after his last teammate died')));
 const administrative=buildProfiles([{id:1,teamSize:3,players:[{name:"Survivor",color:"Green"},{name:"Disconnected",color:"Green",type:"Disconnect",seconds:2},{name:"Disqualified",color:"Green",type:"Disqualification",seconds:3},{name:"Opponent",color:"Red",type:"PVE",death:"fell",seconds:4}]}],[],[]);
 const dc=administrative.allPlayers.find(p=>p.name==="Disconnected"),dq=administrative.allPlayers.find(p=>p.name==="Disqualified");
 assert.equal(administrative.deathCount,3);
@@ -89,3 +101,18 @@ assert.deepEqual(causeAce.trivia.filter(t=>t.includes('different kill types')),[
 assert.equal(trophy(causeAce,'grand-slam').count,4);
 assert.deepEqual(trophy(causeAce,'triple-threat').events.map(e=>e.season),[5]);
 console.log('Passed: five-game boundary, aliases, team wins for dead teammates, kill credit, team wipes, first/last kills, ties, special records, crown transfers, streaks and teammates.');
+const firstTypeCases=[
+ ['FireFirst','was burnt to a crisp whilst fighting FireFirst','from burn damage'],
+ ['FallFirst','hit the ground too hard (FallFirst)','from fall damage'],
+ ['PetFirst','was slain by Wolf (PetFirst)','with a pet'],
+ ['SpearFirst','was speared by SpearFirst','with a spear'],
+ ['TntFirst','was blown up by TNT (TntFirst)','from TNT'],
+ ['RangedFirst','was shot by RangedFirst','with a ranged weapon']
+];
+const firstTypeRoster=firstTypeCases.flatMap(([name,death])=>[{name,color:'Blue'},{name:name+'Victim',color:'Red',type:'PVP',death,result:name,seconds:10}]);
+firstTypeRoster.push({name:'MixedFirst',color:'Blue'},
+ {name:'MixedFire',color:'Red',type:'PVP',death:'was burnt by MixedFirst',result:'MixedFirst',seconds:10},
+ {name:'MixedArrow',color:'Red',type:'PVP',death:'was shot by MixedFirst',result:'MixedFirst',seconds:10});
+const firstTypePlayers=buildProfiles([{id:1,teamSize:2,players:firstTypeRoster}],[],[]).allPlayers;
+for(const [name,,description] of firstTypeCases)assert(firstTypePlayers.find(p=>p.name===name).trivia.some(t=>t.includes('whose first PVP kill was '+description+'.')));
+assert(!firstTypePlayers.find(p=>p.name==='MixedFirst').trivia.some(t=>t.includes('whose first PVP kill was')));

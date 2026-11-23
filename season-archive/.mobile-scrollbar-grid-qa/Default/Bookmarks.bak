@@ -1,0 +1,171 @@
+{
+   "checksum": "c0db059a97e1bfe23e190a3ab840224f",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13175109127130492",
+            "date_last_used": "0",
+            "guid": "f1e46a9b-2f4d-46a9-afe4-ebacb9110492",
+            "id": "6",
+            "name": "UF Email",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://sts.login.ufl.edu/adfs/ls/?client-request-id=f91a8625-66d4-4206-991f-9342ed3c4b84&username=&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=estsredirect%3d2%26estsrequest%3drQIIAdNiNtQztFIxgAAjXRCpa5CWZqibnApiIYEiIS4B1Tapn1fS2Jxmyk92emvj3TKLkb00LUcvNaV0FaN8RklJQbGVvn5-aUlOfn62Xn5aWmZyql5yfq5-fnmi_g5GxguMjKuYzM2MzczMjIyB0MDC3NLIyNhQL8nEJNU01dhQ19Ii1VTXJMnSUjcp2cxU19zUwsg81cIyxcTE4hYTv79jaUmGEYjIL8qsSv3ExJmWX5QbX5BfXDKLOd0lstjUJd-x3MXXKTE8IMfbvCrEI7ky3c-1wiukIi3Vy8ejtCrFwrzENDfJLMnD3dUlyK3It8o7xNCvwNvD0SWxJCo0vcjF2NHVMS-rPMMsP7kyLCc30KXYPMQ4WNfUsMA4ND60NMJkFTNRwbWJmQ3o89z8vFPMbPkFqXmZKRdYGF-x8BgwW3FwcAkwSDAoMPxgYVzECgzW7XEPvRd9e-C9ZpMXc0ijBcMpVv3wMNNA_YwM57LU7MwK__CgjCTvTPPIStPkqNzA_GBXt6hko9Iyv8xwIw9fW2MrwwlsjBPY2F6wMX5gY-xgZ9jFSSg2bnGJGBkYWugamOsaGCsYmlkZG1kZGEYBAA2",
+            "visit_count": 0
+         }, {
+            "date_added": "13175293979999648",
+            "date_last_used": "0",
+            "guid": "baa93c18-95e8-42bc-aafc-63893d862f7a",
+            "id": "7",
+            "name": "Daily Pres Poll",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "http://www.rasmussenreports.com/public_content/politics/trump_administration/prez_track_jul05",
+            "visit_count": 0
+         }, {
+            "date_added": "13177440332437072",
+            "date_last_used": "0",
+            "guid": "b759f2ff-8dc0-40c2-bca2-e14c5a7afcb9",
+            "id": "8",
+            "name": "UF Weather",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://weather.com/weather/today/l/USFL0163:1:US",
+            "visit_count": 0
+         }, {
+            "children": [ {
+               "date_added": "13200614791246137",
+               "date_last_used": "0",
+               "guid": "1107aaa0-e05e-480f-b796-adf909199f81",
+               "id": "10",
+               "name": "ex6r69edhvt21.jpg (640×761)",
+               "show_icon": false,
+               "source": "sync",
+               "type": "url",
+               "url": "https://preview.redd.it/ex6r69edhvt21.jpg?width=640&crop=smart&auto=webp&s=2cc040aa2bd10d411ac87bf4b20e4c10b0b3dccc",
+               "visit_count": 0
+            }, {
+               "date_added": "13210880275479884",
+               "date_last_used": "0",
+               "guid": "eff1e8a8-9380-4f41-b675-f47191f45714",
+               "id": "11",
+               "name": "Twitter: China Behind 200K Fake Accounts Targeting Hong Kong | Time",
+               "show_icon": false,
+               "source": "sync",
+               "type": "url",
+               "url": "https://time.com/5656149/twitter-chinese-accounts-hong-kong-protests/",
+               "visit_count": 0
+            } ],
+            "date_added": "13243199923333811",
+            "date_last_used": "0",
+            "date_modified": "13243199923333811",
+            "guid": "29a52c2a-27d1-4f0a-b6a8-eed5ea1fd4a6",
+            "id": "9",
+            "name": "News Stuff",
+            "source": "unknown",
+            "type": "folder"
+         }, {
+            "date_added": "13228327325238450",
+            "date_last_used": "0",
+            "guid": "bd1b05ed-a336-4ce5-b7b6-01018878446d",
+            "id": "12",
+            "name": "2020 General",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://www.realclearpolitics.com/epolls/latest_polls/pres_general/",
+            "visit_count": 0
+         }, {
+            "date_added": "13219986937772632",
+            "date_last_used": "0",
+            "guid": "d2f178ec-14ea-4e5d-b4fe-d5573eefe8d4",
+            "id": "13",
+            "name": "Gators '21 Recruiting",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://247sports.com/college/florida/Season/2021-Football/Commits/",
+            "visit_count": 0
+         }, {
+            "date_added": "13227739907048608",
+            "date_last_used": "0",
+            "guid": "61737c0d-15fd-482e-88e4-7c1391d52958",
+            "id": "14",
+            "name": "TD.win",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://thedonald.win/",
+            "visit_count": 0
+         }, {
+            "date_added": "13242882914112730",
+            "date_last_used": "0",
+            "guid": "ed57050e-6f6d-4849-839e-c146abb8c172",
+            "id": "15",
+            "name": "US COVID Tracker",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://www.us-covid-tracker.com/",
+            "visit_count": 0
+         }, {
+            "date_added": "13243114664119235",
+            "date_last_used": "0",
+            "guid": "a2d5b1ff-6674-4752-b7b6-4c66fa6a5713",
+            "id": "16",
+            "name": "CP @ M",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://collegeparkatmidtown.residentportal.com/resident_portal/?module=authentication&action=view_login",
+            "visit_count": 0
+         } ],
+         "date_added": "13439845685829350",
+         "date_last_used": "0",
+         "date_modified": "13243114664119235",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Favorites bar",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13439845685829350",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Other favorites",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13439845685829350",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile favorites",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "workspaces_v2": {
+         "children": [  ],
+         "date_added": "13439845685829350",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "75aa6670-344f-549d-b742-660f029506ab",
+         "id": "4",
+         "name": "Workspaces",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "sync_metadata": "CkEKHgiIgQISCAhsfwSiAQAAKg4QABgBIAAoBTAAOABAABIAKhgrRmYwQS9kWTBhOXV0SWpxU0FUQlh3PT1IA6AGDBKMAQgDEocBChxuamdEdTg4ZUNydlhwODZwRDdmSEdjcUZwODg9EiRiNTM3NjYxZS01NDRiLTVmM2QtODIzOS03ZTNhZDdmMjE3ZDQYACAAKAAwxZrJhMUuOK+knZrpL0CvpJ2a6S9KHHl6TkIwMWNuNTRBN2NSVTB1VCsvUGdtVHRVbz1lAAAAAMI+AmAAEq0BCBASqAEKHDJoZ3BkcllKaEkyeGRWYjhDUDFlNGxzNk45bz0SJGEyZDViMWZmLTY2NzQtNDc1Mi1iN2I2LTRjNjZmYTZhNTcxMxgAIAAoADD7rejOxTE48KmU2vAwQPCplNrwMEocTGF6RWNMamEwcG9QcmpicUxLSEQ3M3lDaGdRPVofIh3+Z3A3eE9TZjJ3VyttRnVOWTZvVzBsVU5BWVZRPWWsfZo8wj4CYAUSjAEIBBKHAQocd1JCclpMKzZQQTlhdktnak5QN0pYRExjZnZzPRIkMDA5YzIwMDctODBjYi01YTZlLTlkY2EtZWQ0MjMxZjAyODFlGAAgACgAMOT2zIKyMzjj98yCsjNA4/fMgrIzShxubXg2NXNRRHZ4SThUZ0VlditBK250dG9TbjQ9ZQAAAADCPgJgABKtAQgPEqgBChxjOWwxQSt4dThtRmt2RWNxMzdubG9kWHJOc2s9EiRlZDU3MDUwZS02ZjZkLTQ4NDktODM5ZS1jMTQ2YWJiOGMxNzIYACAAKAAw+K3ozsUxOKKplNrwMECiqZTa8DBKHFV4UTZUWE5qYk5LbE9SQWFkUlU1VGxYVzBSVT1aHyId/U1raGlDZHFKdFFlNGdHZmdwVUFkN2NDV1ZGWT1lmCwbscI+AmAFEqwBCAYSpwEKHGtzczNNYjB6RnNOdHhUOU1RSENyMjVrR2Rpdz0SJGYxZTQ2YTliLTJmNGQtNDZhOS1hZmU0LWViYWNiOTExMDQ5MhgAIAAoADD6rejOxTE446iU2vAwQOOolNrwMEoceUd1cGhIUXJHYklCUU5jN3VjeHlFMDBKeTZ3PVoeIhxKR05lSGxMajgrQmlxTDJ4YWh6NkMrRHNITGM9ZfbMQQnCPgJgBRKtAQgOEqgBChxCVCtIakltT1dWSUhucHEreXFIVzZ6RDZXaWM9EiQ2MTczN2MwZC0xNWZkLTQ4MmUtODhlNC03YzEzOTFkNTI5NTgYACAAKAAw7eqfma8xONCplNrwMEDQqZTa8DBKHFREY014RjhvbmVDRVRKblc5MXI1Vm5yNXRDaz1aHyId+3UwNTZnQ29OVVVnOXZyN3I1cFdZbys0aVEwOD1lbSau9sI+AmAFEqwBCAoSpwEKHGZKdGM2N1BZMzU1YUVWdERpQlJrNk9yZzVZOD0SJDExMDdhYWEwLWUwNWUtNDgwZi1iNzk2LWFkZjkwOTE5OWY4MRgAIAAoADC+p5Ta8DA4laiU2vAwQJWolNrwMEocTExTVStTajhIeVo2cUNtVHhMSThYV0MycE5JPVoeIhwyQVRxazZKMC9md3gwVUFXM2ZFWmlDZVB6QnM9ZQAAAADCPgJgBRKtAQgNEqgBChx2dGM5MVBHOG9TQVhhUUwrbUVGVnhQV3FTWFk9EiRkMmYxNzhlYy0xNGVhLTRlNWQtYjRmZS1kNTU3M2VlZmU4ZDQYACAAKAAw8eqfma8xOJKplNrwMECSqZTa8DBKHEk4cXZDMDY1dnhBblRiMm9hRVdjQnErL1NoUT1aHyId9nMvUjBoc3BpZzJqaTBOMlljdTVPVVZoL1g3UT1lT2+0jMI+AmAFEq0BCAwSqAEKHFhwYVlnZUVBbFBIa0lVZGV6YTZOS2svOVdzcz0SJGJkMWIwNWVkLWEzMzYtNGNlNS1iN2I2LTAxMDE4ODc4NDQ2ZBgAIAAoADD5rejOxTE4xKiU2vAwQMSolNrwMEocMDJodDBGNWdzcDFLZzNtZ0hldkxJbFpKWEs0PVofIh3sZWt5blhrbTNsRDYyUklNR3p1UzEvZHZkWWFVPWXj7c4Xwj4CYAUSrAEICxKnAQocYmFqQlBCTUJxNDRKaE5ic3BRMXlNV25PREtZPRIkZWZmMWU4YTgtOTM4MC00ZjQxLWI2NzUtZjQ3MTkxZjQ1NzE0GAAgACgAML+nlNrwMDilqJTa8DBApaiU2vAwShxVV0EwUWlRcVNKcnNxNUI1Q0RyZ0hNQjBLUXc9Wh4iHE1nL0NwTlIvdW5JdFdma2xVL2poNklaSVZ0QT1lmAwRaMI+AmAFEq0BCAkSqAEKHFU1R2wvaFlvbnVhUTZhc1dKMjN2YVJPdTd0RT0SJDI5YTUyYzJhLTI3ZDEtNGYwYS1iNmE4LWVlZDVlYTFmZDRhNhgAIAAoADC9p5Ta8DA4haiU2vAwQIWolNrwMEocRjdDOU4wZUx3cTQ5N0VKd3pKejkvUUZnOHJJPVofIh3YTC9Ib1FHU2tScFV2ZHFmKzJldkJPYjVJVCtrPWUAAAAAwj4CYAASrAEIBxKnAQocOUhrd3VIRU1XV201a3lnYUZmcGJGRWdvT1NnPRIkYmFhOTNjMTgtOTVlOC00MmJjLWFhZmMtNjM4OTNkODYyZjdhGAAgACgAMOrqn5mvMTjzqJTa8DBA86iU2vAwShxqcWVrN3NmTXoybHFldGdVcW5wOEJrdVJDMnM9Wh4iHGJCK1lMTm1BNzZtbE9JTGw4b1BTYXFDSFFDYz1lr0jAB8I+AmAFEq0BCAgSqAEKHFZObnRHbGwraWpBZ2NUVkxLK3NsdW1McEZKaz0SJGI3NTlmMmZmLThkYzAtNDBjMi1iY2EyLWUxNGM1YTdhZmNiORgAIAAoADDr6p+ZrzE4wamU2vAwQMGplNrwMEocU0NzYkdqR0VIdTRhN2RreW5CdXhQZC9kSkRnPVofIh2xRGE5UlBsOXZ4S1lIQ1dLbEwrd0RRTXpvb2tjPWWtxF6mwj4CYAUSjAEIARKHAQoceXhKLzZmdmtlY3I3a3A1RVF6QjR0V0xwZGJFPRIkODRlZWNhNTQtZWVmMi01OGYzLWIzOWItMzgxM2I3MDQ5OTA2GAAgACgAMMCayYTFLjixo52a6S9AsaOdmukvShxhUkNXTGdoRjliNUlucUtJRHZ1Si9qdlFrRmM9ZQAAAADCPgJgABKMAQgCEocBChxZY1NUb252RVNQd3FDczRMMmNyVmh2NjhMOTg9EiQzMTU1ZmYzOC05NDUwLTU4MmUtYjM5YS03NTllMTBhOTY1ODQYACAAKAAwwZrJhMUuONCjnZrpL0DQo52a6S9KHG9QVmtod0JSYlY2NUtDV1IyK0lPTkhXb091OD1lAAAAAMI+AmAAMAA4AA==",
+   "version": 1
+}

@@ -1,6 +1,8 @@
 require('./prepare-season-replay.cjs');
 const fs=require('node:fs');
 require('./prepare-seasonal-background.cjs');
+const profilePhotos=require('./prepare-profile-photos.cjs');
+const profilePhotoScript='window.UHC_PROFILE_PHOTOS = '+JSON.stringify(profilePhotos.map(photo=>({...photo,src:'data:image/webp;base64,'+fs.readFileSync('dist/'+photo.src).toString('base64')})))+';';
 let html=fs.readFileSync('dist/index.html','utf8');
 html=html.replace(/src="(images\/hero-season-\d+\.webp)"/g,(_,path)=>'src="data:image/webp;base64,'+fs.readFileSync('dist/'+path).toString('base64')+'"');
 const oreTheme=fs.readFileSync('dist/ore-theme.css','utf8').replaceAll('images/seasonal-block-clusters.svg','data:image/svg+xml;base64,'+fs.readFileSync('dist/images/seasonal-block-clusters.svg').toString('base64')).replace(
@@ -24,7 +26,7 @@ html=html.replace(/<a\b[^>]*\bdata-tab="([^"]+)"[^>]*>/g,(anchor,target)=>anchor
 const icons=Object.fromEntries(fs.readdirSync('dist/icons').filter(n=>n.endsWith('.webp')).map(n=>[n.slice(0,-5),'data:image/webp;base64,'+fs.readFileSync('dist/icons/'+n).toString('base64')]));
 icons['hardcore-container']='data:image/webp;base64,'+fs.readFileSync('dist/hardcore-container.webp').toString('base64');
 icons.warden='data:image/png;base64,'+fs.readFileSync('dist/icons/warden.png').toString('base64');
-for(const name of ['oak-sapling','iron-chestplate','redstone']){icons[name]='data:image/png;base64,'+fs.readFileSync('dist/icons/'+name+'.png').toString('base64');html=html.replaceAll('src="icons/'+name+'.png"','src="'+icons[name]+'"');}
+for(const name of ['oak-sapling','iron-chestplate','redstone','campfire','dragon-head']){icons[name]='data:image/png;base64,'+fs.readFileSync('dist/icons/'+name+'.png').toString('base64');html=html.replaceAll('src="icons/'+name+'.png"','src="'+icons[name]+'"');}
 const iconScript='window.UHC_ICONS = '+JSON.stringify(icons)+';';
 fs.writeFileSync('dist/icons.js',iconScript);
 html=html.replaceAll('src="icons/crown.webp"',`src="${icons.crown}"`);
@@ -33,6 +35,7 @@ html=html.replace(/src="icons\/([a-z-]+)\.webp"/g,(match,name)=>{if(!icons[name]
 html=html.replace(/src="(images\/(?:end-portal|uhc-nether|uhc-party|uhc-battle)\.webp)"/g,(_,path)=>`src="data:image/webp;base64,${fs.readFileSync('dist/'+path).toString('base64')}"`);
 html=html.replace('<link rel="stylesheet" href="about.css">','');
 html=html.replaceAll('src="icons/book-and-quill.webp"',`src="${icons['book-and-quill']}"`);
+const profilePhotoUI=fs.readFileSync('dist/profile-photos.js','utf8');
 const players=fs.readFileSync('dist/players.js','utf8');
 const manifest=JSON.parse(fs.readFileSync('face-manifest.json','utf8'));
 const faceMap=Object.fromEntries(Object.entries(manifest.mapping).map(([name,file])=>[name,'data:image/webp;base64,'+fs.readFileSync('dist/faces/'+file).toString('base64')]));
@@ -53,7 +56,8 @@ html=html.replace('<link rel="stylesheet" href="players.css">','').replace('<lin
 html=html.replace('<link rel="stylesheet" href="ore-theme.css">','').replace('<link rel="stylesheet" href="trivia.css">','').replace(/<script defer src="(?:trivia|trivia-data)\.js"><\/script>/g,'');
 html=html.replace(/<script defer src="season-replay(?:-data)?\.js"><\/script>/g,'');
 html=html.replace('<script defer src="overlay-scrollbar.js"></script>','');
-html=html.replace('</body>',()=>`<script>${[data,profiles,iconScript,seasonVideoScript,faceScript,statsData,rankingsData,playerRankingsData,triviaData,players,stats,rankings,playerRankings,trivia,app,crownHistory,fs.readFileSync("dist/season-replay-data.js","utf8"),fs.readFileSync("dist/season-replay.js","utf8")].join('\n;\n').replace(/<\/script/gi,'<\\/script')}</script></body>`);
+html=html.replace(/<script defer src="profile-photos(?:-data)?\.js"><\/script>/g,'');
+html=html.replace('</body>',()=>`<script>${[data,profiles,iconScript,seasonVideoScript,faceScript,statsData,rankingsData,playerRankingsData,triviaData,profilePhotoScript,profilePhotoUI,players,stats,rankings,playerRankings,trivia,app,crownHistory,fs.readFileSync("dist/season-replay-data.js","utf8"),fs.readFileSync("dist/season-replay.js","utf8")].join('\n;\n').replace(/<\/script/gi,'<\\/script')}</script></body>`);
 fs.writeFileSync('../UHC.html',html);
 console.log('Created self-contained UHC.html');
 require('./prepare-pages.cjs');

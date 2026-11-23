@@ -174,3 +174,30 @@
   background-size: 100% 100%, 100% 100%, var(--wall-width) auto;
   image-rendering: pixelated;
 }
+
+.team-history-disclosure > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 17px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--cream);
+  background: #1b1d21;
+}
+.team-history-disclosure > summary::-webkit-details-marker { display: none; }
+.team-history-disclosure > summary::before { content: '▸'; color: var(--green); }
+.team-history-disclosure[open] > summary::before { content: '▾'; }
+.team-history-disclosure > summary > span {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.team-history-disclosure > summary:hover { filter: brightness(1.15); }
+.team-history-disclosure > summary:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: -3px;
+}

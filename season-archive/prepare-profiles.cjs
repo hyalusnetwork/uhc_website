@@ -202,6 +202,7 @@ if(fs.existsSync('trivia-document-reference.json')&&fs.existsSync('trivia-record
  const {buildTrivia}=require('./trivia-engine.cjs');
  fs.writeFileSync('dist/trivia-data.js','window.UHC_TRIVIA = '+JSON.stringify(buildTrivia(window.UHC_DATA,output,stats,{document:read('trivia-document-reference.json'),workbook:read('trivia-records-reference.json'),legacy:read('trivia-legacy-records.json')}))+';\n');
 }
+for(const player of output.allPlayers)player.trivia=player.trivia.map(require('./profile-engine.cjs').formatTriviaNotation);
 delete output.allPlayers;
 fs.writeFileSync('dist/profiles.js','window.UHC_PROFILES = '+JSON.stringify(output)+';\n');
 console.log(`Built ${output.profiles.length} eligible player profiles; ${output.deathCount} recorded deaths.`);
