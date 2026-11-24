@@ -441,6 +441,7 @@ function bindCareerCurve(root,p){
     buttons.forEach((button,j)=>{button.classList.toggle('active',i===j);button.setAttribute('aria-selected',String(i===j));button.tabIndex=i===j?0:-1;});
     panel.setAttribute('aria-labelledby',buttons[i].id);
     panel.innerHTML=careerContent(p,i);
+    bindChartScrollbars(panel);
 
     if(i===5){const tile=root.querySelector('.profile-sidebar .profile-season-grid > a');if(tile){panel.style.setProperty('--teammate-tile-width',tile.offsetWidth+'px');panel.style.setProperty('--teammate-tile-height',tile.offsetHeight+'px');}}
   };
@@ -487,6 +488,7 @@ function showPlayer(name){
   bindTrophyDialog($('full-profile'),trophy,p);
   bindCareerCurve($('full-profile'),p);
   bindProfilePhotos($('full-profile'),p,photos);
+  bindChartScrollbars($('full-profile'));
 
   const sidebar=$('full-profile').querySelector('.profile-sidebar');
   sidebar.style.setProperty('--profile-sidebar-height',sidebar.offsetHeight+'px');
@@ -519,3 +521,32 @@ window.addEventListener('pageshow',()=>{
 document.addEventListener('scroll',event=>{
  if(event.target instanceof Element&&event.target.matches('.table-wrap,.outcome-plot-scroll'))hideChartTooltip();
 },{capture:true,passive:true});
+
+// A separate native scroll surface keeps horizontal scrolling out of the data hit area.
+const chartScrollbars=new Map();
+const chartScrollbarObserver=new ResizeObserver(()=>{
+ for(const [viewport,state] of chartScrollbars){
+  if(!viewport.isConnected){chartScrollbarObserver.unobserve(viewport);chartScrollbarObserver.unobserve(state.content);chartScrollbars.delete(viewport);}
+  else state.update();
+ }
+});
+function bindChartScrollbars(root){
+ for(const viewport of root.querySelectorAll('.outcome-plot-scroll,.table-wrap:has(.damage-table)')){
+  if(chartScrollbars.has(viewport))continue;
+  const content=viewport.firstElementChild;
+  const rail=document.createElement('div'),spacer=document.createElement('div');
+  rail.className='chart-scroll-rail';rail.tabIndex=0;rail.setAttribute('role','region');
+  rail.setAttribute('aria-label','Scroll '+(content.getAttribute('aria-label')||'chart')+' horizontally');
+  spacer.className='chart-scroll-spacer';spacer.setAttribute('aria-hidden','true');rail.append(spacer);
+  viewport.classList.add('scrub-scroll-viewport');viewport.after(rail);
+  const update=()=>{
+   spacer.style.width=viewport.scrollWidth+'px';
+   rail.hidden=viewport.scrollWidth<=viewport.clientWidth+1;
+   rail.scrollLeft=viewport.scrollLeft;
+  };
+  rail.addEventListener('scroll',()=>{viewport.scrollLeft=rail.scrollLeft;hideChartTooltip();},{passive:true});
+  viewport.addEventListener('scroll',()=>{rail.scrollLeft=viewport.scrollLeft;hideChartTooltip();},{passive:true});
+  chartScrollbars.set(viewport,{content,update});
+  chartScrollbarObserver.observe(viewport);chartScrollbarObserver.observe(content);update();
+ }
+}

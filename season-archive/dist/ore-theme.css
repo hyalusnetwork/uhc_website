@@ -1330,3 +1330,15 @@ body:has(#stats-view:not([hidden])){
 :is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar-track{background:transparent;border:0}
 :is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar-thumb{background:#77808b;border:0;border-radius:3px;box-shadow:none}
 :is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar-thumb:hover{background:#929ba7}
+
+/* Native scrollbar below, outside the data surface used for tooltip scrubbing. */
+.scrub-scroll-viewport{overflow-x:hidden!important;scrollbar-width:none!important}
+.scrub-scroll-viewport::-webkit-scrollbar{display:none}
+#career-panel .table-wrap.scrub-scroll-viewport,.scrub-scroll-viewport>svg{touch-action:pan-y}
+.chart-scroll-rail{display:block;box-sizing:border-box;width:100%;max-width:100%;height:28px;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#77808b transparent}
+.chart-scroll-rail[hidden]{display:none}
+.chart-scroll-spacer{height:1px;pointer-events:none}
+.chart-scroll-rail::-webkit-scrollbar{height:6px}
+.chart-scroll-rail::-webkit-scrollbar-track{background:transparent}
+.chart-scroll-rail::-webkit-scrollbar-thumb{background:#77808b;border-radius:3px}
+.chart-scroll-rail:focus-visible{outline:2px solid #dbe8ff;outline-offset:2px}

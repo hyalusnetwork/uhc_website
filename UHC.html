@@ -1806,6 +1806,18 @@ body:has(#stats-view:not([hidden])){
 :is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar-thumb{background:#77808b;border:0;border-radius:3px;box-shadow:none}
 :is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar-thumb:hover{background:#929ba7}
 
+/* Native scrollbar below, outside the data surface used for tooltip scrubbing. */
+.scrub-scroll-viewport{overflow-x:hidden!important;scrollbar-width:none!important}
+.scrub-scroll-viewport::-webkit-scrollbar{display:none}
+#career-panel .table-wrap.scrub-scroll-viewport,.scrub-scroll-viewport>svg{touch-action:pan-y}
+.chart-scroll-rail{display:block;box-sizing:border-box;width:100%;max-width:100%;height:28px;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#77808b transparent}
+.chart-scroll-rail[hidden]{display:none}
+.chart-scroll-spacer{height:1px;pointer-events:none}
+.chart-scroll-rail::-webkit-scrollbar{height:6px}
+.chart-scroll-rail::-webkit-scrollbar-track{background:transparent}
+.chart-scroll-rail::-webkit-scrollbar-thumb{background:#77808b;border-radius:3px}
+.chart-scroll-rail:focus-visible{outline:2px solid #dbe8ff;outline-offset:2px}
+
 /* Illustrated field guide. Scoped to About to preserve the archive. */
 .about-page{max-width:1320px;margin:auto;padding:54px 5% 70px;--about-highlight:#a8c7ff;--gold:#eccb80}
 .about-page p{overflow-wrap:normal}.about-page strong{color:#edf3f5}.about-page .eyebrow{font-size:10px;line-height:1.6;letter-spacing:1.7px}.about-page h2{letter-spacing:-1.2px}.about-page h3{letter-spacing:-.4px}
@@ -2655,6 +2667,7 @@ function bindCareerCurve(root,p){
     buttons.forEach((button,j)=>{button.classList.toggle('active',i===j);button.setAttribute('aria-selected',String(i===j));button.tabIndex=i===j?0:-1;});
     panel.setAttribute('aria-labelledby',buttons[i].id);
     panel.innerHTML=careerContent(p,i);
+    bindChartScrollbars(panel);
 
     if(i===5){const tile=root.querySelector('.profile-sidebar .profile-season-grid > a');if(tile){panel.style.setProperty('--teammate-tile-width',tile.offsetWidth+'px');panel.style.setProperty('--teammate-tile-height',tile.offsetHeight+'px');}}
   };
@@ -2701,6 +2714,7 @@ function showPlayer(name){
   bindTrophyDialog($('full-profile'),trophy,p);
   bindCareerCurve($('full-profile'),p);
   bindProfilePhotos($('full-profile'),p,photos);
+  bindChartScrollbars($('full-profile'));
 
   const sidebar=$('full-profile').querySelector('.profile-sidebar');
   sidebar.style.setProperty('--profile-sidebar-height',sidebar.offsetHeight+'px');
@@ -2733,6 +2747,35 @@ window.addEventListener('pageshow',()=>{
 document.addEventListener('scroll',event=>{
  if(event.target instanceof Element&&event.target.matches('.table-wrap,.outcome-plot-scroll'))hideChartTooltip();
 },{capture:true,passive:true});
+
+// A separate native scroll surface keeps horizontal scrolling out of the data hit area.
+const chartScrollbars=new Map();
+const chartScrollbarObserver=new ResizeObserver(()=>{
+ for(const [viewport,state] of chartScrollbars){
+  if(!viewport.isConnected){chartScrollbarObserver.unobserve(viewport);chartScrollbarObserver.unobserve(state.content);chartScrollbars.delete(viewport);}
+  else state.update();
+ }
+});
+function bindChartScrollbars(root){
+ for(const viewport of root.querySelectorAll('.outcome-plot-scroll,.table-wrap:has(.damage-table)')){
+  if(chartScrollbars.has(viewport))continue;
+  const content=viewport.firstElementChild;
+  const rail=document.createElement('div'),spacer=document.createElement('div');
+  rail.className='chart-scroll-rail';rail.tabIndex=0;rail.setAttribute('role','region');
+  rail.setAttribute('aria-label','Scroll '+(content.getAttribute('aria-label')||'chart')+' horizontally');
+  spacer.className='chart-scroll-spacer';spacer.setAttribute('aria-hidden','true');rail.append(spacer);
+  viewport.classList.add('scrub-scroll-viewport');viewport.after(rail);
+  const update=()=>{
+   spacer.style.width=viewport.scrollWidth+'px';
+   rail.hidden=viewport.scrollWidth<=viewport.clientWidth+1;
+   rail.scrollLeft=viewport.scrollLeft;
+  };
+  rail.addEventListener('scroll',()=>{viewport.scrollLeft=rail.scrollLeft;hideChartTooltip();},{passive:true});
+  viewport.addEventListener('scroll',()=>{rail.scrollLeft=viewport.scrollLeft;hideChartTooltip();},{passive:true});
+  chartScrollbars.set(viewport,{content,update});
+  chartScrollbarObserver.observe(viewport);chartScrollbarObserver.observe(content);update();
+ }
+}
 
 ;
 function statsTableTitle(table,info,columns){
@@ -2956,6 +2999,7 @@ function statsGraph(){
  const title=`<div class="stats-integrated-title stats-graph-title"><h2>${escape(g.title)}<span>.</span></h2>${tools}</div>`;
  const chart=g.id==='day-of-week'?calendarGraph(g):g.id==='death-time'?histogram(g):g.id==='death-type'?stackedDeathGraph(g,outcomeView==='percent'):g.id==='timing'?timingGraph(g):['team-size','game-version'].includes(g.id)?teamSizeGraph(g):timelineGraph(g);
  target.innerHTML=chart.replace(/^(<div class="outcome-visual[^"]*">)/,(_,opening)=>opening+title);
+ bindChartScrollbars(target);
 
 }
 function statsEntries(mode){

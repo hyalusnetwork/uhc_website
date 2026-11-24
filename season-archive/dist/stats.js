@@ -219,6 +219,7 @@ function statsGraph(){
  const title=`<div class="stats-integrated-title stats-graph-title"><h2>${escape(g.title)}<span>.</span></h2>${tools}</div>`;
  const chart=g.id==='day-of-week'?calendarGraph(g):g.id==='death-time'?histogram(g):g.id==='death-type'?stackedDeathGraph(g,outcomeView==='percent'):g.id==='timing'?timingGraph(g):['team-size','game-version'].includes(g.id)?teamSizeGraph(g):timelineGraph(g);
  target.innerHTML=chart.replace(/^(<div class="outcome-visual[^"]*">)/,(_,opening)=>opening+title);
+ bindChartScrollbars(target);
 
 }
 function statsEntries(mode){

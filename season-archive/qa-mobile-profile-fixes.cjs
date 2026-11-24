@@ -15,7 +15,7 @@ eval(harness+`
  await evaluate("document.querySelector('.profile-photo-card:not(.profile-photo-clone)').click()");assert(await evaluate("document.querySelector('.photo-season-label').textContent==='Season 37'"));await evaluate("document.querySelector('[data-photo-close]').click()");
  await evaluate("document.querySelector('[data-photo-season]').value='all';document.querySelector('[data-photo-season]').dispatchEvent(new Event('change'))");
  await evaluate("document.querySelectorAll('.career-tabs button')[1].click()");await pause(100);
- assert(await evaluate("(()=>{const el=document.querySelector('.damage-table').parentElement;el.scrollLeft=el.scrollWidth;return getComputedStyle(el).scrollbarWidth==='thin'&&(el.scrollWidth<=el.clientWidth+1||el.scrollLeft>0);})()"),'Damage scrolls');
+ assert(await evaluate("(()=>{const el=document.querySelector('.damage-table').parentElement;el.scrollLeft=el.scrollWidth;return getComputedStyle(el).scrollbarWidth==='none'&&(el.scrollWidth<=el.clientWidth+1||el.scrollLeft>0);})()"),'Damage scrolls');
  await evaluate("showPlayer(playerProfiles.find(p=>p.history.some(h=>h.color==='Mole')).name)");
  assert(await evaluate("document.querySelector('.mole-bar-stripes')?.getAnimations().length>0"),'Animated mole kill bar');
  await evaluate("document.querySelectorAll('.career-tabs button')[2].click()");assert(await evaluate("!!document.querySelector('.mole-chart-bar')"),'Mole survival bar');
@@ -24,7 +24,7 @@ eval(harness+`
  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
  for(const tab of ['death-type','death-time','timing']){
  await evaluate("location.hash='#stats';statsMode='graphs';statsTab='"+tab+"';renderStats()");await pause(200);
- assert(await evaluate("(()=>{const el=document.querySelector('.outcome-plot-scroll'),native=getComputedStyle(el).scrollbarWidth==='thin';el.scrollLeft=el.scrollWidth;return native&&el.scrollLeft>0&&getComputedStyle(el.querySelector('svg')).touchAction==='pan-y';})()"),'Chart scroll '+tab);
+ assert(await evaluate("(()=>{const el=document.querySelector('.outcome-plot-scroll'),rail=el.nextElementSibling,native=rail.classList.contains('chart-scroll-rail')&&getComputedStyle(rail).scrollbarWidth==='thin';rail.scrollLeft=rail.scrollWidth;rail.dispatchEvent(new Event('scroll'));return native&&el.scrollLeft>0&&getComputedStyle(el.querySelector('svg')).touchAction==='pan-y';})()"),'Chart scroll '+tab);
  }
  for(const tab of ['pve','wins','pvp','victims','ironmen','winners']){
  await evaluate("statsMode='"+(tab==='winners'?'season':'all-time')+"';statsTab='"+tab+"';renderStats()");await pause(100);
