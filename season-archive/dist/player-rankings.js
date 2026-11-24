@@ -45,7 +45,7 @@ function renderSeasonGrades(hash){
  const combined=playerRankingData.combinedGrades;
  if(/^#rankings-classic(?:-|$)/.test(hash))$('ranking-era-filter').value='classic';
  if(/^#rankings-(?:modern|grades)(?:-|$)/.test(hash))$('ranking-era-filter').value='modern';
- const era=$('ranking-era-filter').value;
+ const era=validSelectValue($('ranking-era-filter'),'all');
  const {seasons,players}=combined.modes[era];
  const qualified=players.filter(player=>player.games>=5);
  const visiblePlayers=qualified.length?qualified:players;

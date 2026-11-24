@@ -10,9 +10,13 @@ function molePalette(seasonId){
  const names=season?[...new Set(season.players.flatMap(p=>[p.color,p.moleFor]).filter(c=>c&&c!=='Mole'&&c!=='Solo'&&colors[c]))]:Object.keys(colors).filter(c=>!['Mole','Solo'].includes(c));
  return names.map(name=>colors[name]);
 }
+function moleCycleDuration(size){
+ // Match the full palette's speed even when a season has fewer team colors.
+ return 8*size/(molePalette().length*16);
+}
 function molePaint(seasonId){
  const palette=molePalette(seasonId),size=palette.length*16;
- return `--mole-paint:linear-gradient(to bottom,${palette.map((c,i)=>`${c} ${i*16}px ${(i+1)*16}px`).join(',')});--mole-cycle:${size}px;`;
+ return `--mole-paint:linear-gradient(to bottom,${palette.map((c,i)=>`${c} ${i*16}px ${(i+1)*16}px`).join(',')});--mole-cycle:${size}px;--mole-duration:${moleCycleDuration(size)}s;`;
 }
 const profileData=window.UHC_PROFILES;
 const playerProfiles=profileData.profiles;
@@ -44,26 +48,35 @@ function comparePlayerDebuts(a,b){
 }
 function playerCards(){
   const q=$('player-search').value.trim().toLowerCase();
-  const sort=$('player-sort').value||'name';
+  const sort=validSelectValue($('player-sort'),'name');
   const visible=playerProfiles.filter(p=>[p.name,...p.aliases].some(n=>n.toLowerCase().includes(q))).sort((a,b)=>sort==='debut'?comparePlayerDebuts(a,b):(sort==='games'?b.games-a.games:0)||a.name.localeCompare(b.name));
   $('player-count').textContent=`${visible.length} of ${playerProfiles.length} profiles`;
   $('player-grid').innerHTML=visible.map(p=>`<a class="player-card player-introduction" href="${profileHref(p.name)}"><div class="directory-header"><div class="directory-portrait">${playerFace(p.name)}</div><div class="directory-person"><h3>${escape(p.name)}</h3><p class="directory-debut">Debut · Season ${p.history[0].season}</p></div></div></a>`).join('')||'<div class="empty">No eligible player matches that name.</div>';
 }
+function moleBarAnimation(seasonId){
+ const palette=molePalette(seasonId),size=palette.length*16;
+ const bands=[-1,0,1].flatMap(cycle=>palette.map((color,i)=>'<rect x="0" y="'+(cycle*size+i*16)+'" width="760" height="16" fill="'+color+'"/>')).join('');
+ return '<defs><pattern id="mole-bar-paint-'+seasonId+'" patternUnits="userSpaceOnUse" width="760" height="'+size+'"><g class="mole-bar-stripes" style="--mole-bar-cycle:'+size+'px;--mole-duration:'+moleCycleDuration(size)+'s">'+bands+'</g></pattern></defs>';
+}
+function moleBarAttributes(record){
+ return record?.color==='Mole'?'class="mole-chart-bar" style="fill:url(#mole-bar-paint-'+record.season+')"':'';
+}
 function killChart(p){
   const w=760,h=230,left=42,right=42,top=22,bottom=35,cw=w-left-right,ch=h-top-bottom,n=seasons.length;
   const best=Math.max(1,p.bestKills),total=Math.max(1,p.kills);let cumulative=0;const points=[];
+  const moleStyles=p.history.filter(r=>r.color==='Mole').map(r=>moleBarAnimation(r.season)).join('');
   const bars=seasons.map((s,i)=>{const record=p.history.find(r=>r.season===s.id),k=record?.kills||0;cumulative+=k;const victims=k?s.players.filter(v=>v.type==='PVP'&&profileIdentity(v.result)===p.name&&profileIdentity(v.name)!==p.name).map(v=>profileIdentity(v.name)):[];
   const teamColor=record?(s.teamSize!==1&&record.color!=='Solo'&&colors[record.color])||'#737e8d':'#393e48';
-  const killTip={season:s.id,k,cumulative,played:!!record,victims};const x=left+(i+.5)*cw/n;const lineY=top+ch-cumulative/total*ch;points.push(`${x},${lineY}`);return `<g class="kill-bar" tabindex="0" style="--team-color:${teamColor}" data-kill-tip="${escape(JSON.stringify(killTip))}" data-chart-tip="${escape(`Season ${s.id}\n${record ? `${k} PVP kills` : `Did not play`}\n${cumulative} career PVP kills`)}" aria-label="Season ${s.id}: ${record?k+' kills, '+cumulative+' career kills':'did not play'}"><rect x="${x-cw/n*.32}" y="${top+ch-k/best*ch}" width="${cw/n*.64}" height="${Math.max(1,k/best*ch)}" fill="${teamColor}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/><circle class="career-kill-point" cx="${x}" cy="${lineY}" r="6" fill="#f2bc79" aria-hidden="true"/></g>`;}).join('');
+  const killTip={season:s.id,k,cumulative,played:!!record,victims};const x=left+(i+.5)*cw/n;const lineY=top+ch-cumulative/total*ch;points.push(`${x},${lineY}`);return `<g class="kill-bar" tabindex="0" style="--team-color:${teamColor}" data-kill-tip="${escape(JSON.stringify(killTip))}" data-chart-tip="${escape(`Season ${s.id}\n${record ? `${k} PVP kills` : `Did not play`}\n${cumulative} career PVP kills`)}" aria-label="Season ${s.id}: ${record?k+' kills, '+cumulative+' career kills':'did not play'}"><rect ${moleBarAttributes(record)} x="${x-cw/n*.32}" y="${top+ch-k/best*ch}" width="${cw/n*.64}" height="${Math.max(1,k/best*ch)}" fill="${teamColor}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/><circle class="career-kill-point" cx="${x}" cy="${lineY}" r="6" fill="#f2bc79" aria-hidden="true"/></g>`;}).join('');
   const grid=[0,.5,1].map(f=>`<line x1="${left}" x2="${w-right}" y1="${top+ch-f*ch}" y2="${top+ch-f*ch}"/><text x="${left-10}" y="${top+ch-f*ch+4}" text-anchor="end">${best*f}</text><text x="${w-right+10}" y="${top+ch-f*ch+4}">${total*f}</text>`).join('');
-  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="PVP kills per season and cumulative career kills for ${escape(p.name)}" class="profile-chart">${grid}${bars}<polyline points="${points.join(' ')}" fill="none" stroke="#f2bc79" stroke-width="2.5"/></svg>`;
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="PVP kills per season and cumulative career kills for ${escape(p.name)}" class="profile-chart">${moleStyles}${grid}${bars}<polyline points="${points.join(' ')}" fill="none" stroke="#f2bc79" stroke-width="2.5"/></svg>`;
 }
 function survivalChart(p){
   const w=760,h=200,left=42,right=20,top=15,bottom=35,cw=w-left-right,ch=h-top-bottom;
   const bars=seasons.map((s,i)=>{const r=p.history.find(r=>r.season===s.id),x=left+(i+.5)*cw/seasons.length;const available=r?.outlivedAvailable,val=available?r.outlivedPercent:0;
   const team=available&&s.teamSize!==1&&r.color!=='Solo'?colors[r.color]:null;
-  return `<g class="outlast-bar" tabindex="0" style="--team-color:${team||'#737e8d'}" data-chart-tip="${escape(`Season ${s.id}\n${!r ? `Did not play` : available ? `${val}% of other participants outlived` : `Exit time unavailable`}${r ? `\nTeam: ${r.team}` : ``}`)}" aria-label="Season ${s.id}: ${!r?'did not play':available?val+' percent of other participants outlived':'exit time unavailable'}"><rect x="${x-5}" width="10" y="${top+ch-val/100*ch}" height="${Math.max(2,val/100*ch)}" fill="${available?team||'#737e8d':'#393e48'}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/></g>`;}).join('');
-  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Percentage of other players outlived each season" class="profile-chart">${[0,50,100].map(v=>`<line x1="${left}" x2="${w-right}" y1="${top+ch-v/100*ch}" y2="${top+ch-v/100*ch}"/><text x="${left-8}" y="${top+ch-v/100*ch+4}" text-anchor="end">${v}%</text>`).join('')}${bars}</svg>`;
+  return `<g class="outlast-bar" tabindex="0" style="--team-color:${team||'#737e8d'}" data-chart-tip="${escape(`Season ${s.id}\n${!r ? `Did not play` : available ? `${val}% of other participants outlived` : `Exit time unavailable`}${r ? `\nTeam: ${r.team}` : ``}`)}" aria-label="Season ${s.id}: ${!r?'did not play':available?val+' percent of other participants outlived':'exit time unavailable'}"><rect ${available?moleBarAttributes(r):''} x="${x-5}" width="10" y="${top+ch-val/100*ch}" height="${Math.max(2,val/100*ch)}" fill="${available?team||'#737e8d':'#393e48'}"/><text x="${x}" y="${h-15}" text-anchor="middle">${s.id}</text><rect class="chart-hit" x="${x-cw/seasons.length/2}" y="${top}" width="${cw/seasons.length}" height="${ch}" fill="transparent"/></g>`;}).join('');
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Percentage of other players outlived each season" class="profile-chart">${p.history.filter(r=>r.color==='Mole').map(r=>moleBarAnimation(r.season)).join('')}${[0,50,100].map(v=>`<line x1="${left}" x2="${w-right}" y1="${top+ch-v/100*ch}" y2="${top+ch-v/100*ch}"/><text x="${left-8}" y="${top+ch-v/100*ch+4}" text-anchor="end">${v}%</text>`).join('')}${bars}</svg>`;
 }
 function teamColorLegend(p,percent){
  return `<div class="team-color-key" role="list" aria-label="Team colors played">${p.teamColors.filter(c=>c.count>0).map(c=>`<span class="team-color-tile" role="listitem" style="--team-color:${colors[c.color]||'#798372'}"><i class="${c.color==='Mole'?'mole-color':''}" style="${c.color==='Mole'?molePaint():''}background:var(--team-color)" aria-hidden="true"></i><b>${escape(teamDisplayName(c.color))}</b><span class="team-color-tile-stats">${percent(c)} <small>(${c.count})</small></span></span>`).join('')}</div>`;
@@ -428,6 +441,7 @@ function bindCareerCurve(root,p){
     buttons.forEach((button,j)=>{button.classList.toggle('active',i===j);button.setAttribute('aria-selected',String(i===j));button.tabIndex=i===j?0:-1;});
     panel.setAttribute('aria-labelledby',buttons[i].id);
     panel.innerHTML=careerContent(p,i);
+
     if(i===5){const tile=root.querySelector('.profile-sidebar .profile-season-grid > a');if(tile){panel.style.setProperty('--teammate-tile-width',tile.offsetWidth+'px');panel.style.setProperty('--teammate-tile-height',tile.offsetHeight+'px');}}
   };
   buttons.forEach((button,i)=>{
@@ -473,6 +487,7 @@ function showPlayer(name){
   bindTrophyDialog($('full-profile'),trophy,p);
   bindCareerCurve($('full-profile'),p);
   bindProfilePhotos($('full-profile'),p,photos);
+
   const sidebar=$('full-profile').querySelector('.profile-sidebar');
   sidebar.style.setProperty('--profile-sidebar-height',sidebar.offsetHeight+'px');
   fitProfileName(sidebar.querySelector('h1'));
@@ -485,6 +500,22 @@ function playersRoute(){const hash=location.hash;if(hash.startsWith('#player-'))
 function initializePlayers(){
   $('player-search').addEventListener('input',playerCards);$('player-sort').addEventListener('change',playerCards);
   $('player-count-summary').textContent=`${playerProfiles.length} eligible players · At least 5 matches each`;
-  $('profile-methods').innerHTML=Object.entries(profileData.definitions).map(([label,value])=>`<dt>${escape(label.replace(/([A-Z])/g,' $1'))}</dt><dd>${escape(value)}</dd>`).join('');
 }
 
+// Browsers can restore an invalid form selection when returning to a page.
+function validSelectValue(select,fallback){
+  if(!Array.from(select.options).some(option=>option.value===select.value))select.value=fallback;
+  return select.value;
+}
+window.addEventListener('pageshow',()=>{
+  const sort=$('player-sort'),era=$('ranking-era-filter');
+  const invalidSort=!sort.value,invalidEra=!era.value;
+  validSelectValue(sort,'name');validSelectValue(era,'all');
+  if(invalidSort&& !$('players-view').hidden)playerCards();
+  if(invalidEra&& !$('season-grades-panel').hidden)renderSeasonGrades(location.hash);
+});
+
+// Native scrollbars sit outside the chart's tooltip targets.
+document.addEventListener('scroll',event=>{
+ if(event.target instanceof Element&&event.target.matches('.table-wrap,.outcome-plot-scroll'))hideChartTooltip();
+},{capture:true,passive:true});

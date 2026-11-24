@@ -21,6 +21,20 @@ assert.equal(trophy(ace,'sharpshooter').count,5);assert.equal(trophy(ace,'sharps
 assert.match(trophy(ace,'grand-slam').events[1].detail,/retained the Crown/);
 assert(ace.trivia.includes('Earned Ironman on his debut (S1) (the only recorded player to do so).'));
 assert.equal(data.deathCount,16);
+assert(ace.trivia.includes('The only player ever to kill multiple players in the majority of his games played (5 times in 5 games).'));
+const halfMultiKillRounds=rounds.slice(0,4).map((s,i)=>({...s,players:s.players.map(p=>i>=2&&p.name==='Enemy2'?{...p,type:'PVE',death:'was slain by Zombie',result:'Zombie'}:p)}));
+assert(!buildProfiles(halfMultiKillRounds,bios,[]).allPlayers.find(p=>p.name==='Ace').trivia.some(t=>t.includes('to kill multiple players in the majority')));
+const extraMultiKiller=rounds.map(s=>({...s,players:[...s.players,{name:'Hopalot202',color:'Blue'},
+ {name:'Extra1',color:'White',type:'PVP',death:'was shot by Hopalot202',result:'Hopalot202',seconds:30},
+ {name:'Extra2',color:'White',type:'PVP',death:'was shot by Hopalot202',result:'Hopalot202',seconds:40}]}));
+const sharedMajority=buildProfiles(extraMultiKiller,bios,[]).allPlayers;
+assert(sharedMajority.find(p=>p.name==='Ace').trivia.includes('One of 2 players to kill multiple players in the majority of his games played (5 times in 5 games).'));
+assert(sharedMajority.find(p=>p.name==='Hopalot202').trivia.includes('One of 2 players to kill multiple players in the majority of her games played (5 times in 5 games).'));
+assert(!buildProfiles(extraMultiKiller.slice(0,4),bios,[]).allPlayers.some(p=>p.trivia.some(t=>t.includes('to kill multiple players in the majority'))));
+const shortMultiKiller=extraMultiKiller.map((s,i)=>i?{...s,players:s.players.filter(p=>!['Hopalot202','Extra1','Extra2'].includes(p.name))}:s);
+const shortMajority=buildProfiles(shortMultiKiller,bios,[]).allPlayers;
+assert(shortMajority.find(p=>p.name==='Ace').trivia.includes('The only player ever to kill multiple players in the majority of his games played (5 times in 5 games).'));
+assert(!shortMajority.find(p=>p.name==='Hopalot202').trivia.some(t=>t.includes('to kill multiple players in the majority')));
 const dragonAwards=buildProfiles(rounds,bios,[{season:1,name:'Ace',stat:'Free the End'},{season:1,name:'Partner',stat:'Free the End'}]);
 assert.equal(trophy(dragonAwards.allPlayers.find(p=>p.name==='Ace'),'free-the-end').count,1);
 assert.equal(trophy(dragonAwards.allPlayers.find(p=>p.name==='Partner'),'free-the-end').count,1);
@@ -39,6 +53,16 @@ assert.equal(administrative.deathCount,3);
 assert(dc.history[0].win);assert(!dq.history[0].win);
 for(const p of [dc,dq]){assert.equal(p.administrativeDeaths,1);assert.equal(p.teamKillDeaths,0);assert.equal(p.kills,0);}
 assert.equal(ace.killStreak,10);assert.equal(ace.history[0].outlivedPercent,100);
+assert(ace.trivia.includes('Longest PVP kill streak without a death: 10 (S1, S2, S3, S4, S5). This is the longest streak among all players.'));
+const zeroKillRounds=rounds.map(s=>s.id===3?{...s,players:s.players.map(p=>p.type==='PVP'?{...p,type:'PVE',death:'was slain by Zombie',result:'Zombie'}:p)}:s);
+assert(buildProfiles(zeroKillRounds,bios,[]).allPlayers.find(p=>p.name==='Ace').trivia.some(t=>t.startsWith('Longest PVP kill streak without a death: 8 (S1, S2, S3, S4, S5).')));
+const splitStreakRounds=rounds.slice(0,4).map(s=>({...s,players:s.players.map(p=>['Ace','OldAce'].includes(p.name)&&s.id%2===0?{...p,type:'PVE',death:'was slain by Zombie',seconds:25}:p)}));
+assert(buildProfiles(splitStreakRounds,bios,[]).allPlayers.find(p=>p.name==='Ace').trivia.some(t=>t.startsWith('Longest PVP kill streak without a death: 4 (S1, S2 | S3, S4).')));
+const streakRankRoster=[7,6,6,5,4,3].flatMap((count,i)=>[{name:'Streak'+i,color:'Blue'},...Array.from({length:count},(_,j)=>({name:'Victim'+i+'_'+j,color:'Red',type:'PVP',death:'was shot by Streak'+i,result:'Streak'+i,seconds:10+i*10+j}))]);
+const streakRanks=buildProfiles([{id:1,teamSize:2,players:streakRankRoster}],[],[]).allPlayers;
+assert(streakRanks.find(p=>p.name==='Streak1').trivia.some(t=>t.endsWith('This is tied for the 2nd longest streak among all players.')));
+assert(streakRanks.find(p=>p.name==='Streak4').trivia.some(t=>t.endsWith('This is the 5th longest streak among all players.')));
+assert(streakRanks.find(p=>p.name==='Streak5').trivia.includes('Longest PVP kill streak without a death: 3 (S1).'));
 assert.equal(ace.topTeammates[0].name,'Partner');assert.equal(ace.topTeammates[0].count,5);
 assert.equal(ace.teamColors.reduce((total,c)=>total+c.count,0),ace.games);
 assert.equal(ace.commonColors[0].color,'Green');assert.equal(ace.commonColors[0].percent,100);

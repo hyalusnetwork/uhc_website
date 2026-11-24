@@ -9,11 +9,13 @@ function photoControl(direction,attribute,label,disabled=false,type='button'){
  const path=direction==='close'?'m6 6 12 12M18 6 6 18':direction==='previous'?'m15 5-7 7 7 7':'m9 5 7 7-7 7';
  return `<button type="${type}" class="photo-control" ${attribute} aria-label="${label}" ${disabled?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"/></svg></button>`;
 }
-function profilePhotosPanel(player,photos){
+function profilePhotosPanel(player,photos,season='all'){
  if(!photos.length)return '';
- return `<section class="profile-section profile-photos"><div class="profile-section-title"><div class="profile-photo-heading"><h2>Photos<span>.</span></h2><p class="photo-hint">Select a photo to enlarge.</p></div><div class="profile-photo-controls">${photoControl('previous','data-carousel-step="-1"','Previous photo',photos.length<2)}<span class="profile-photo-position" aria-live="off">1 / ${photos.length}</span>${photoControl('next','data-carousel-step="1"','Next photo',photos.length<2)}</div></div><div class="profile-photo-strip" role="region" aria-roledescription="carousel" aria-label="Photos of ${escape(player.name)}">${photos.map((photo,i)=>`<button type="button" class="profile-photo-card" data-profile-photo="${i}" aria-label="Enlarge photo ${i+1} of ${photos.length}" aria-haspopup="dialog"><img src="${photo.src}" alt="${escape(photo.players.join(', '))} in UHC" loading="${i?'lazy':'eager'}" decoding="async" draggable="false"></button>`).join('')}</div></section>`;
+ const photoSeasons=[...new Set(photosForPlayer(player).map(photo=>photo.season))].sort((a,b)=>a-b);
+ const filter=`<label class="ore-select-bevel photo-season-filter"><span class="sr-only">Filter photos by season</span><select data-photo-season aria-label="Filter photos by season"><option value="all" ${season==='all'?'selected':''}>All seasons</option>${photoSeasons.map(id=>`<option value="${id}" ${String(season)===String(id)?'selected':''}>Season ${id}</option>`).join('')}</select></label>`;
+ return `<section class="profile-section profile-photos"><div class="profile-section-title"><div class="profile-photo-heading"><h2>Photos<span>.</span></h2><p class="photo-hint">Select a photo to enlarge.</p></div><div class="profile-photo-controls">${filter}${photoControl('previous','data-carousel-step="-1"','Previous photo',photos.length<2)}<span class="profile-photo-position" aria-live="off">1 / ${photos.length}</span>${photoControl('next','data-carousel-step="1"','Next photo',photos.length<2)}</div></div><div class="profile-photo-strip" role="region" aria-roledescription="carousel" aria-label="Photos of ${escape(player.name)}">${photos.map((photo,i)=>`<button type="button" class="profile-photo-card" data-profile-photo="${i}" aria-label="Enlarge photo ${i+1} of ${photos.length}" aria-haspopup="dialog"><img src="${photo.src}" alt="${escape(photo.players.join(', '))} in UHC" loading="${i?'lazy':'eager'}" decoding="async" draggable="false"></button>`).join('')}</div></section>`;
 }
-function bindProfilePhotos(root,player,photos){
+function bindProfilePhotos(root,player,photos,allPhotos=photos){
  profilePhotosCleanup();
  const controller=new AbortController(),{signal}=controller;
  const backdrop=document.createElement('div');
@@ -66,9 +68,15 @@ function bindProfilePhotos(root,player,photos){
    const content=playerFace(name)+`<span>${escape(name)}</span>`;
    return profileByName(name)?`<a class="photo-person" href="${profileHref(profileIdentity(name))}">${content}</a>`:`<span class="photo-person">${content}</span>`;
   }).join('<span class="photo-person-divider" aria-hidden="true"> | </span>');
-  dialog.innerHTML=`<div class="photo-dialog-toolbar"><span>Photo ${selected+1} of ${photos.length}</span>${photoControl('close','data-photo-close','Close photo')}</div><img class="photo-dialog-image" src="${photo.src}" alt="${escape(photo.players.join(', '))} in UHC"><div class="photo-dialog-bottom">${photoControl('previous','data-photo-step="-1"','Previous photo',photos.length<2)}<div class="photo-people" aria-label="Players in this photo">${people}</div>${photoControl('next','data-photo-step="1"','Next photo',photos.length<2)}</div>`;
+  dialog.innerHTML=`<div class="photo-dialog-toolbar"><span>Photo ${selected+1} of ${photos.length}</span>${photoControl('close','data-photo-close','Close photo')}</div><img class="photo-dialog-image" src="${photo.src}" alt="${escape(photo.players.join(', '))} in UHC"><div class="photo-dialog-bottom">${photoControl('previous','data-photo-step="-1"','Previous photo',photos.length<2)}<div class="photo-people" aria-label="Season and players in this photo"><span class="photo-season-label">Season ${photo.season}</span><span class="photo-person-divider" aria-hidden="true"> | </span>${people}</div>${photoControl('next','data-photo-step="1"','Next photo',photos.length<2)}</div>`;
  };
  if(panel){
+  panel.querySelector('[data-photo-season]').addEventListener('change',event=>{
+   const season=event.target.value;
+   const filtered=allPhotos.filter(photo=>season==='all'||String(photo.season)===season);
+   panel.outerHTML=profilePhotosPanel(player,filtered,season);
+   bindProfilePhotos(root,player,filtered,allPhotos);
+  },{signal});
   panel.addEventListener('pointerover',event=>{if(event.pointerType==='mouse')hovered=true;},{signal});
   panel.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse'){hovered=false;lastInteraction=Date.now();}},{signal});
   panel.addEventListener('pointerdown',event=>{if(event.pointerType!=='mouse')touches.add(event.pointerId);lastInteraction=Date.now();},{signal});

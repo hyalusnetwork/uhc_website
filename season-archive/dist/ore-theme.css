@@ -223,15 +223,15 @@ input::placeholder{color:#a9afb8}
 .mole-cover{display:block;margin-top:4px;color:var(--muted);font-size:10px;line-height:1.5}.mole-cover b{font-weight:600}
 /* Mole colors are horizontal blocks travelling straight down, never diagonal. */
 @keyframes mole-colors-down{from{background-position:0 0}to{background-position:0 var(--mole-cycle)}}
-.mole-color{background-image:var(--mole-paint)!important;background-size:100% var(--mole-cycle)!important;background-repeat:repeat-y!important;animation:mole-colors-down 8s linear infinite}
+.mole-color{background-image:var(--mole-paint)!important;background-size:100% var(--mole-cycle)!important;background-repeat:repeat-y!important;animation:mole-colors-down var(--mole-duration,8s) linear infinite}
 .career-table td:first-child{border-left-width:6.75px}
 .mole-row>td:first-child{position:relative}
-.mole-row>td:first-child:before{content:'';position:absolute;top:0;bottom:0;left:-3px;width:3px;background-image:var(--mole-paint);background-size:100% var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down 8s linear infinite;pointer-events:none}
+.mole-row>td:first-child:before{content:'';position:absolute;top:0;bottom:0;left:-3px;width:3px;background-image:var(--mole-paint);background-size:100% var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down var(--mole-duration,8s) linear infinite;pointer-events:none}
 .season-card .mole-row>td:first-child:before{left:-7.5px;width:7.5px}
 .career-table .mole-row>td:first-child:before{left:-6.75px;width:6.75px}
 .team-history .mole-row>td:first-child:before{left:0;width:4.5px}
 @media(prefers-reduced-motion:reduce){.mole-color,.mole-row>td:first-child:before{animation:none}}
-.season-stat-table .mole-row>td:first-child:before{left:-7.5px;width:7.5px;background-image:var(--mole-paint);background-size:100% var(--mole-cycle);animation:mole-colors-down 8s linear infinite}
+.season-stat-table .mole-row>td:first-child:before{left:-7.5px;width:7.5px;background-image:var(--mole-paint);background-size:100% var(--mole-cycle);animation:mole-colors-down var(--mole-duration,8s) linear infinite}
 @media(prefers-reduced-motion:reduce){.season-stat-table .mole-row>td:first-child:before{animation:none}}
 /* Team formation and roamer joins sit within the chronological match ledger. */
 .season-card .team-join-row,.season-card .team-join-row:hover{background:color-mix(in srgb,var(--team) 8%,#161a20)}
@@ -357,7 +357,7 @@ main,main>section,.archive,.archive-main,.players-page,.stats-page,.rankings-pag
 .death-time-plot .outcome-segment.chart-active{stroke:#fff;stroke-width:2;paint-order:stroke fill}
 .death-time-plot{touch-action:none}
 /* Paint Mole rails without positioned overlays on collapsed table cells. */
-.mole-row>td:first-child{position:static;border-left-color:transparent;--mole-rail-width:3px;background-image:var(--mole-paint);background-origin:border-box;background-clip:border-box;background-size:var(--mole-rail-width) var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down 8s linear infinite}
+.mole-row>td:first-child{position:static;border-left-color:transparent;--mole-rail-width:3px;background-image:var(--mole-paint);background-origin:border-box;background-clip:border-box;background-size:var(--mole-rail-width) var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down var(--mole-duration,8s) linear infinite}
 .mole-row>td:first-child:before{content:none!important;display:none!important}
 .season-card .mole-row>td:first-child,.season-stat-table .mole-row>td:first-child{--mole-rail-width:7.5px}
 .career-table .mole-row>td:first-child{--mole-rail-width:6.75px}
@@ -426,7 +426,7 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 /* Season tables share team shading and the animated Mole palette. */
 .season-stat-table tbody tr,.season-stat-table tbody tr:nth-child(even){--season-tint:30%;background:var(--season-team-background,var(--panel))}
 .season-stat-table tbody tr:hover{--season-tint:40%;background:var(--season-team-background,var(--panel))}
-.season-stat-table tbody tr.mole-row,.season-stat-table tbody tr.mole-row:hover{background-image:var(--mole-tint-paint);background-size:100% var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down 8s linear infinite}
+.season-stat-table tbody tr.mole-row,.season-stat-table tbody tr.mole-row:hover{background-image:var(--mole-tint-paint);background-size:100% var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down var(--mole-duration,8s) linear infinite}
 @media(prefers-reduced-motion:reduce){.season-stat-table tbody tr.mole-row{animation:none}}
 .career-rank.debut-badge strong{font-size:clamp(22px,2.6vw,36px);white-space:nowrap}.career-rank.debut-badge>span{display:block;margin-top:8px;font-size:10px;letter-spacing:2px}
 /* Shared name/season baseline; an optional alias never moves the name. */
@@ -508,8 +508,8 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .profile-sidebar .profile-hero>h1{justify-self:stretch;min-width:0;white-space:nowrap}
 .profile-trivia{display:flex;flex-direction:column;max-height:var(--profile-trophy-height,none);box-sizing:border-box}
 .profile-trivia .trivia-list{max-height:none;min-height:0}
-.profile-followup{display:grid;gap:18px}
-.profile-followup>.profile-section,.profile-followup>.original-bio{margin-bottom:0}
+.profile-followup{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.profile-followup>.profile-section,.profile-followup>.original-bio{min-width:0;margin-bottom:0}
 .enchanted-trophy{position:relative;display:inline-grid;max-width:100%}
 .enchanted-trophy img{display:block}
 .enchanted-trophy::after{content:'';position:absolute;inset:0;pointer-events:none;mask:var(--item-mask) center/100% 100% no-repeat;background:repeating-linear-gradient(to right,#a658ff40 0px,#eeaaffb0 24px,#a658ff40 48px) 0 0/48px 100% repeat-x;animation:trophy-glint 2.8s linear infinite}
@@ -536,8 +536,8 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 .season-preview-heads>span,.season-preview-heads .face{display:block;width:14px;height:14px;border:0;border-radius:0;box-shadow:none;image-rendering:pixelated}
 
 .search>input[type="search"]:focus{outline:none;box-shadow:none}
-.profile-season-grid>a.profile-season-mole{background-image:var(--mole-paint);background-size:100% var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down 8s linear infinite;text-shadow:0 0 2px #000,0 1px 2px #000,0 -1px 2px #000}
-.profile-season-preview.profile-season-mole{background-image:linear-gradient(#14161bc4,#14161bc4),var(--mole-paint);background-size:100% 100%,100% var(--mole-cycle);background-repeat:no-repeat,repeat-y;animation:profile-season-mole-colors 8s linear infinite}
+.profile-season-grid>a.profile-season-mole{background-image:var(--mole-paint);background-size:100% var(--mole-cycle);background-repeat:repeat-y;animation:mole-colors-down var(--mole-duration,8s) linear infinite;text-shadow:0 0 2px #000,0 1px 2px #000,0 -1px 2px #000}
+.profile-season-preview.profile-season-mole{background-image:linear-gradient(#14161bc4,#14161bc4),var(--mole-paint);background-size:100% 100%,100% var(--mole-cycle);background-repeat:no-repeat,repeat-y;animation:profile-season-mole-colors var(--mole-duration,8s) linear infinite}
 @keyframes profile-season-mole-colors{to{background-position:0 0,0 var(--mole-cycle)}}
 @media(prefers-reduced-motion:reduce){.profile-season-grid>a.profile-season-mole,.profile-season-preview.profile-season-mole{animation:none}}
 .color-ranking-hero{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}
@@ -572,7 +572,7 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
   background-clip:padding-box,border-box;
   background-size:100% 100%,100% var(--mole-cycle);
   background-repeat:repeat;
-  animation:mole-colors-down 8s linear infinite;
+  animation:mole-colors-down var(--mole-duration,8s) linear infinite;
 }
 @media(prefers-reduced-motion:reduce){.chart-tooltip.mole-chart-tooltip{animation:none}}
 
@@ -639,8 +639,8 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 
 :is(#stats-view,#rankings-view) :is(.stats-mode,.stats-subtabs) button{white-space:normal}
 .ore-select-bevel{--trophy-color:var(--control-face,#394454);display:inline-flex;transition:transform .08s ease-out}
-:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order,#season-filter-category,#year,#order),:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order,#season-filter-category,#year,#order):hover{display:block;height:40px;padding-bottom:6px;background:transparent;border:0;box-shadow:none;color:#f5f7fa;cursor:pointer}
-:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order,#season-filter-category,#year,#order) option{background:#394454;color:#f5f7fa}
+:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order,#season-filter-category,#year,#order,[data-photo-season]),:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order,#season-filter-category,#year,#order,[data-photo-season]):hover{display:block;height:40px;padding-bottom:6px;background:transparent;border:0;box-shadow:none;color:#f5f7fa;cursor:pointer}
+:is(#player-sort,#ranking-filter,#ranking-order,#pr-tier-filter,#pr-order,#season-filter-category,#year,#order,[data-photo-season]) option{background:#394454;color:#f5f7fa}
 .ore-select-bevel:has(select:active){transform:translateY(2px)}
 .ore-select-bevel:has(select:active)::before{bottom:4px}
 @media(prefers-reduced-motion:reduce){.ore-select-bevel,.ore-select-bevel::before{transition:none}}
@@ -648,7 +648,7 @@ table:has(>tbody>.mole-row){border-collapse:separate;border-spacing:0}
 :is(.profile-season-grid,.season-index,.trivia-season-links)>a:is(:link,:visited,:hover,:focus-visible){background-color:var(--season-depth);border:2px solid var(--season-edge);color:var(--season-ink,#f4f4f5)}
 :is(.profile-season-grid,.season-index,.trivia-season-links)>a::before{content:'';position:absolute;inset:0 0 5px;z-index:-1;pointer-events:none;background:var(--season-face);box-shadow:inset 0 0 0 2px #ffffff38;transition:filter .1s ease}
 .profile-season-grid>a.profile-season-mole{background-image:none;animation:none}
-.profile-season-grid>a.profile-season-mole::before{background:var(--mole-paint) 0 0/100% var(--mole-cycle) repeat-y;animation:mole-colors-down 8s linear infinite}
+.profile-season-grid>a.profile-season-mole::before{background:var(--mole-paint) 0 0/100% var(--mole-cycle) repeat-y;animation:mole-colors-down var(--mole-duration,8s) linear infinite}
 :is(.profile-season-grid,.season-index,.trivia-season-links)>a:hover:not(:focus-visible){outline:none}
 @media(hover:hover){:is(.profile-season-grid,.season-index,.trivia-season-links)>a:hover::before{filter:brightness(1.16)}}
 :is(.profile-season-grid,.season-index,.trivia-season-links)>a:active{transform:translateY(2px)}
@@ -1215,7 +1215,7 @@ body:has(#stats-view:not([hidden])){
 .photo-hint{margin:0 0 14px}
 .profile-photo-controls{display:flex;align-items:center;gap:12px}
 .profile-photo-position{font:12px Consolas,monospace;color:var(--muted);min-width:4em;text-align:center}
-.profile-photo-strip{position:relative;display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.profile-photo-strip{max-width:100%;position:relative;display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .profile-photo-strip::-webkit-scrollbar{display:none}
 .profile-photo-card{box-sizing:border-box;flex:0 0 var(--photo-slide-width,100%);min-width:0;margin:0;padding:0;position:relative;background:#101318;border:0;box-shadow:none;scroll-snap-align:start;cursor:zoom-in}
 .profile-photo-card img{display:block;width:100%;aspect-ratio:16/9;max-height:500px;object-fit:contain;background:#101318;-webkit-user-drag:none}
@@ -1256,7 +1256,8 @@ body:has(#stats-view:not([hidden])){
 }
 #career-panel img,.team-color-bar img,.history-highlight img{-webkit-user-drag:none}
 #career-panel .profile-chart,.team-color-bar{touch-action:none}
-#career-panel .table-wrap,#career-panel .career-metric-plot{touch-action:pan-y}
+#career-panel .table-wrap{touch-action:pan-x pan-y}
+#career-panel .career-metric-plot{touch-action:pan-y}
 #career-panel{min-width:0;max-width:100%}
 .career-teammate-rows{width:100%;max-width:100%;min-width:0;box-sizing:border-box;overflow-x:auto;touch-action:pan-x pan-y}
 .career-teammate-row{min-width:var(--teammate-tile-width,36px)}
@@ -1285,3 +1286,47 @@ body:has(#stats-view:not([hidden])){
  .profile-primary .trophy-tile img{width:clamp(40px,13vw,68px);height:clamp(40px,13vw,68px)}
  .profile-primary .trophy-tile strong{font-size:12px;line-height:1.25;overflow-wrap:anywhere}
 }
+.outcome-plot-scroll .outcome-plot{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+@media(prefers-reduced-motion:reduce){.mole-bar-stripes{animation:none!important}}
+@media(max-width:600px){
+ .pve-ledger .pve-single-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .pve-single{gap:5px;padding:7px 5px;font-size:11px}
+ .pve-single .face{width:20px;height:20px;flex-shrink:0}
+ .pve-single a{min-width:0;overflow-wrap:anywhere}
+ .stats-grouped-table .stats-count-people{padding:10px 8px;gap:10px;min-width:0}
+ .stats-grouped-table .stats-count-person,.stats-grouped-table .stat-person{min-width:0;max-width:100%;white-space:normal;flex-wrap:wrap;overflow-wrap:anywhere}
+ .stats-grouped-table .stat-person :is(a,span){min-width:0;overflow-wrap:anywhere}
+ .season-winners-table{min-width:0;width:100%;table-layout:fixed;font-size:11px}
+ .season-winners-table th,.season-winners-table td{padding:8px 6px;overflow-wrap:anywhere;white-space:normal}
+ .season-winners-table th:first-child{width:42px}
+ .season-winners-table th:nth-child(2){width:27%}
+ .season-winners-table .season-stat-people{gap:4px}
+ .season-winners-table .season-stat-person{white-space:normal;min-width:0;max-width:100%;gap:4px;overflow-wrap:anywhere}
+ .season-winners-table .season-stat-person .face{width:18px;height:18px;flex-shrink:0}
+ .season-winners-table .season-stat-person :is(a,span){min-width:0;overflow-wrap:anywhere}
+ .season-winners-table th button{gap:3px;letter-spacing:0;font-size:9px}
+}
+.profile-photo-controls .photo-season-filter{box-sizing:border-box;height:44px;flex-shrink:0;align-items:stretch}
+.profile-photo-controls .photo-season-filter select{box-sizing:border-box;height:100%;min-width:142px;padding-top:0;padding-bottom:6px}
+.profile-photo-controls{flex-wrap:wrap}
+@media(max-width:600px){.profile-photos .profile-section-title{align-items:flex-start;flex-wrap:wrap}.profile-photo-controls{width:100%;justify-content:flex-end}.photo-season-filter{margin-right:auto}.profile-photo-controls .photo-season-filter select{min-width:120px}}
+@media(max-width:600px){.stats-ironmen-table .stats-count-people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.stats-ironmen-table .stats-count-person{align-self:start}.stats-ironmen-table .stat-person{align-items:flex-start;flex-wrap:nowrap;gap:5px}}
+
+/* The chart uses the same moving team-color bands as other Mole surfaces. */
+.mole-bar-stripes{animation:mole-bar-stripes-down var(--mole-duration,8s) linear infinite}
+@keyframes mole-bar-stripes-down{to{transform:translateY(var(--mole-bar-cycle))}}
+.photo-season-label{color:#e5edfa;white-space:nowrap}
+
+/* Native trivia scrollbar: conventional direction and a quiet, narrow thumb. */
+.profile-trivia .trivia-list{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#77808b transparent}
+.profile-trivia .trivia-list::-webkit-scrollbar{width:6px}
+.profile-trivia .trivia-list::-webkit-scrollbar-track{background:transparent;border:0}
+.profile-trivia .trivia-list::-webkit-scrollbar-thumb{background:#77808b;border:0;border-radius:3px;box-shadow:none}
+.profile-trivia .trivia-list::-webkit-scrollbar-thumb:hover{background:#929ba7}
+
+/* Use the browser's scrollbar for profile tables and Stats overflow as well. */
+:is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows){scrollbar-width:thin;scrollbar-color:#77808b transparent}
+:is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar{width:6px;height:6px}
+:is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar-track{background:transparent;border:0}
+:is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar-thumb{background:#77808b;border:0;border-radius:3px;box-shadow:none}
+:is(#full-profile,#stats-view) :is(.table-wrap,.outcome-plot-scroll,.pve-season-scroll,.career-teammate-rows)::-webkit-scrollbar-thumb:hover{background:#929ba7}

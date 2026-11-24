@@ -46,6 +46,7 @@ function buildProfiles(seasons,bios,specials){
   const add=(p,key,label,season,detail,icon)=>{let t=p.trophies.find(t=>t.key===key);if(!t){t={key,label,icon,count:0,events:[]};p.trophies.push(t)}t.count++;t.events.push({season,detail})};
   const teamKey=(s,p)=>s.teamSize===1?`solo:${identity(p.name)}`:p.color&&p.color!=='Solo'?`color:${p.color}`:p.team?`name:${p.team}`:`unassigned:${identity(p.name)}`;
   const activeStreaks=new Map();
+  const activeStreakSeasons=new Map();
   for(const s of [...seasons].sort((a,b)=>a.id-b.id)){
     const roster=s.players.map(p=>({...p,id:identity(p.name),key:teamKey(s,p)}));
     if(new Set(roster.map(p=>p.id)).size!==roster.length)throw Error(`Duplicate player identity in S${s.id}`);
@@ -75,10 +76,17 @@ function buildProfiles(seasons,bios,specials){
           if(!killCauses.has(killer))killCauses.set(killer,{});
           inc(killCauses.get(killer),cause);
         }
-        activeStreaks.set(killer,(activeStreaks.get(killer)||0)+1);kp.killStreak=Math.max(kp.killStreak,activeStreaks.get(killer));
+        const count=(activeStreaks.get(killer)||0)+1;
+        activeStreaks.set(killer,count);
+        const ids=activeStreakSeasons.get(killer)||[];
+        if(ids.at(-1)!==s.id)ids.push(s.id);
+        activeStreakSeasons.set(killer,ids);
+        if(count>kp.killStreak){kp.killStreak=count;kp.killStreakRuns=[[...ids]];}
+        else if(count===kp.killStreak&&!kp.killStreakRuns.some(run=>JSON.stringify(run)===JSON.stringify(ids)))kp.killStreakRuns.push([...ids]);
         if(victim.seconds!=null&&victim.seconds===firstTime&&!kp.trophies.find(t=>t.key==='first-blood')?.events.some(e=>e.season===s.id))add(kp,'first-blood','First Blood',s.id,deathMessage,'golden-sword');
       }else if(victim.type==='Team Kill'&&killerRecord&&killer!==victim.id)ensure(killer).teamKills++;
       activeStreaks.set(victim.id,0);
+      activeStreakSeasons.delete(victim.id);
       if(victim.type==='PVP'&&victim.seconds!=null&&victim.seconds===lastTime)add(p,'final-boss','Final Boss',s.id,deathMessage,'creeper');
     }
     const maxKills=Math.max(0,...Object.values(killCounts));
@@ -101,7 +109,7 @@ function buildProfiles(seasons,bios,specials){
       const crownAcquired=s.crown?.acquired&&crownAtEnd;
       const outlived=r.seconds==null&&!r.death&&!r.type?roster.length-1:deathEvents.filter(v=>v.id!==r.id&&v.seconds!=null&&r.seconds!=null&&v.seconds<r.seconds).length;
       p.history.push({season:s.id,metrics:r.metrics,date:s.date,recordedName:r.name,team:r.team||r.color||'Not recorded',color:r.color,moleFor:r.moleFor||null,joinedAt:r.joinedAt??null,roamer:!!r.roamer,kills,ranged,teamKills,diedFirst,runnerUp,win,winMethod:win?winMethod:'',iron,death:r.death,type:r.type,seconds:r.seconds,outlivedPercent:roster.length>1?Math.round(100*outlived/(roster.length-1)):0,outlivedAvailable:r.seconds!=null||(!r.death&&!r.type),participants:roster.length,crownAcquired});
-      if(r.type&&!isRecordedDeath(r.type)){p.otherExits++;activeStreaks.set(r.id,0)}
+      if(r.type&&!isRecordedDeath(r.type)){p.otherExits++;activeStreaks.set(r.id,0);activeStreakSeasons.delete(r.id)}
       if(win&&s.crown?.previous&&identity(s.crown.previous)===r.id&&s.crown.name&&!crownAtEnd)p.trivia.push(`Season ${s.id}: Lost the Crown to ${identity(s.crown.name)} but still won with their team.`);
       if(win)add(p,'victor','UHC Victor',s.id,r.team||r.color||'Solo','apple');
       if(iron)add(p,'ironman','Ironman',s.id,`Last player to take damage out of ${roster.length} players.`,'armor');
@@ -178,7 +186,6 @@ function buildProfiles(seasons,bios,specials){
     const doubleIronmen=p.ironRuns.filter(run=>run.length===2);
     if(doubleIronmen.length)p.trivia.push(`Earned Ironman in 2 consecutive seasons${doubleIronmen.length>1?' on '+doubleIronmen.length+' separate occasions':''} ${doubleIronmen.map(run=>'(S'+run.join(', S')+')').join(', ')}.`);
     for(const run of p.ironRuns.filter(run=>run.length>=3))p.trivia.push(`Earned Ironman in ${run.length} consecutive seasons (S${run.join(', S')}).`);
-    if(p.killStreak>=3)p.trivia.push(`Longest PVP kill streak without a recorded death: ${p.killStreak}.`);
     for(const m of p.milestones)p.trivia.push(`Was the ${m.number}th recorded death, in Season ${m.season}.`);
     for(const h of p.history.filter(h=>h.moleFor)){
       const season=seasons.find(s=>s.id===h.season);
@@ -200,6 +207,20 @@ function buildProfiles(seasons,bios,specials){
     p.trophies.sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
   }
   const allPlayers=[...players.values()];
+  for(const player of allPlayers.filter(p=>p.killStreak>=3)){
+    const runs=player.killStreakRuns.map(run=>player.history.filter(h=>h.season>=run[0]&&h.season<=run.at(-1)).map(h=>h.season));
+    const labels=[...new Set(runs.map(run=>run.map(id=>'S'+id).join(', ')))];
+    const rank=1+allPlayers.filter(p=>p.killStreak>player.killStreak).length;
+    const tied=allPlayers.some(p=>p!==player&&p.killStreak===player.killStreak);
+    const position=rank===1?'longest':['','','2nd','3rd','4th','5th'][rank]+' longest';
+    const record=rank<=5?` This is ${tied?'tied for the':'the'} ${position} streak among all players.`:'';
+    player.trivia.push(`Longest PVP kill streak without a death: ${player.killStreak} (${labels.join(' | ')}).${record}`);
+  }
+  const majorityMultiKillPlayers=allPlayers.map(player=>({player,count:player.history.filter(h=>h.kills>=2).length})).filter(({player,count})=>player.games>=5&&count>player.games/2);
+  for(const {player,count} of majorityMultiKillPlayers){
+    const rarity=majorityMultiKillPlayers.length===1?'The only player ever':`One of ${majorityMultiKillPlayers.length} players`;
+    player.trivia.push(`${rarity} to kill multiple players in the majority of ${player.pronouns.possessive} games played (${count} ${count===1?'time':'times'} in ${player.games} ${player.games===1?'game':'games'}).`);
+  }
   const perfectPlayers=allPlayers.flatMap(player=>{
     const ids=[...new Set(player.trophies.find(t=>t.key==='perfect-ironman')?.events.map(e=>e.season)||[])].sort((a,b)=>a-b);
     return ids.length?[{player,ids}]:[];

@@ -2,6 +2,7 @@ const fs=require('node:fs');
 const photos=JSON.parse(fs.readFileSync('references/profile-photos.json','utf8'));
 const ids=new Set();
 for(const photo of photos){
+ if(!Number.isInteger(photo.season)||photo.season<1)throw Error('Missing photo season '+photo.id);
  if(ids.has(photo.id)||photo.id===26||!photo.players.length)throw Error('Invalid photo '+photo.id);
  ids.add(photo.id);
  photo.src=`images/hero-season-${photo.id}.webp`;

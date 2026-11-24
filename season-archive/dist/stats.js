@@ -120,7 +120,7 @@ function statsTable(){
   if(['ironmen','victims'].includes(table.id)){
    const column=table.columns.findIndex(c=>c[1]==='number'),groups=new Map();
    for(const row of rows){const count=row[column];if(!groups.has(count))groups.set(count,[]);groups.get(count).push(row);}
-   body=`<table class="stats-grouped stats-grouped-table"><colgroup><col class="stats-total-column"><col></colgroup><thead>${statsTableTitle(table,info,2)}<tr><th scope="col">${escape(table.columns[column][0])}</th><th scope="col">${table.id==='victims'?'Killer → victim':'Players'}</th></tr></thead><tbody>${[...groups].sort((a,b)=>b[0]-a[0]).map(([count,entries])=>`<tr><td class="stats-count"><strong>${count}</strong><span>${table.id==='ironmen'?(count===1?'Ironman':'Ironmen'):(count===1?'kill':'kills')}</span></td><td><div class="stats-count-people">${entries.map(row=>`<span class="stats-count-person">${row.map((v,i)=>i===column?'':(i===1&&table.id==='victims'?'<span class="stats-pair-arrow" aria-label="killed">→</span>':'')+statCell(v,table.columns[i][1])).join('')}</span>`).join('')}</div></td></tr>`).join('')||'<tr><td colspan="2" class="stats-table-note">No records match your search.</td></tr>'}</tbody></table>`;
+   body=`<table class="stats-grouped stats-grouped-table stats-${table.id}-table"><colgroup><col class="stats-total-column"><col></colgroup><thead>${statsTableTitle(table,info,2)}<tr><th scope="col">${escape(table.columns[column][0])}</th><th scope="col">${table.id==='victims'?'Killer → victim':'Players'}</th></tr></thead><tbody>${[...groups].sort((a,b)=>b[0]-a[0]).map(([count,entries])=>`<tr><td class="stats-count"><strong>${count}</strong><span>${table.id==='ironmen'?(count===1?'Ironman':'Ironmen'):(count===1?'kill':'kills')}</span></td><td><div class="stats-count-people">${entries.map(row=>`<span class="stats-count-person">${row.map((v,i)=>i===column?'':(i===1&&table.id==='victims'?'<span class="stats-pair-arrow" aria-label="killed">→</span>':'')+statCell(v,table.columns[i][1])).join('')}</span>`).join('')}</div></td></tr>`).join('')||'<tr><td colspan="2" class="stats-table-note">No records match your search.</td></tr>'}</tbody></table>`;
   }else{
    body=body.replace(/^(<div class="[^"]*\bpve-ledger\b[^"]*">)/,(_,opening)=>opening+statsTableTitle(table,info));
    if(!body.includes('stats-integrated-title'))body=statsTableTitle(table,info)+body;
@@ -219,6 +219,7 @@ function statsGraph(){
  const title=`<div class="stats-integrated-title stats-graph-title"><h2>${escape(g.title)}<span>.</span></h2>${tools}</div>`;
  const chart=g.id==='day-of-week'?calendarGraph(g):g.id==='death-time'?histogram(g):g.id==='death-type'?stackedDeathGraph(g,outcomeView==='percent'):g.id==='timing'?timingGraph(g):['team-size','game-version'].includes(g.id)?teamSizeGraph(g):timelineGraph(g);
  target.innerHTML=chart.replace(/^(<div class="outcome-visual[^"]*">)/,(_,opening)=>opening+title);
+
 }
 function statsEntries(mode){
  const allTimeIds=['wins','pve','mob-damage','pvp','victims','ironmen'];
